@@ -1,0 +1,44 @@
+name: Deploy App
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Publish to environment"
+        required: true
+        default: "internal"
+        type: choice
+        options:
+          - internal
+          - alpha
+          - production
+          - cluster-core
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build
+        run: yarn build:k8s:${{ inputs.environment }}
+
+      - uses: imranismail/setup-kustomize@v2
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITAL_OCEAT_TOKEN }}
+
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.DIGITALOCEAN_CLUSTER_ID }}
+
+      - uses: azure/setup-kubectl@v3
+
+      - name: Show diff
+        run: kubectl diff -f ./${{ inputs.environment }}.yaml | grep -e "^\+ " -e "^- "
+
+      - name: Deploy
+        run: kubectl apply -f ./${{ inputs.environment }}.yaml -n democracy-${{ inputs.environment }}

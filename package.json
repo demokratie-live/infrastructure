@@ -1,0 +1,15 @@
+{
+  "name": "@democracy-deutschland/infrastructure",
+  "version": "0.1.0",
+  "author": "Manuel Ruck <m.ruck@democracy-deutschland.de>",
+  "license": "Apache2",
+  "scripts": {
+    "build:k8s:local": "kustomize build ./kustomize/overlays/local > local.yaml",
+    "build:k8s:internal": "kustomize build ./kustomize/overlays/internal > internal.yaml",
+    "build:k8s:alpha": "kustomize build ./kustomize/overlays/alpha > alpha.yaml",
+    "build:k8s:production": "kustomize build ./kustomize/overlays/production > production.yaml",
+    "build:k8s:cluster-core": "kustomize build ./kustomize/overlays/cluster-core > cluster-core.yaml"
+  },
+  "dependencies": {
+  }
+}
