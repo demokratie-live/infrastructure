@@ -10,10 +10,10 @@ spec:
     spec:
       containers:
         - name: democracy-app
-          resources:
-            limits:
-              memory: "120M"
-              cpu: "200m"
-            requests:
-              memory: "100M"
-              cpu: "50m"
+          # resources:
+          #   limits:
+          #     memory: "120M"
+          #     cpu: "200m"
+          #   requests:
+          #     memory: "100M"
+          #     cpu: "50m"
