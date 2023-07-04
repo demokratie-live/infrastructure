@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: queue-pushs-vote-top-100
-              image: democracy/queue-pushs-vote-top-100:sha-bb94f88
+              image: democracy/queue-pushs-vote-top-100:0.1.8
               env:
                 - name: DB_URL
                   valueFrom:

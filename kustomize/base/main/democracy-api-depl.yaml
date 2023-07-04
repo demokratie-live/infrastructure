@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: democracy-api
-          image: democracy/democracy-server:0.2.62-alpha.2-new-push-token
+          image: democracy/democracy-server:0.2.62
           envFrom:
             - configMapRef:
                 name: democracy-api-config

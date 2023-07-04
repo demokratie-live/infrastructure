@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: import-procedures
-              image: democracy/crawler:sha-128ee55
+              image: democracy/crawler:1.0.10
               envFrom:
                 - configMapRef:
                     name: crawler-config
