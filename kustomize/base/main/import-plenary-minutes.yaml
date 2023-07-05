@@ -15,6 +15,7 @@ spec:
           containers:
             - name: import-plenary-minutes
               image: democracy/import-plenary-minutes:0.1.0
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:
