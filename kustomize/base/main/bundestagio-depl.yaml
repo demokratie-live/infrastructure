@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bundestagio
-          image: democracy/bundestag.io:sha-5c1bf48
+          image: democracy/bundestag.io:0.1.54
           envFrom:
             - configMapRef:
                 name: bio-api-config
