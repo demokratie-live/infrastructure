@@ -15,6 +15,9 @@ spec:
       containers:
         - name: bundestagio-dip
           image: democracy/bundestag.io-dip:0.1.7
+          ports:
+            - containerPort: 3101
+              protocol: TCP
           envFrom:
             - secretRef:
                 name: dip-api-token
