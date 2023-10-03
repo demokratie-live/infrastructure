@@ -15,6 +15,9 @@ spec:
       containers:
         - name: democracy-api
           image: democracy/democracy-server:0.2.63
+          ports:
+            - containerPort: 3000
+              protocol: TCP
           envFrom:
             - configMapRef:
                 name: democracy-api-config
