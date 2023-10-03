@@ -24,6 +24,9 @@ spec:
                   optional: false
             - name: PROCEDURES_SERVER_URL
               value: http://procedures
+          ports:
+            - containerPort: 3000
+              protocol: TCP
           envFrom:
             - configMapRef:
                 name: bio-admin-config
