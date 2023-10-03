@@ -19,6 +19,9 @@ spec:
           envFrom:
             - configMapRef:
                 name: democracy-app-config
+          ports:
+            - containerPort: 3000
+              protocol: TCP
 ---
 apiVersion: v1
 kind: Service
