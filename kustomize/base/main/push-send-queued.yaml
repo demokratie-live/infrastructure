@@ -15,7 +15,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: push-send-queued
-              image: democracy/push-send-queued:0.1.18
+              image: democracy/push-send-queued:pr-504
               envFrom:
                 - configMapRef:
                     name: push-notifications-config

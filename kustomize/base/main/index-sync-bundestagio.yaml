@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: index-sync-bundestagio
-              image: democracy/index-sync-bundestagio:0.1.0
+              image: democracy/index-sync-bundestagio:pr-504
               env:
                 - name: DB_URL
                   valueFrom:

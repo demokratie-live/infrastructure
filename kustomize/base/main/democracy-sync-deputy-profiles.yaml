@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: democracy-sync-deputy-profiles
-              image: democracy/sync-deputy-profiles:0.1.8
+              image: democracy/sync-deputy-profiles:pr-504
               env:
                 - name: DB_URL
                   valueFrom:

@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: queue-pushs-vote-conference-week
-              image: democracy/queue-pushs-vote-conference-week:0.1.4
+              image: democracy/queue-pushs-vote-conference-week:pr-504
               env:
                 - name: DB_URL
                   valueFrom:

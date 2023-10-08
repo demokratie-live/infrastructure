@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: cleanup-push-queue
-              image: democracy/cleanup-push-queue:1.0.1
+              image: democracy/cleanup-push-queue:pr-504
               env:
                 - name: DB_URL
                   valueFrom:
