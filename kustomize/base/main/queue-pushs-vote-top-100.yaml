@@ -15,6 +15,7 @@ spec:
           containers:
             - name: queue-pushs-vote-top-100
               image: democracy/queue-pushs-vote-top-100:pr-504
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:

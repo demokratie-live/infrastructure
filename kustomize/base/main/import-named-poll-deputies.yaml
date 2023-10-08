@@ -15,6 +15,7 @@ spec:
           containers:
             - name: import-named-poll-deputies
               image: democracy/import-named-poll-deputies:pr-504
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:

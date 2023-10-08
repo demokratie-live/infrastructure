@@ -15,6 +15,7 @@ spec:
           containers:
             - name: democracy-sync-named-polls
               image: democracy/sync-named-polls:pr-504
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:

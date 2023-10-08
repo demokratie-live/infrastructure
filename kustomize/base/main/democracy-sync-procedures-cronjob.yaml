@@ -15,6 +15,7 @@ spec:
           containers:
             - name: democracy-sync-procedures
               image: democracy/sync-procedures:pr-504
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:

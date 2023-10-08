@@ -15,6 +15,7 @@ spec:
           containers:
             - name: import-deputy-profiles
               image: democracy/import-deputy-profiles:pr-504
+              imagePullPolicy: Always
               env:
                 - name: PERIOD
                   value: '18'

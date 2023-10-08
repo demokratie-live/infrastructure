@@ -15,6 +15,7 @@ spec:
           containers:
             - name: index-sync-bundestagio
               image: democracy/index-sync-bundestagio:pr-504
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:

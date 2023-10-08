@@ -15,6 +15,7 @@ spec:
           containers:
             - name: shedule-bio-resync
               image: democracy/shedule-bio-resync:pr-504
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:

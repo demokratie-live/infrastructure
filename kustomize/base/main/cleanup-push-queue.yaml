@@ -15,6 +15,7 @@ spec:
           containers:
             - name: cleanup-push-queue
               image: democracy/cleanup-push-queue:pr-504
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:

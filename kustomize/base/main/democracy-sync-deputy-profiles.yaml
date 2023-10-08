@@ -15,6 +15,7 @@ spec:
           containers:
             - name: democracy-sync-deputy-profiles
               image: democracy/sync-deputy-profiles:pr-504
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:

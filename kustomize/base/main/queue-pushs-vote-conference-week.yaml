@@ -15,6 +15,7 @@ spec:
           containers:
             - name: queue-pushs-vote-conference-week
               image: democracy/queue-pushs-vote-conference-week:pr-504
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:
