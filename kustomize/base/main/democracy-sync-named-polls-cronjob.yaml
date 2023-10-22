@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: democracy-sync-named-polls
-              image: democracy/sync-named-polls:pr-504
+              image: democracy/sync-named-polls:pr-520
               imagePullPolicy: Always
               env:
                 - name: DB_URL

@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: import-procedures
-              image: democracy/crawler:pr-504
+              image: democracy/crawler:pr-520
               imagePullPolicy: Always
               envFrom:
                 - configMapRef:

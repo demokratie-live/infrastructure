@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: import-named-polls
-              image: democracy/import-named-polls:pr-504
+              image: democracy/import-named-polls:pr-520
               env:
                 - name: DB_URL
                   valueFrom:

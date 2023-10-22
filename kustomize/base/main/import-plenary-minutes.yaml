@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: import-plenary-minutes
-              image: democracy/import-plenary-minutes:pr-504
+              image: democracy/import-plenary-minutes:pr-520
               imagePullPolicy: Always
               env:
                 - name: DB_URL

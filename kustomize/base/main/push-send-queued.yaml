@@ -15,7 +15,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: push-send-queued
-              image: democracy/push-send-queued:pr-504
+              image: democracy/push-send-queued:pr-520
               imagePullPolicy: Always
               envFrom:
                 - configMapRef:

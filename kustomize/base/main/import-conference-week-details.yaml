@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: import-conference-week-details
-              image: democracy/import-conference-week-details:pr-504
+              image: democracy/import-conference-week-details:pr-520
               imagePullPolicy: Always
               env:
                 - name: DB_URL

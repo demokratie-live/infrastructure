@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: import-deputy-profiles
-              image: democracy/import-deputy-profiles:pr-504
+              image: democracy/import-deputy-profiles:pr-520
               imagePullPolicy: Always
               env:
                 - name: PERIOD

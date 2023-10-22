@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: import-named-poll-deputies
-              image: democracy/import-named-poll-deputies:pr-504
+              image: democracy/import-named-poll-deputies:pr-520
               imagePullPolicy: Always
               env:
                 - name: DB_URL
