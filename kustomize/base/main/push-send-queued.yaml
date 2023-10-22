@@ -16,7 +16,7 @@ spec:
           containers:
             - name: push-send-queued
               image: democracy/push-send-queued:pr-520
-              imagePullPolicy: Always
+              imagePullPolicy: IfNotPresent
               envFrom:
                 - configMapRef:
                     name: push-notifications-config
