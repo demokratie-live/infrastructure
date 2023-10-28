@@ -12,6 +12,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 43200
           containers:
             - name: import-procedures
               image: democracy/crawler:pr-520

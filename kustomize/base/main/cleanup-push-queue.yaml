@@ -12,6 +12,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 43200
           containers:
             - name: cleanup-push-queue
               image: democracy/cleanup-push-queue:pr-520

@@ -12,6 +12,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 43200
           containers:
             - name: import-plenary-minutes
               image: democracy/import-plenary-minutes:pr-520

@@ -12,6 +12,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 43200
           containers:
             - name: shedule-bio-resync
               image: democracy/shedule-bio-resync:pr-520

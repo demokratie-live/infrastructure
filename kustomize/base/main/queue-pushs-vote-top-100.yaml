@@ -12,6 +12,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 43200
           containers:
             - name: queue-pushs-vote-top-100
               image: democracy/queue-pushs-vote-top-100:pr-520
