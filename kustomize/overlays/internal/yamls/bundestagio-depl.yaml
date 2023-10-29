@@ -10,6 +10,7 @@ spec:
     spec:
       containers:
         - name: bundestagio
+          imagePullPolicy: Always
           resources:
             requests:
               memory: "150M"

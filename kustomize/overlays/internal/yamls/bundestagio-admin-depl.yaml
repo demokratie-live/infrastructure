@@ -10,6 +10,7 @@ spec:
     spec:
       containers:
         - name: bundestagio-admin
+          imagePullPolicy: Always
           resources:
             limits:
               memory: "200M"
