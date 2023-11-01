@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 43200
           containers:
             - name: queue-pushs-vote-conference-week
-              image: democracy/queue-pushs-vote-conference-week:pr-520
+              image: democracy/queue-pushs-vote-conference-week:0.1.7
               imagePullPolicy: Always
               env:
                 - name: DB_URL

@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 43200
           containers:
             - name: cleanup-push-queue
-              image: democracy/cleanup-push-queue:pr-520
+              image: democracy/cleanup-push-queue:1.0.4
               imagePullPolicy: Always
               env:
                 - name: DB_URL

@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 43200
           containers:
             - name: import-named-polls
-              image: democracy/import-named-polls:pr-520
+              image: democracy/import-named-polls:0.1.10
               env:
                 - name: DB_URL
                   valueFrom:

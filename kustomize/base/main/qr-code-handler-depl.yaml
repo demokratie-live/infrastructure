@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: qr-code-handler
-          image: democracy/qr-code-handler:pr-507
+          image: democracy/qr-code-handler:1.0.9
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
