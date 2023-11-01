@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 43200
           containers:
             - name: import-plenary-minutes
-              image: democracy/import-plenary-minutes:0.1.4
+              image: democracy/import-plenary-minutes:pr-502
               imagePullPolicy: Always
               env:
                 - name: DB_URL
