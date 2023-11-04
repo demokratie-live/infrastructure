@@ -20,3 +20,6 @@ spec:
               envFrom:
                 - configMapRef:
                     name: crawler-config
+                - secretRef:
+                    name: dip-api-token
+                    optional: false
