@@ -12,7 +12,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
-          activeDeadlineSeconds: 43200
+          activeDeadlineSeconds: 86400
           containers:
             - name: index-sync-democracy
               image: democracy/index-sync-democracy:0.1.4

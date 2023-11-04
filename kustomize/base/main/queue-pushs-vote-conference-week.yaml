@@ -12,7 +12,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
-          activeDeadlineSeconds: 43200
+          activeDeadlineSeconds: 86400
           containers:
             - name: queue-pushs-vote-conference-week
               image: democracy/queue-pushs-vote-conference-week:0.1.7

@@ -12,7 +12,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
-          activeDeadlineSeconds: 43200
+          activeDeadlineSeconds: 86400
           containers:
             - name: index-sync-bundestagio
               image: democracy/index-sync-bundestagio:0.1.4

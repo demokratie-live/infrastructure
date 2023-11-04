@@ -12,7 +12,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
-          activeDeadlineSeconds: 43200
+          activeDeadlineSeconds: 86400
           containers:
             - name: shedule-bio-resync
               image: democracy/shedule-bio-resync:0.1.5

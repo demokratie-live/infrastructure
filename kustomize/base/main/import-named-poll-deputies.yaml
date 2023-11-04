@@ -12,7 +12,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
-          activeDeadlineSeconds: 43200
+          activeDeadlineSeconds: 86400
           containers:
             - name: import-named-poll-deputies
               image: democracy/import-named-poll-deputies:0.1.7

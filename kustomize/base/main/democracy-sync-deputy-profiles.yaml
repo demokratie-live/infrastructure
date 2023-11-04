@@ -12,7 +12,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
-          activeDeadlineSeconds: 43200
+          activeDeadlineSeconds: 86400
           containers:
             - name: democracy-sync-deputy-profiles
               image: democracy/sync-deputy-profiles:0.1.12
