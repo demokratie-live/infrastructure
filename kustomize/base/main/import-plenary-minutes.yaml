@@ -12,9 +12,10 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 86400
           containers:
             - name: import-plenary-minutes
-              image: democracy/import-plenary-minutes:0.1.0
+              image: democracy/import-plenary-minutes:0.1.6
               imagePullPolicy: Always
               env:
                 - name: DB_URL

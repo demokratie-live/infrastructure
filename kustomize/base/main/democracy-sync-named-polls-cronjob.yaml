@@ -12,9 +12,11 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 86400
           containers:
             - name: democracy-sync-named-polls
-              image: democracy/sync-named-polls:0.1.12
+              image: democracy/sync-named-polls:0.1.14
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:

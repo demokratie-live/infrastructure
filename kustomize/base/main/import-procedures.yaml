@@ -12,9 +12,14 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 86400
           containers:
             - name: import-procedures
-              image: democracy/crawler:1.0.10
+              image: democracy/crawler:1.0.16
+              imagePullPolicy: Always
               envFrom:
                 - configMapRef:
                     name: crawler-config
+                - secretRef:
+                    name: dip-api-token
+                    optional: false

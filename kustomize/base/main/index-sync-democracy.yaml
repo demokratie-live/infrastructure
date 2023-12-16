@@ -12,9 +12,10 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 86400
           containers:
             - name: index-sync-democracy
-              image: democracy/index-sync-democracy:0.1.1
+              image: democracy/index-sync-democracy:0.1.4
               env:
                 - name: DB_URL
                   valueFrom:

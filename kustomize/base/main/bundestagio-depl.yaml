@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bundestagio
-          image: democracy/bundestag.io:0.1.54
+          image: democracy/bundestag.io:0.1.58
           envFrom:
             - configMapRef:
                 name: bio-api-config
@@ -24,6 +24,13 @@ spec:
             - secretRef:
                 name: bio-api-secrets
                 optional: true
+          resources:
+            requests:
+              memory: "150M"
+              cpu: "50m"
+            limits:
+              memory: "500M"
+              cpu: "1000m"
 ---
 apiVersion: v1
 kind: Service

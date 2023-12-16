@@ -9,13 +9,14 @@ spec:
   jobTemplate:
     spec:
       backoffLimit: 0
-      activeDeadlineSeconds: 300
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 86400
           containers:
             - name: push-send-queued
-              image: democracy/push-send-queued:0.1.18
+              image: democracy/push-send-queued:0.1.24
+              imagePullPolicy: IfNotPresent
               envFrom:
                 - configMapRef:
                     name: push-notifications-config

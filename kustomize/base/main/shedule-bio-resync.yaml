@@ -12,9 +12,11 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 86400
           containers:
             - name: shedule-bio-resync
-              image: democracy/shedule-bio-resync:0.1.2
+              image: democracy/shedule-bio-resync:0.1.5
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:

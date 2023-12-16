@@ -10,6 +10,7 @@ spec:
     spec:
       containers:
         - name: democracy-api
+          imagePullPolicy: Always
           resources:
             requests:
               memory: "300M"

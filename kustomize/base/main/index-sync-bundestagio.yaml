@@ -12,9 +12,11 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 86400
           containers:
             - name: index-sync-bundestagio
-              image: democracy/index-sync-bundestagio:0.1.0
+              image: democracy/index-sync-bundestagio:0.1.4
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:

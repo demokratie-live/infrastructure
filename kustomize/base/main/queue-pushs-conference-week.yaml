@@ -12,9 +12,11 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          activeDeadlineSeconds: 86400
           containers:
             - name: queue-pushs-conference-week
-              image: democracy/queue-pushs-conference-week:0.1.6
+              image: democracy/queue-pushs-conference-week:0.1.9
+              imagePullPolicy: Always
               env:
                 - name: DB_URL
                   valueFrom:
