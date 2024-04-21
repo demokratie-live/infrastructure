@@ -5,6 +5,9 @@ configMapGenerator:
   - name: bio-admin-config
     envs:
       - bio-admin.env
+  - name: ai-votes-config
+    envs:
+      - ai-votes.env
   - name: bio-api-config
     envs:
       - bio-api.env

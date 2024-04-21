@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: votes-ai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: votes-ai
+  template:
+    metadata:
+      labels:
+        app: votes-ai
+    spec:
+      containers:
+        - name: votes-ai
+          image: democracy/votes-ai:0.0.1
+          ports:
+            - containerPort: 4003
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: ai-votes-config
+            - secretRef:
+                name: ai-votes-access-token
+                optional: false
+            - secretRef:
+                name: ai-votes-secrets
+                optional: false
+          resources:
+            requests:
+              memory: "150M"
+              cpu: "50m"
+            limits:
+              memory: "200M"
+              cpu: "300m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: votes-ai-srv
+spec:
+  selector:
+    app: votes-ai
+  ports:
+    - name: votes-ai
+      protocol: TCP
+      port: 4003
+      targetPort: 4003

@@ -14,7 +14,14 @@ spec:
     spec:
       containers:
         - name: bundestagio-admin
-          image: democracy/bundestag.io-admin:3.0.7
+          image: democracy/bundestag.io-admin:3.2.0
+          env:
+            - name: AI_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ai-votes-access-token
+                  key: ACCESS_TOKEN
+                  optional: false
           envFrom:
             - configMapRef:
                 name: bio-admin-config
