@@ -10,7 +10,6 @@ resources:
   - bundestagio-dip-depl.yaml
   - democracy-api-depl.yaml
   - democracy-app-depl.yaml
-  - nats-depl.yaml
   - democracy-sync-procedures-cronjob.yaml
   - democracy-sync-named-polls-cronjob.yaml
   - democracy-sync-deputy-profiles.yaml
