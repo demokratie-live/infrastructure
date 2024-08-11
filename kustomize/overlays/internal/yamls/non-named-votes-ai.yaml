@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: non-named-votes-ai
+spec:
+  template:
+    spec:
+      containers:
+        - name: non-named-votes-ai
+          imagePullPolicy: Always

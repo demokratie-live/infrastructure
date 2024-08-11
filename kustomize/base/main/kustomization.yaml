@@ -6,6 +6,7 @@ resources:
   - bundestagio-admin-depl.yaml
   - bundestagio-depl.yaml
   - votes-ai.yaml
+  - non-named-votes-ai.yaml
   - bundestagio-dip-depl.yaml
   - democracy-api-depl.yaml
   - democracy-app-depl.yaml
