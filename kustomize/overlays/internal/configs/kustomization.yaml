@@ -8,6 +8,9 @@ configMapGenerator:
   - name: ai-votes-config
     envs:
       - ai-votes.env
+  - name: non-named-votes-ai-config
+    envs:
+      - non-named-votes-ai.env
   - name: bio-api-config
     envs:
       - bio-api.env

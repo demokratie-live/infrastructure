@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: non-named-votes-ai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: non-named-votes-ai
+  template:
+    metadata:
+      labels:
+        app: non-named-votes-ai
+    spec:
+      containers:
+        - name: non-named-votes-ai
+          image: democracy/non-named-votes-ai:pr-592
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3005
+              protocol: TCP
+          env:
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: bio-api-config
+                  key: DB_URL
+          envFrom:
+            - configMapRef:
+                name: non-named-votes-ai-config
+            - secretRef:
+                name: non-named-votes-ai-access-token
+                optional: false
+            - secretRef:
+                name: non-named-votes-ai-openai-token
+                optional: false
+          resources:
+            requests:
+              memory: "150M"
+              cpu: "50m"
+            limits:
+              memory: "200M"
+              cpu: "300m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: non-named-votes-ai-srv
+spec:
+  selector:
+    app: non-named-votes-ai
+  ports:
+    - name: non-named-votes-ai
+      protocol: TCP
+      port: 3005
+      targetPort: 3005
