@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: import-conference-week-details
-              image: democracy/import-conference-week-details:0.1.26
+              image: democracy/import-conference-week-details:0.1.30
               imagePullPolicy: Always
               env:
                 - name: DB_URL

@@ -16,5 +16,6 @@ patches:
   - path: import-named-polls.yaml
   - path: import-procedures.yaml
   - path: mongo-statefulset.yaml
+  - path: non-named-votes-ai.yaml
 
 namespace: democracy-internal
