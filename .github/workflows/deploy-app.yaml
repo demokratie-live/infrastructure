@@ -33,7 +33,7 @@ jobs:
     environment: DigitalOcean
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build
         run: yarn build:k8s:${{ inputs.environment }}
@@ -48,7 +48,7 @@ jobs:
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.DIGITALOCEAN_CLUSTER_ID }}
 
-      - uses: azure/setup-kubectl@v3
+      - uses: azure/setup-kubectl@v4
 
       - name: Show diff
         run: kubectl diff -f ./${{ inputs.environment }}.yaml | grep -e "^\+ " -e "^- "
