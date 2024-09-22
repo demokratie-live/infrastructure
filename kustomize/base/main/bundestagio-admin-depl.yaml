@@ -22,6 +22,8 @@ spec:
                   name: ai-votes-access-token
                   key: ACCESS_TOKEN
                   optional: false
+            - name: PROCEDURES_SERVER_URL
+              value: http://procedures
           envFrom:
             - configMapRef:
                 name: bio-admin-config
