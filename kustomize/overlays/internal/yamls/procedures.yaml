@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: procedures
+spec:
+  template:
+    spec:
+      containers:
+        - name: procedures
+          imagePullPolicy: Always
