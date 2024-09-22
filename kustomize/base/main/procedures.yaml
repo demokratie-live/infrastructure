@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: procedures
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: procedures
+  template:
+    metadata:
+      labels:
+        app: procedures
+    spec:
+      containers:
+        - name: procedures
+          image: democracy/procedures:pr-600
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: bio-api-config
+                  key: DB_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: procedures
+  name: procedures
+spec:
+  selector:
+    app: procedures
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
