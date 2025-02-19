@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: import-deputy-profiles-cronjob
 spec:
-  schedule: '0 4 * * *'
+  schedule: "0 4 * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -15,11 +15,11 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: import-deputy-profiles
-              image: democracy/import-deputy-profiles:0.1.17
+              image: democracy/import-deputy-profiles:0.1.18
               imagePullPolicy: Always
               env:
                 - name: PERIOD
-                  value: '20'
+                  value: "20"
                 - name: DB_URL
                   valueFrom:
                     configMapKeyRef:
