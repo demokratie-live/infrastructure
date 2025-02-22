@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: import-conference-week-details-cronjob
 spec:
-  schedule: '*/30 * * * *'
+  schedule: "*/30 * * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: import-conference-week-details
-              image: democracy/import-conference-week-details:0.1.31
+              image: democracy/import-conference-week-details:pr-610
               imagePullPolicy: Always
               env:
                 - name: DB_URL

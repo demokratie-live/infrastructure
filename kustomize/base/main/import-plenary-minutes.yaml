@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: import-plenary-minutes-cronjob
 spec:
-  schedule: '15 1 * * *'
+  schedule: "15 1 * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: import-plenary-minutes
-              image: democracy/import-plenary-minutes:0.1.12
+              image: democracy/import-plenary-minutes:pr-610
               imagePullPolicy: Always
               env:
                 - name: DB_URL
