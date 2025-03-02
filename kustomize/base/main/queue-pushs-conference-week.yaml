@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: queue-pushs-conference-week-cronjob
 spec:
-  schedule: '0 12 * * SUN'
+  schedule: "0 12 * * SUN"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: queue-pushs-conference-week
-              image: democracy/queue-pushs-conference-week:0.1.11
+              image: democracy/queue-pushs-conference-week:pr-613
               imagePullPolicy: Always
               env:
                 - name: DB_URL
