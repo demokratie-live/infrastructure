@@ -14,10 +14,17 @@ spec:
     spec:
       containers:
         - name: votes-ai
-          image: democracy/votes-ai:0.0.1
+          image: democracy/non-named-votes-ai:pr-613
+          imagePullPolicy: Always
           ports:
             - containerPort: 4003
               protocol: TCP
+          env:
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: democracy-api-config
+                  key: DB_URL
           envFrom:
             - configMapRef:
                 name: ai-votes-config
