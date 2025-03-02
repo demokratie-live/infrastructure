@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: push-send-queued-cronjob
 spec:
-  schedule: '*/1 8-20 * * *'
+  schedule: "*/1 8-20 * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: push-send-queued
-              image: democracy/push-send-queued:0.1.27
+              image: democracy/push-send-queued:pr-613
               imagePullPolicy: IfNotPresent
               envFrom:
                 - configMapRef:

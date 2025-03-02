@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: democracy-sync-procedures-cronjob
 spec:
-  schedule: '0 0/2 * * *'
+  schedule: "0 0/2 * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: democracy-sync-procedures
-              image: democracy/sync-procedures:0.1.21
+              image: democracy/sync-procedures:pr-613
               imagePullPolicy: Always
               env:
                 - name: DB_URL

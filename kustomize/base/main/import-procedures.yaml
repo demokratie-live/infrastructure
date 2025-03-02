@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: import-procedures-cronjob
 spec:
-  schedule: '0 1 * * *'
+  schedule: "0 1 * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: import-procedures
-              image: democracy/crawler:1.1.4
+              image: democracy/crawler:pr-613
               imagePullPolicy: Always
               envFrom:
                 - configMapRef:
