@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: index-sync-democracy-cronjob
 spec:
-  schedule: '0 7 * * *'
+  schedule: "0 7 * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: index-sync-democracy
-              image: democracy/index-sync-democracy:0.1.6
+              image: democracy/index-sync-democracy:pr-613
               env:
                 - name: DB_URL
                   valueFrom:

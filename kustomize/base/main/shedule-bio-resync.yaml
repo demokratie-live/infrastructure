@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: shedule-bio-resync-cronjob
 spec:
-  schedule: '55 2 * */1 *'
+  schedule: "55 2 * */1 *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: shedule-bio-resync
-              image: democracy/shedule-bio-resync:0.1.7
+              image: democracy/shedule-bio-resync:pr-613
               imagePullPolicy: Always
               env:
                 - name: DB_URL
