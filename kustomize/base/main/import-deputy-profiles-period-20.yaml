@@ -1,9 +1,9 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: import-deputy-profiles-period-19-cronjob
+  name: import-deputy-profiles-period-20-cronjob
 spec:
-  schedule: "0 5 * * 2"
+  schedule: "0 4 * * 3"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -19,7 +19,7 @@ spec:
               imagePullPolicy: Always
               env:
                 - name: PERIOD
-                  value: "19"
+                  value: "20"
                 - name: DB_URL
                   valueFrom:
                     configMapKeyRef:

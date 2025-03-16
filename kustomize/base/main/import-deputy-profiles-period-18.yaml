@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: import-deputy-profiles-period-18-cronjob
 spec:
-  schedule: "0 6 * * *"
+  schedule: "0 6 * * 1"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: import-deputy-profiles
-              image: democracy/import-deputy-profiles:0.1.20
+              image: democracy/import-deputy-profiles:0.1.21
               imagePullPolicy: Always
               env:
                 - name: PERIOD
