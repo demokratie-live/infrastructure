@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: procedures
-          image: democracy/procedures:pr-613
+          image: democracy/procedures:0.0.4
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
