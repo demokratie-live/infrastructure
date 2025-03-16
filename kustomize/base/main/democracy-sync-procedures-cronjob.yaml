@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: democracy-sync-procedures
-              image: democracy/sync-procedures:pr-613
+              image: democracy/sync-procedures:0.1.22
               imagePullPolicy: Always
               env:
                 - name: DB_URL

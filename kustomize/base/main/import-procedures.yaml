@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: import-procedures
-              image: democracy/crawler:pr-613
+              image: democracy/crawler:1.1.6
               imagePullPolicy: Always
               envFrom:
                 - configMapRef:
