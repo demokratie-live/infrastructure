@@ -22,9 +22,10 @@ resources:
   # - push-send-queued.yaml
   - import-procedures.yaml
   - import-conference-week-details.yaml
-  - import-deputy-profiles.yaml
   - import-deputy-profiles-period-18.yaml
   - import-deputy-profiles-period-19.yaml
+  - import-deputy-profiles-period-20.yaml
+  - import-deputy-profiles-period-21.yaml
   - import-named-polls.yaml
   - import-plenary-minutes.yaml
   - import-named-poll-deputies.yaml

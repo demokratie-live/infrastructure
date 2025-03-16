@@ -8,7 +8,6 @@ patches:
   - path: democracy-app-depl.yaml
   - path: mongo-statefulset.yaml
   - path: import-conference-week-details.yaml
-  - path: import-deputy-profiles.yaml
   - path: import-named-poll-deputies.yaml
   - path: import-named-polls.yaml
 
