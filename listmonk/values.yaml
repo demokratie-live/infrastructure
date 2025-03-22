@@ -1,0 +1,11 @@
+ingress:
+  enabled: true
+  host: listmonk.democracy-app.de
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+  tls:
+    - hosts:
+        - listmonk.democracy-app.de
+      secretName: listmonk-tls
