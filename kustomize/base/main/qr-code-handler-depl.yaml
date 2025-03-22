@@ -16,6 +16,9 @@ spec:
         - name: qr-code-handler
           image: democracy/qr-code-handler:1.0.12
           imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              protocol: TCP
           envFrom:
             - configMapRef:
                 name: qr-code-handler-config

@@ -15,6 +15,9 @@ spec:
       containers:
         - name: bundestagio
           image: democracy/bundestag.io:0.1.66
+          ports:
+            - containerPort: 3100
+              protocol: TCP
           envFrom:
             - configMapRef:
                 name: bio-api-config
