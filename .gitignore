@@ -1,1 +1,41 @@
+# Kustomize generierte YAML-Dateien im Root-Verzeichnis
 /*.yaml
+
+# Node.js Abhängigkeiten
+node_modules/
+
+# CDKTF generierte Dateien
+cdktf.out/
+**/.terraform/
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/terraform.tfstate.*.backup
+**/.terraform.lock.hcl
+**/*.tfvars
+**/*.tfvars.json
+**/crash.log
+**/crash.*.log
+cdktf/dist/
+cdktf/src/generated/
+
+# TypeScript kompilierte Dateien
+dist/
+build/
+
+# Editor-Dateien
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Log-Dateien
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Umgebungsvariablen
+.env
+.env.local
+.env.*.local
