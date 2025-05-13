@@ -1,8 +1,4 @@
-# Kustomize generierte YAML-Dateien im Root-Verzeichnis
-/*.yaml
-
-# Node.js Abhängigkeiten
-node_modules/
+**/node_modules/
 
 # CDKTF generierte Dateien
 cdktf.out/
@@ -39,3 +35,7 @@ yarn-error.log*
 .env
 .env.local
 .env.*.local
+
+# DigitalOcean API Tokens
+.spaces-key-*.json
+.doctl-config.yaml
