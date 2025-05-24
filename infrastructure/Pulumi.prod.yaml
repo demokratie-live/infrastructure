@@ -1,0 +1,7 @@
+config:
+  digitalocean:token:
+    secure: AAABAJIEKuoiZ9uRKzW2cx3ccjpnCy2ia8hLIM5u7aM/QiCESnIkJ40iRSfmKnE4fqAJ/wzrApEbmDHt3Ym/PkOcVpScy0wzq0WQKNhv/aKfnQy0UKGZa5iMbbJZVw/0b7+ZdV6aXA==
+  democracy-deutschland:projectName: "Team DEMOCRACY"
+  democracy-deutschland:environment: "Production"
+  democracy-deutschland:description: "Production environment for Democracy project infrastructure"
+  democracy-deutschland:isDefault: true
