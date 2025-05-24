@@ -1,0 +1,10 @@
+name: democracy-deutschland
+description: Democracy Deutschland e.V. IaC
+runtime:
+  name: nodejs
+  options:
+    packagemanager: pnpm
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: typescript
