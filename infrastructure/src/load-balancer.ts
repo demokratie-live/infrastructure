@@ -1,6 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
 import { cluster } from "./kubernetes-cluster";
+import { kubernetesTestVpc } from "./vpcs";
 
 // Get project dynamically to avoid circular dependencies
 const config = new pulumi.Config();
@@ -40,7 +41,7 @@ export const loadBalancer = new digitalocean.LoadBalancer(
     region: digitalocean.Region.FRA1,
     sizeUnit: 1,
     type: "REGIONAL",
-    vpcUuid: "64d3d4fa-f217-4832-8201-627bdd37690c",
+    vpcUuid: kubernetesTestVpc.id,
   },
   {
     protect: true,

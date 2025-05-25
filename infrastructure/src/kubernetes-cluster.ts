@@ -1,5 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
+import { kubernetesTestVpc } from "./vpcs"; // or "./path/to/your/vpc/module"
 
 // Load configuration values
 const config = new pulumi.Config();
@@ -35,6 +36,7 @@ export const cluster = new digitalocean.KubernetesCluster(
       nodeCount: nodePoolCount,
     },
     tags: clusterTags,
+    vpcUuid: kubernetesTestVpc.id,
   },
   {
     protect: true,
