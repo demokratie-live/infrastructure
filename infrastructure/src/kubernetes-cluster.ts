@@ -23,7 +23,7 @@ if (!kubernetesVersion.includes("do.")) {
 }
 
 // EXISTIERENDEN Cluster importieren und managen
-const cluster = new digitalocean.KubernetesCluster(
+export const cluster = new digitalocean.KubernetesCluster(
   clusterName,
   {
     region: digitalocean.Region.FRA1,
