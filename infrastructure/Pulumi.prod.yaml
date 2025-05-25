@@ -1,7 +1,14 @@
 config:
   digitalocean:token:
-    secure: AAABAJIEKuoiZ9uRKzW2cx3ccjpnCy2ia8hLIM5u7aM/QiCESnIkJ40iRSfmKnE4fqAJ/wzrApEbmDHt3Ym/PkOcVpScy0wzq0WQKNhv/aKfnQy0UKGZa5iMbbJZVw/0b7+ZdV6aXA==
+    secure: AAABAFvCtnLq6jBD++Kd0HtpOjZ+n2Kdw7GLi2WsjVVB5YCQGZcga4eFSbiWcFafG5tm5liBx7oi3C1/8SBIlvlC7XbNsOUmX2cbJr7ZT1ryUbtpYpQPhxS7kVa9Hlhq0DPgEPgeyA==
   democracy-deutschland:projectName: "Team DEMOCRACY"
   democracy-deutschland:environment: "Production"
   democracy-deutschland:description: "Production environment for Democracy project infrastructure"
   democracy-deutschland:isDefault: true
+  democracy-deutschland:kubernetesVersion: "1.30.10-do.1"
+  democracy-deutschland:autoUpgrade: true
+  democracy-deutschland:clusterName: "democracy"
+  democracy-deutschland:nodePoolSize: "s-4vcpu-8gb"
+  democracy-deutschland:nodePoolCount: 5
+  democracy-deutschland:clusterTags:
+    - "kubernetes-test"

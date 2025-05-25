@@ -1,5 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
+import { clusterId } from "../kubernetes-cluster";
 
 // Load configuration values
 const config = new pulumi.Config();
@@ -20,7 +21,7 @@ export const teamDemocracy = new digitalocean.Project(
       "do:domain:bundestag.io",
       "do:domain:democracy-app.de",
       "do:domain:democracy-deutschland.de",
-      "do:kubernetes:47f41c0b-f8b6-4c32-9364-c6f6beed456e",
+      pulumi.interpolate`do:kubernetes:${clusterId}`,
       "do:space:democracy",
       "do:space:democracy-develop-terraform-state",
       "do:space:democracy-newsletter",

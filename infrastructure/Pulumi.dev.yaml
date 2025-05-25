@@ -5,3 +5,12 @@ config:
   democracy-deutschland:environment: "Development"
   democracy-deutschland:description: "Development environment for Democracy project infrastructure"
   democracy-deutschland:isDefault: false
+  democracy-deutschland:kubernetesVersion: "1.30.10-do.1"
+  democracy-deutschland:autoUpgrade: true
+  democracy-deutschland:clusterName: "democracy-dev"
+  democracy-deutschland:nodePoolSize: "s-2vcpu-4gb"
+  democracy-deutschland:nodePoolCount: 1
+  democracy-deutschland:clusterTags:
+    - "kubernetes"
+    - "democracy"
+    - "development"
