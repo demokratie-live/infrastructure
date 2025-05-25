@@ -1,6 +1,9 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
 import { clusterId } from "../kubernetes-cluster";
+import { bundestagIo } from "../domains/bundestag-io";
+import { democracyAppDe } from "../domains/democracy-app-de";
+import { democracyDeutschlandDe } from "../domains/democracy-deutschland-de";
 
 // Load configuration values
 const config = new pulumi.Config();
@@ -18,9 +21,9 @@ export const teamDemocracy = new digitalocean.Project(
     isDefault,
     name: projectName,
     resources: [
-      "do:domain:bundestag.io",
-      "do:domain:democracy-app.de",
-      "do:domain:democracy-deutschland.de",
+      pulumi.interpolate`do:domain:${bundestagIo.name}`,
+      pulumi.interpolate`do:domain:${democracyAppDe.name}`,
+      pulumi.interpolate`do:domain:${democracyDeutschlandDe.name}`,
       pulumi.interpolate`do:kubernetes:${clusterId}`,
       "do:space:democracy",
       "do:space:democracy-develop-terraform-state",
