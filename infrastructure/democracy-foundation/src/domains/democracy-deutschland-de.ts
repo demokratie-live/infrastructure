@@ -1,5 +1,7 @@
+import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
 import { createDnsRecord, DnsRecordConfig } from "./utils/dns-records";
+import { platformOutputs } from "../platform-stack-refs";
 
 const domainName = "democracy-deutschland.de";
 
@@ -19,7 +21,7 @@ const dnsRecords: DnsRecordConfig[] = [
   {
     type: "A",
     recordName: "qr",
-    value: "174.138.102.21",
+    value: platformOutputs.loadBalancerIp as pulumi.Output<string>,
     ttl: 3601,
     id: "1701532948",
   },

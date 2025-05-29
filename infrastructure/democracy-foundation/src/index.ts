@@ -4,9 +4,10 @@ import { firewallOutputs } from "./firewalls";
 import { bundestagIoOutputs } from "./domains/bundestag-io";
 import { democracyDeutschlandDeOutputs } from "./domains/democracy-deutschland-de";
 import { democracyAppDeOutputs } from "./domains/democracy-app-de";
+import { platformOutputs } from "./platform-stack-refs";
 
 // Export all outputs for cross-stack references
-export { vpcOutputs, firewallOutputs };
+export { vpcOutputs, firewallOutputs, platformOutputs };
 export {
   bundestagIoOutputs,
   democracyDeutschlandDeOutputs,
