@@ -1,0 +1,4 @@
+config:
+  digitalocean:token:
+    secure: ${DIGITALOCEAN_TOKEN}
+  democracy-foundation:environment: "staging"

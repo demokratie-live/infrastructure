@@ -1,7 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
 import { cluster } from "./kubernetes-cluster";
-import { kubernetesTestVpc } from "./vpcs";
+import { kubernetesTestVpc } from "./foundation-stack-refs";
 
 // Get project dynamically to avoid circular dependencies
 const config = new pulumi.Config();

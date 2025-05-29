@@ -1,0 +1,11 @@
+name: democracy-foundation
+description: Democracy Deutschland e.V. Foundation Infrastructure (VPCs, Domains, Firewalls)
+runtime:
+  name: nodejs
+  options:
+    packagemanager: pnpm
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: typescript
+      project: foundation

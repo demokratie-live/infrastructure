@@ -1,0 +1,12 @@
+{
+  "name": "democracy-foundation",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@types/node": "^18",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@pulumi/digitalocean": "^4.44.0",
+    "@pulumi/pulumi": "^3.113.0"
+  }
+}

@@ -1,4 +1,5 @@
 import * as digitalocean from "@pulumi/digitalocean";
+import * as pulumi from "@pulumi/pulumi";
 
 // Default VPC for fra1 region
 export const defaultFra1Vpc = new digitalocean.Vpc(
@@ -10,6 +11,7 @@ export const defaultFra1Vpc = new digitalocean.Vpc(
   },
   {
     protect: true,
+    import: "fa3eddc8-dc84-11e8-8b13-3cfdfea9f160",
   }
 );
 
@@ -23,6 +25,7 @@ export const websiteVpc = new digitalocean.Vpc(
   },
   {
     protect: true,
+    import: "ae417d56-f22a-4590-bcc3-224b5645ae11",
   }
 );
 
@@ -38,5 +41,13 @@ export const kubernetesTestVpc = new digitalocean.Vpc(
   },
   {
     protect: true,
+    import: "64d3d4fa-f217-4832-8201-627bdd37690c",
   }
 );
+
+// Export VPC IDs for cross-stack references
+export const vpcOutputs = {
+  defaultFra1VpcId: defaultFra1Vpc.id,
+  websiteVpcId: websiteVpc.id,
+  kubernetesTestVpcId: kubernetesTestVpc.id,
+};

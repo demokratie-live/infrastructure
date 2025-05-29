@@ -1,0 +1,4 @@
+config:
+  digitalocean:token:
+    secure: AAABAIBOCBtVi3Uy6COq1XUgE7/xETAhyjunxRbPRRKoBs81baaHmwuh7gTn5t3ixDqI7xYnBL0/+bnk7TF3U/A/NAyF9nMjuoUTMH077xZ0AKd+/5Cd/AHo/EXY+YcHJSHYuhppZw==
+  democracy-foundation:environment: "production"

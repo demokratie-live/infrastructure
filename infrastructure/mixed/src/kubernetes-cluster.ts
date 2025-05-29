@@ -1,6 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
-import { kubernetesTestVpc } from "./vpcs"; // or "./path/to/your/vpc/module"
+import { kubernetesTestVpc } from "./foundation-stack-refs";
 
 // Load configuration values
 const config = new pulumi.Config();

@@ -1,4 +1,5 @@
 import * as digitalocean from "@pulumi/digitalocean";
+import * as pulumi from "@pulumi/pulumi";
 
 // k8s-public-access firewall
 export const k8sPublicAccessFirewall = new digitalocean.Firewall(
@@ -26,6 +27,7 @@ export const k8sPublicAccessFirewall = new digitalocean.Firewall(
   },
   {
     protect: true,
+    import: "79db9db7-6f38-4cf5-bb61-fd9f6eabac1f",
   }
 );
 
@@ -70,5 +72,12 @@ export const k8sWorkerFirewall = new digitalocean.Firewall(
   },
   {
     protect: true,
+    import: "3f0125df-c4b9-451a-9acf-9605963c953e",
   }
 );
+
+// Export firewall IDs for cross-stack references
+export const firewallOutputs = {
+  k8sPublicAccessFirewallId: k8sPublicAccessFirewall.id,
+  k8sWorkerFirewallId: k8sWorkerFirewall.id,
+};

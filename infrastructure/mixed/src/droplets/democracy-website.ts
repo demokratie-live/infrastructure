@@ -1,5 +1,5 @@
 import * as digitalocean from "@pulumi/digitalocean";
-import { websiteVpc } from "../vpcs";
+import { websiteVpc } from "../foundation-stack-refs";
 
 export const democracyWebsiteDroplet = new digitalocean.Droplet(
   "democracy-website",

@@ -1,0 +1,4 @@
+config:
+  digitalocean:token:
+    secure: AAABAPQnoDK7fLNuIcTTOGJkw6G5vHsnTo6GYraOhZ1lSSse4+7ARpPWkpPgX1PGKZAoiqmBt+dQCCP8DXjsMc8Gi4LqJy12cMDIJXeeEmOci9dKKBKcF7CV5hXvH9qAJcx9i3FZew==
+  democracy-foundation:environment: "dev"
