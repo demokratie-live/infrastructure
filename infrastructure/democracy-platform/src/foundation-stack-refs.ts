@@ -8,7 +8,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 // Reference to the foundation stack
 const foundationStackRef = new pulumi.StackReference("foundation", {
-  name: "ManAnRuck/democracy-foundation/dev",
+  name: "ManAnRuck/democracy-foundation/production",
 });
 
 // VPC outputs from foundation
