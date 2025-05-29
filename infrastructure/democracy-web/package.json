@@ -1,0 +1,14 @@
+{
+  "name": "democracy-web",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@pulumi/pulumi": "^3.0.0",
+    "@pulumi/digitalocean": "^4.0.0"
+  }
+}

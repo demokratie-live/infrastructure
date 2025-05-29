@@ -1,0 +1,4 @@
+name: democracy-web
+runtime: nodejs
+description: Democracy Web Application Infrastructure
+main: src/
