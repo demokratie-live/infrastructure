@@ -1,0 +1,9 @@
+name: democracy-platform
+runtime: nodejs
+description: DigitalOcean platform resources (Kubernetes cluster, load balancer)
+
+template:
+  config:
+    pulumi:tags:
+      value:
+        pulumi:template: digitalocean-typescript

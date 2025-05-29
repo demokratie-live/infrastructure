@@ -1,0 +1,14 @@
+{
+  "name": "democracy-platform",
+  "version": "1.0.0",
+  "description": "DigitalOcean platform resources (Kubernetes cluster, load balancer)",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@pulumi/pulumi": "^3.0.0",
+    "@pulumi/digitalocean": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

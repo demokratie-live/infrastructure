@@ -1,6 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
-import { kubernetesTestVpc } from "./foundation-stack-refs";
+import { vpcOutputs } from "./foundation-stack-refs";
 
 // Load configuration values
 const config = new pulumi.Config();
@@ -10,10 +10,9 @@ const kubernetesVersion = config.get("kubernetesVersion") || "1.30.10-do.1";
 const autoUpgrade = config.getBoolean("autoUpgrade") ?? true;
 const clusterName = config.get("clusterName") || "democracy";
 const nodePoolSize = config.get("nodePoolSize") || "s-4vcpu-8gb";
-const nodePoolCount = config.getNumber("nodePoolCount") || 1;
+const nodePoolCount = config.getNumber("nodePoolCount") || 5;
 const clusterTags = config.getObject<string[]>("clusterTags") || [
-  "kubernetes",
-  "democracy",
+  "kubernetes-test",
 ];
 
 // Validation
@@ -36,14 +35,15 @@ export const cluster = new digitalocean.KubernetesCluster(
       nodeCount: nodePoolCount,
     },
     tags: clusterTags,
-    vpcUuid: kubernetesTestVpc.id,
+    vpcUuid: vpcOutputs.mainVpcId,
+    destroyAllAssociatedResources: false,
   },
   {
     protect: true,
   }
 );
 
-// Exporte
+// Exporte für andere Stacks
 export const kubeconfig = cluster.kubeConfigs[0].rawConfig;
 export const endpoint = cluster.endpoint;
 export const clusterId = cluster.id;

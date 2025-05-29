@@ -1,18 +1,15 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
 import { clusterId } from "../kubernetes-cluster";
-import {
-  bundestagIo,
-  democracyAppDe,
-  democracyDeutschlandDe,
-} from "../foundation-stack-refs";
+import { domainOutputs } from "../foundation-stack-refs";
 
 // Load configuration values
 const config = new pulumi.Config();
 const projectName = config.require("projectName");
-const environment = config.require("environment");
+const environment = config.get("environment") || "production";
 const description =
-  config.get("description") || "Democracy project infrastructure";
+  config.get("description") ||
+  "Production environment for Democracy project infrastructure";
 const isDefault = config.getBoolean("isDefault") || true;
 
 export const teamDemocracy = new digitalocean.Project(
@@ -23,9 +20,9 @@ export const teamDemocracy = new digitalocean.Project(
     isDefault,
     name: projectName,
     resources: [
-      pulumi.interpolate`do:domain:${bundestagIo.name}`,
-      pulumi.interpolate`do:domain:${democracyAppDe.name}`,
-      pulumi.interpolate`do:domain:${democracyDeutschlandDe.name}`,
+      "do:domain:bundestag.io",
+      "do:domain:democracy-app.de",
+      "do:domain:democracy-deutschland.de",
       pulumi.interpolate`do:kubernetes:${clusterId}`,
       "do:space:democracy-newsletter",
       "do:volumesnapshot:0b72f032-9ccd-11ea-9aea-0a58ac14d0a1",
