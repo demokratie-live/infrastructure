@@ -26,13 +26,6 @@ const dnsRecords: DnsRecordConfig[] = [
     id: "1701532948",
   },
   {
-    type: "A",
-    recordName: "*",
-    value: "207.154.221.111",
-    ttl: 3600,
-    id: "1762459402",
-  },
-  {
     name: `${domainName}-digitalocean-ns1-ns`,
     type: "NS",
     recordName: "@",
