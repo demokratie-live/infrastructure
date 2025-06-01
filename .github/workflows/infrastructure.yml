@@ -61,7 +61,10 @@ jobs:
 
       - name: Preview foundation changes
         working-directory: infrastructure
-        run: pnpm foundation:preview
+        run: |
+          cd democracy-foundation && pulumi stack select production
+          cd ../
+          pnpm foundation:preview
 
   preview-platform:
     needs: preview-foundation
@@ -86,7 +89,10 @@ jobs:
 
       - name: Preview platform changes
         working-directory: infrastructure
-        run: pnpm platform:preview
+        run: |
+          cd democracy-platform && pulumi stack select prod
+          cd ../
+          pnpm platform:preview
 
   deploy-foundation:
     needs: validate
@@ -111,7 +117,10 @@ jobs:
 
       - name: Deploy foundation
         working-directory: infrastructure
-        run: pnpm foundation:up --yes
+        run: |
+          cd democracy-foundation && pulumi stack select production
+          cd ../
+          pnpm foundation:up --yes
 
   deploy-platform:
     needs: deploy-foundation
@@ -136,7 +145,10 @@ jobs:
 
       - name: Deploy platform
         working-directory: infrastructure
-        run: pnpm platform:up --yes
+        run: |
+          cd democracy-platform && pulumi stack select prod
+          cd ../
+          pnpm platform:up --yes
 
       - name: Run post-deployment tests
         working-directory: infrastructure
