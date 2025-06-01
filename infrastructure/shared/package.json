@@ -1,13 +1,12 @@
 {
-  "name": "democracy-platform",
+  "name": "@democracy/shared-infrastructure",
   "version": "1.0.0",
-  "description": "DigitalOcean platform resources (Kubernetes cluster, load balancer)",
+  "description": "Shared infrastructure configurations and utilities for Democracy Deutschland e.V.",
   "main": "src/index.ts",
   "scripts": {
-    "test": "tsx src/test.ts"
+    "test": "tsx src/testing/test-runner.ts"
   },
   "dependencies": {
-    "@democracy/shared-infrastructure": "workspace:*",
     "@pulumi/digitalocean": "^4.45.0",
     "@pulumi/pulumi": "^3.173.0"
   },

@@ -1,9 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
+import { createPlatformReference } from "../../shared/src/stack-refs";
 
 // Reference to the democracy-platform stack to get load balancer IP
-const platformStackRef = new pulumi.StackReference(
-  "ManAnRuck/democracy-platform/prod"
-);
+const platformStackRef = createPlatformReference("prod");
 
 // Platform stack outputs
 export const platformOutputs = {

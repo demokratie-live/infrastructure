@@ -1,0 +1,4 @@
+packages:
+  - "democracy-foundation"
+  - "democracy-platform"
+  - "shared"

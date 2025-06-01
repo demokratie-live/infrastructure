@@ -1,0 +1,36 @@
+{
+  "name": "@democracy/infrastructure-monorepo",
+  "version": "1.0.0",
+  "description": "Democracy Deutschland e.V. Infrastructure Monorepo",
+  "private": true,
+  "scripts": {
+    "foundation:preview": "cd democracy-foundation && pulumi preview",
+    "foundation:up": "cd democracy-foundation && pulumi up",
+    "foundation:destroy": "cd democracy-foundation && pulumi destroy",
+    "platform:preview": "cd democracy-platform && pulumi preview",
+    "platform:up": "cd democracy-platform && pulumi up",
+    "platform:destroy": "cd democracy-platform && pulumi destroy",
+    "test:foundation": "cd democracy-foundation && tsx src/test.ts",
+    "test:platform": "cd democracy-platform && tsx src/test.ts",
+    "test:all": "pnpm test:foundation && pnpm test:platform",
+    "validate:mock": "tsx scripts/validate-infrastructure-comprehensive.ts mock",
+    "validate:live": "tsx scripts/validate-infrastructure-comprehensive.ts live",
+    "validate:deployment": "tsx scripts/validate-infrastructure-comprehensive.ts deployment",
+    "validate:all": "tsx scripts/validate-infrastructure.ts",
+    "health:check": "tsx scripts/deployment-health-check.ts",
+    "health:full": "tsx scripts/deployment-health-check.ts full",
+    "health:dns": "tsx scripts/deployment-health-check.ts dns-only",
+    "health:k8s": "tsx scripts/deployment-health-check.ts kubernetes-only",
+    "status": "tsx scripts/infrastructure-status.ts",
+    "status:save": "tsx scripts/infrastructure-status.ts --save",
+    "ci:fast": "tsx scripts/ci-cd-helper.ts",
+    "ci:full": "tsx scripts/ci-cd-helper.ts --full",
+    "cleanup:scan": "tsx scripts/resource-cleanup.ts",
+    "cleanup:report": "tsx scripts/resource-cleanup.ts --save",
+    "lint": "pnpm -r lint"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}

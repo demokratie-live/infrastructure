@@ -1,12 +1,17 @@
 {
   "name": "democracy-foundation",
   "main": "src/index.ts",
+  "scripts": {
+    "test": "tsx src/test.ts"
+  },
   "devDependencies": {
-    "@types/node": "^18",
-    "typescript": "^5.0.0"
+    "@types/node": "^18.19.110",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@pulumi/digitalocean": "^4.44.0",
-    "@pulumi/pulumi": "^3.113.0"
+    "@democracy/shared-infrastructure": "workspace:*",
+    "@pulumi/digitalocean": "^4.45.0",
+    "@pulumi/pulumi": "^3.173.0"
   }
 }

@@ -1,4 +1,5 @@
 import * as pulumi from "@pulumi/pulumi";
+import { createFoundationReference } from "../../shared/src/stack-refs";
 
 /**
  * Foundation stack references for accessing shared infrastructure resources
@@ -6,10 +7,8 @@ import * as pulumi from "@pulumi/pulumi";
  * Consumed by: democracy-platform project
  */
 
-// Reference to the foundation stack
-const foundationStackRef = new pulumi.StackReference("foundation", {
-  name: "ManAnRuck/democracy-foundation/production",
-});
+// Reference to the foundation stack using shared utility
+const foundationStackRef = createFoundationReference("production");
 
 // VPC outputs from foundation
 export const vpcOutputs = {
