@@ -1,0 +1,57 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/**/*.ts", "eslint.config.js"],
+      "project": ["scripts/**/*.ts", "eslint.config.js"],
+      "ignore": [
+        "archive/**",
+        "ci-artifacts/**",
+        "reports/**",
+        "node_modules/**",
+        "dist/**",
+        "**/*.d.ts",
+        "kustomize/**"
+      ],
+      "ignoreDependencies": []
+    },
+    "democracy-foundation": {
+      "entry": ["src/index.ts", "src/test.ts"],
+      "project": ["src/**/*.ts"],
+      "ignore": ["node_modules/**", "dist/**", "**/*.d.ts"]
+    },
+    "democracy-platform": {
+      "entry": ["src/index.ts", "src/test.ts"],
+      "project": ["src/**/*.ts"],
+      "ignore": ["node_modules/**", "dist/**", "**/*.d.ts"]
+    },
+    "shared": {
+      "entry": ["src/index.ts", "src/testing/test-runner.ts"],
+      "project": ["src/**/*.ts"],
+      "ignore": ["node_modules/**", "dist/**", "**/*.d.ts"]
+    }
+  },
+  "ignore": [
+    "**/*.d.ts",
+    "**/node_modules/**",
+    "**/dist/**",
+    "archive/**",
+    "ci-artifacts/**",
+    "reports/**",
+    "kustomize/**",
+    "**/*.yaml",
+    "**/*.yml",
+    "**/*.md"
+  ],
+  "ignoreDependencies": [],
+  "ignoreBinaries": ["pulumi"],
+  "include": [
+    "files",
+    "dependencies",
+    "unlisted",
+    "exports",
+    "types",
+    "duplicates"
+  ],
+  "exclude": ["enumMembers", "classMembers"]
+}

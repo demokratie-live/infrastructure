@@ -33,15 +33,19 @@
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
     "format": "prettier --write \"**/*.{ts,js,json,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,js,json,md}\""
+    "format:check": "prettier --check \"**/*.{ts,js,json,md}\"",
+    "knip": "knip",
+    "knip:fix": "knip --fix",
+    "knip:production": "knip --production"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
-    "@typescript-eslint/eslint-plugin": "^8.33.0",
-    "@typescript-eslint/parser": "^8.33.0",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
     "globals": "^16.2.0",
+    "knip": "^5.42.2",
     "prettier": "^3.5.3",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
