@@ -2,5 +2,4 @@ export * from "./config";
 export * from "./stack-refs";
 export * from "./monitoring";
 export * from "./testing";
-export * from "./cost-monitoring";
 export * from "./pulumi-config";
