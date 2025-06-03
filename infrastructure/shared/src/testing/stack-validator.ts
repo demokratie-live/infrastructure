@@ -1,9 +1,7 @@
-import * as pulumi from "@pulumi/pulumi";
-
 export interface StackValidationRule {
   name: string;
   description: string;
-  validate: (outputs: Record<string, any>) => Promise<ValidationResult>;
+  validate: (outputs: Record<string, unknown>) => Promise<ValidationResult>;
 }
 
 export interface ValidationResult {
@@ -20,8 +18,8 @@ export class StackValidator {
   }
 
   async validateStack(
-    stackName: string,
-    outputs: Record<string, any>
+    _stackName: string,
+    outputs: Record<string, unknown>
   ): Promise<ValidationResult[]> {
     const results: ValidationResult[] = [];
 
@@ -32,7 +30,7 @@ export class StackValidator {
       } catch (error) {
         results.push({
           passed: false,
-          message: `Rule "${rule.name}" failed with error: ${error}`,
+          message: `Rule "${rule.name}" failed with error: ${error instanceof Error ? error.message : String(error)}`,
           severity: "error",
         });
       }
@@ -47,37 +45,37 @@ export class StackValidator {
       {
         name: "vpc-exists",
         description: "Verify VPC is created and has valid IP range",
-        validate: async (outputs) => {
+        validate: (outputs): Promise<ValidationResult> => {
           if (!outputs.vpcId) {
-            return {
+            return Promise.resolve({
               passed: false,
               message: "VPC ID not found in stack outputs",
               severity: "error",
-            };
+            });
           }
-          return {
+          return Promise.resolve({
             passed: true,
             message: "VPC exists and is properly configured",
             severity: "info",
-          };
+          });
         },
       },
       {
         name: "domain-ssl-ready",
         description: "Verify domain is configured and SSL-ready",
-        validate: async (outputs) => {
+        validate: (outputs): Promise<ValidationResult> => {
           if (!outputs.domainName) {
-            return {
+            return Promise.resolve({
               passed: false,
               message: "Domain name not found in stack outputs",
               severity: "error",
-            };
+            });
           }
-          return {
+          return Promise.resolve({
             passed: true,
             message: "Domain is configured for SSL",
             severity: "info",
-          };
+          });
         },
       },
     ];
@@ -89,44 +87,68 @@ export class StackValidator {
       {
         name: "kubernetes-cluster-healthy",
         description: "Verify Kubernetes cluster is healthy and accessible",
-        validate: async (outputs) => {
+        validate: (outputs): Promise<ValidationResult> => {
           if (!outputs.kubernetesClusterId) {
-            return {
+            return Promise.resolve({
               passed: false,
               message: "Kubernetes cluster ID not found in stack outputs",
               severity: "error",
-            };
+            });
           }
-          return {
+          return Promise.resolve({
             passed: true,
             message: "Kubernetes cluster is healthy",
             severity: "info",
-          };
+          });
         },
       },
       {
         name: "load-balancer-accessible",
         description: "Verify load balancer has public IP and is accessible",
-        validate: async (outputs) => {
+        validate: (outputs): Promise<ValidationResult> => {
           if (!outputs.loadBalancerIp) {
-            return {
+            return Promise.resolve({
               passed: false,
               message: "Load balancer IP not found in stack outputs",
               severity: "error",
-            };
+            });
           }
 
           // Improved IP format validation
           const ipRegex =
             /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-          const ipString = String(outputs.loadBalancerIp);
+
+          // Safely convert to string, handling potential object values
+          const loadBalancerIp = outputs.loadBalancerIp;
+          let ipString: string;
+
+          if (typeof loadBalancerIp === "string") {
+            ipString = loadBalancerIp;
+          } else if (typeof loadBalancerIp === "number") {
+            ipString = String(loadBalancerIp);
+          } else {
+            // Handle object or other types - extract string representation
+            if (
+              loadBalancerIp &&
+              typeof loadBalancerIp === "object" &&
+              "value" in loadBalancerIp
+            ) {
+              ipString = String((loadBalancerIp as { value: unknown }).value);
+            } else {
+              return Promise.resolve({
+                passed: false,
+                message: `Load balancer IP is not a valid string: ${typeof loadBalancerIp}`,
+                severity: "error",
+              });
+            }
+          }
 
           if (!ipRegex.test(ipString)) {
-            return {
+            return Promise.resolve({
               passed: false,
               message: `Load balancer IP format is invalid: ${ipString}`,
               severity: "error",
-            };
+            });
           }
 
           // Check if it's a valid public IP (not private ranges)
@@ -137,18 +159,18 @@ export class StackValidator {
             (parts[0] === 192 && parts[1] === 168);
 
           if (isPrivate) {
-            return {
+            return Promise.resolve({
               passed: false,
               message: `Load balancer IP appears to be private: ${ipString}`,
               severity: "warning",
-            };
+            });
           }
 
-          return {
+          return Promise.resolve({
             passed: true,
             message: `Load balancer IP is valid and accessible: ${ipString}`,
             severity: "info",
-          };
+          });
         },
       },
     ];

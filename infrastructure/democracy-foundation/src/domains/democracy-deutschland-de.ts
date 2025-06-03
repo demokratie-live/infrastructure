@@ -52,7 +52,7 @@ const dnsRecords: DnsRecordConfig[] = [
 ];
 
 // Create DNS records
-export const dnsRecordResources = dnsRecords.map((record) =>
+export const dnsRecordResources = dnsRecords.map(record =>
   createDnsRecord({ ...record, domainName })
 );
 

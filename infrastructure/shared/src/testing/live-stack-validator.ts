@@ -1,7 +1,9 @@
 #!/usr/bin/env tsx
 
 import * as pulumi from "@pulumi/pulumi";
-import { StackValidator } from "./stack-validator";
+import { promises as dns } from "dns";
+import { request as httpRequest } from "http";
+import { StackValidator, ValidationResult } from "./stack-validator";
 
 /**
  * Live stack validator that can be run within a Pulumi program context
@@ -18,13 +20,17 @@ export class LiveStackValidator {
 
     const validator = new StackValidator();
     const rules = StackValidator.createFoundationRules();
-    rules.forEach((rule) => validator.addRule(rule));
+    rules.forEach(rule => validator.addRule(rule));
 
     try {
-      const stackRef = new pulumi.StackReference(
+      const stackRef: pulumi.StackReference = new pulumi.StackReference(
         `democracy-foundation/${stackName}`
       );
-      const outputs = await stackRef.outputs;
+
+      const outputs: Record<string, unknown> = stackRef.outputs as Record<
+        string,
+        unknown
+      >;
 
       if (!outputs || typeof outputs !== "object") {
         throw new Error(`No outputs found for foundation stack: ${stackName}`);
@@ -33,12 +39,13 @@ export class LiveStackValidator {
       const results = await validator.validateStack("foundation", outputs);
 
       let hasErrors = false;
-      results.forEach((result) => {
+      results.forEach(result => {
         const icon = result.passed
           ? "✅"
           : result.severity === "error"
-          ? "❌"
-          : "⚠️";
+            ? "❌"
+            : "⚠️";
+
         console.log(`${icon} ${result.message}`);
         if (!result.passed && result.severity === "error") {
           hasErrors = true;
@@ -64,13 +71,17 @@ export class LiveStackValidator {
 
     const validator = new StackValidator();
     const rules = StackValidator.createPlatformRules();
-    rules.forEach((rule) => validator.addRule(rule));
+    rules.forEach(rule => validator.addRule(rule));
 
     try {
-      const stackRef = new pulumi.StackReference(
+      const stackRef: pulumi.StackReference = new pulumi.StackReference(
         `democracy-platform/${stackName}`
       );
-      const outputs = await stackRef.outputs;
+
+      const outputs: Record<string, unknown> = stackRef.outputs as Record<
+        string,
+        unknown
+      >;
 
       if (!outputs || typeof outputs !== "object") {
         throw new Error(`No outputs found for platform stack: ${stackName}`);
@@ -79,12 +90,13 @@ export class LiveStackValidator {
       const results = await validator.validateStack("platform", outputs);
 
       let hasErrors = false;
-      results.forEach((result) => {
+      results.forEach(result => {
         const icon = result.passed
           ? "✅"
           : result.severity === "error"
-          ? "❌"
-          : "⚠️";
+            ? "❌"
+            : "⚠️";
+
         console.log(`${icon} ${result.message}`);
         if (!result.passed && result.severity === "error") {
           hasErrors = true;
@@ -130,8 +142,10 @@ export const EnhancedValidationRules = {
   domainDnsResolution: {
     name: "domain-dns-resolution",
     description: "Verify domain DNS records are properly configured",
-    validate: async (outputs: Record<string, any>) => {
-      if (!outputs.domainName) {
+    validate: async (
+      outputs: Record<string, unknown>
+    ): Promise<ValidationResult> => {
+      if (!outputs.domainName || typeof outputs.domainName !== "string") {
         return {
           passed: false,
           message: "Domain name not found in stack outputs",
@@ -139,18 +153,20 @@ export const EnhancedValidationRules = {
         };
       }
 
+      const domainName = outputs.domainName;
       try {
-        const dns = require("dns").promises;
-        await dns.resolve4(outputs.domainName);
+        await dns.resolve4(domainName);
         return {
           passed: true,
-          message: `Domain ${outputs.domainName} resolves correctly`,
+          message: `Domain ${domainName} resolves correctly`,
           severity: "info" as const,
         };
       } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
         return {
           passed: false,
-          message: `Domain ${outputs.domainName} DNS resolution failed: ${error}`,
+          message: `Domain ${domainName} DNS resolution failed: ${errorMessage}`,
           severity: "warning" as const,
         };
       }
@@ -163,8 +179,13 @@ export const EnhancedValidationRules = {
   loadBalancerConnectivity: {
     name: "load-balancer-connectivity",
     description: "Verify load balancer is responding to HTTP requests",
-    validate: async (outputs: Record<string, any>) => {
-      if (!outputs.loadBalancerIp) {
+    validate: async (
+      outputs: Record<string, unknown>
+    ): Promise<ValidationResult> => {
+      if (
+        !outputs.loadBalancerIp ||
+        typeof outputs.loadBalancerIp !== "string"
+      ) {
         return {
           passed: false,
           message: "Load balancer IP not found in stack outputs",
@@ -172,24 +193,24 @@ export const EnhancedValidationRules = {
         };
       }
 
+      const loadBalancerIp = outputs.loadBalancerIp;
       try {
-        const http = require("http");
         const options = {
-          hostname: outputs.loadBalancerIp,
+          hostname: loadBalancerIp,
           port: 80,
           timeout: 5000,
         };
 
-        return new Promise((resolve) => {
-          const req = http.request(options, (res: any) => {
+        return new Promise<ValidationResult>(resolve => {
+          const req = httpRequest(options, res => {
             resolve({
               passed: true,
-              message: `Load balancer at ${outputs.loadBalancerIp} is responding (Status: ${res.statusCode})`,
+              message: `Load balancer at ${loadBalancerIp} is responding (Status: ${res.statusCode})`,
               severity: "info" as const,
             });
           });
 
-          req.on("error", (error: any) => {
+          req.on("error", (error: Error) => {
             resolve({
               passed: false,
               message: `Load balancer connectivity test failed: ${error.message}`,
@@ -208,9 +229,11 @@ export const EnhancedValidationRules = {
           req.end();
         });
       } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
         return {
           passed: false,
-          message: `Load balancer connectivity test error: ${error}`,
+          message: `Load balancer connectivity test error: ${errorMessage}`,
           severity: "warning" as const,
         };
       }
@@ -219,8 +242,5 @@ export const EnhancedValidationRules = {
 };
 
 // Export for use in Pulumi programs
-export {
-  StackValidator,
-  StackValidationRule,
-  ValidationResult,
-} from "./stack-validator";
+export { StackValidator } from "./stack-validator";
+export type { StackValidationRule, ValidationResult } from "./stack-validator";

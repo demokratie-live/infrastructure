@@ -110,7 +110,7 @@ class InfrastructureValidator {
           await this.runDeploymentValidation(stackName);
           break;
         default:
-          throw new Error(`Unknown validation mode: ${mode}`);
+          throw new Error(`Unknown validation mode: ${mode as string}`);
       }
 
       process.exit(0);
@@ -122,7 +122,7 @@ class InfrastructureValidator {
 }
 
 // CLI handling
-async function main() {
+async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const mode = (args[0] as ValidationMode) || "mock";
   const stackName = args[1] || "dev";
@@ -143,7 +143,8 @@ async function main() {
   await InfrastructureValidator.validate({ mode, stackName });
 }
 
-if (require.main === module) {
+// ES module equivalent of require.main === module
+if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch(console.error);
 }
 

@@ -1,17 +1,18 @@
-import * as pulumi from "@pulumi/pulumi";
 import { StackValidator } from "./stack-validator";
 
 export async function runFoundationTests(): Promise<void> {
+  // Using console.log is intentional for test output
+
   console.log("🧪 Running Foundation Stack Tests...");
 
   const validator = new StackValidator();
   const rules = StackValidator.createFoundationRules();
 
-  rules.forEach((rule) => validator.addRule(rule));
+  rules.forEach(rule => validator.addRule(rule));
 
   try {
     // Use a more direct approach that doesn't create promise leaks
-    let outputs: Record<string, any> = {};
+    let outputs: Record<string, unknown> = {};
     let usingMockData = false;
 
     try {
@@ -19,7 +20,7 @@ export async function runFoundationTests(): Promise<void> {
       // we'll use a simpler mock-based approach for now
       // In a real deployment scenario, this would be called from within a Pulumi program
       throw new Error("Using mock data for non-Pulumi execution context");
-    } catch (stackError) {
+    } catch {
       console.log(
         "⚠️ Stack reference not available - running validation with mock data"
       );
@@ -37,12 +38,13 @@ export async function runFoundationTests(): Promise<void> {
     const results = await validator.validateStack("foundation", outputs);
 
     let hasErrors = false;
-    results.forEach((result) => {
+    results.forEach(result => {
       const icon = result.passed
         ? "✅"
         : result.severity === "error"
-        ? "❌"
-        : "⚠️";
+          ? "❌"
+          : "⚠️";
+
       console.log(`${icon} ${result.message}`);
       if (!result.passed && result.severity === "error" && !usingMockData) {
         hasErrors = true;
@@ -66,11 +68,11 @@ export async function runPlatformTests(): Promise<void> {
   const validator = new StackValidator();
   const rules = StackValidator.createPlatformRules();
 
-  rules.forEach((rule) => validator.addRule(rule));
+  rules.forEach(rule => validator.addRule(rule));
 
   try {
     // Use a more direct approach that doesn't create promise leaks
-    let outputs: Record<string, any> = {};
+    let outputs: Record<string, unknown> = {};
     let usingMockData = false;
 
     try {
@@ -78,7 +80,7 @@ export async function runPlatformTests(): Promise<void> {
       // we'll use a simpler mock-based approach for now
       // In a real deployment scenario, this would be called from within a Pulumi program
       throw new Error("Using mock data for non-Pulumi execution context");
-    } catch (stackError) {
+    } catch {
       console.log(
         "⚠️ Stack reference not available - running validation with mock data"
       );
@@ -95,12 +97,13 @@ export async function runPlatformTests(): Promise<void> {
     const results = await validator.validateStack("platform", outputs);
 
     let hasErrors = false;
-    results.forEach((result) => {
+    results.forEach(result => {
       const icon = result.passed
         ? "✅"
         : result.severity === "error"
-        ? "❌"
-        : "⚠️";
+          ? "❌"
+          : "⚠️";
+
       console.log(`${icon} ${result.message}`);
       if (!result.passed && result.severity === "error" && !usingMockData) {
         hasErrors = true;

@@ -1,4 +1,3 @@
-import * as pulumi from "@pulumi/pulumi";
 import {
   vpcOutputs,
   defaultFra1Vpc,

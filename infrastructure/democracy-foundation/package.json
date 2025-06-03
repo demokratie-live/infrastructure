@@ -1,11 +1,20 @@
 {
   "name": "democracy-foundation",
+  "version": "1.0.0",
+  "description": "Democracy Deutschland e.V. Foundation Infrastructure (VPCs, Domains, Firewalls)",
   "main": "src/index.ts",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
-    "test": "tsx src/test.ts"
+    "test": "tsx src/test.ts",
+    "lint": "eslint src/**/*.ts --config ../eslint.config.js",
+    "lint:fix": "eslint src/**/*.ts --config ../eslint.config.js --fix",
+    "format": "prettier --write \"src/**/*.{ts,js,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js,json}\""
   },
   "devDependencies": {
-    "@types/node": "^18.19.110",
+    "@types/node": "^20.17.57",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   },

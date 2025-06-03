@@ -1,4 +1,3 @@
-import * as pulumi from "@pulumi/pulumi";
 import { createFoundationReference } from "../../shared/src/stack-refs";
 
 /**

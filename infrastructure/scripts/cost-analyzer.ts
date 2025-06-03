@@ -1,6 +1,13 @@
 #!/usr/bin/env tsx
 
 /**
+ * Infrastructure Cost Analysis Tool
+ *
+ * Provides cost tracking, budget analysis, and optimization recommendations
+ * for DigitalOcean infrastructure.
+ */
+
+/**
  * Infrastructure Cost Analysis and Monitoring Tool
  *
  * Provides cost tracking, budget analysis, and optimization recommendations
@@ -8,7 +15,6 @@
  */
 
 import * as fs from "fs";
-import * as path from "path";
 
 interface ResourceCost {
   resourceType: string;
@@ -102,7 +108,7 @@ class InfrastructureCostAnalyzer {
       "bundestag.io",
       "democracy-app.de",
     ];
-    domains.forEach((domain) => {
+    domains.forEach(domain => {
       costs.push({
         resourceType: "domain",
         resourceName: domain,
@@ -178,7 +184,7 @@ class InfrastructureCostAnalyzer {
     const costByComponent: Record<string, number> = {};
     const costByResourceType: Record<string, number> = {};
 
-    allCosts.forEach((cost) => {
+    allCosts.forEach(cost => {
       costByEnvironment[cost.environment] =
         (costByEnvironment[cost.environment] || 0) + cost.monthlyEstimate;
       costByComponent[cost.component] =
@@ -213,11 +219,11 @@ class InfrastructureCostAnalyzer {
     const recommendations: string[] = [];
 
     // Check for high-cost items
-    const highCostItems = costs.filter((cost) => cost.monthlyEstimate > 20);
+    const highCostItems = costs.filter(cost => cost.monthlyEstimate > 20);
     if (highCostItems.length > 0) {
       recommendations.push(
         `Review high-cost resources: ${highCostItems
-          .map((c) => c.resourceName)
+          .map(c => c.resourceName)
           .join(", ")}`
       );
     }
@@ -236,7 +242,7 @@ class InfrastructureCostAnalyzer {
     }
 
     // Kubernetes-specific recommendations
-    const k8sCosts = costs.filter((c) => c.resourceType.includes("kubernetes"));
+    const k8sCosts = costs.filter(c => c.resourceType.includes("kubernetes"));
     const k8sTotalCost = k8sCosts.reduce(
       (sum, cost) => sum + cost.monthlyEstimate,
       0
@@ -249,9 +255,7 @@ class InfrastructureCostAnalyzer {
     }
 
     // Storage recommendations
-    const storageCosts = costs.filter((c) =>
-      c.resourceType.includes("storage")
-    );
+    const storageCosts = costs.filter(c => c.resourceType.includes("storage"));
     const storageTotalCost = storageCosts.reduce(
       (sum, cost) => sum + cost.monthlyEstimate,
       0
@@ -284,7 +288,7 @@ class InfrastructureCostAnalyzer {
 
     let grandTotal = 0;
 
-    environments.forEach((env) => {
+    environments.forEach(env => {
       const analysis = this.generateCostAnalysis(env);
       grandTotal += analysis.totalMonthlyCost;
 
@@ -316,7 +320,7 @@ class InfrastructureCostAnalyzer {
     console.log("====================================");
 
     const devAnalysis = this.generateCostAnalysis("dev");
-    devAnalysis.recommendations.forEach((rec) => {
+    devAnalysis.recommendations.forEach(rec => {
       console.log(`   • ${rec}`);
     });
   }
@@ -328,10 +332,10 @@ class InfrastructureCostAnalyzer {
     const environments = ["dev", "staging", "production"];
     const costData = {
       generatedAt: new Date().toISOString(),
-      environments: {} as Record<string, any>,
+      environments: {} as Record<string, unknown>,
     };
 
-    environments.forEach((env) => {
+    environments.forEach(env => {
       costData.environments[env] = {
         analysis: this.generateCostAnalysis(env),
         foundationCosts: this.estimateFoundationCosts(env),
@@ -345,7 +349,7 @@ class InfrastructureCostAnalyzer {
 }
 
 // CLI handling
-async function main() {
+function main(): void {
   const args = process.argv.slice(2);
   const command = args[0] || "report";
 
@@ -354,18 +358,20 @@ async function main() {
       case "report":
         InfrastructureCostAnalyzer.generateCostReport();
         break;
-      case "export":
+      case "export": {
         const outputPath = args[1] || "./cost-analysis.json";
         InfrastructureCostAnalyzer.exportCostData(outputPath);
         break;
-      case "environment":
+      }
+      case "environment": {
         const env = args[1] || "dev";
         const analysis = InfrastructureCostAnalyzer.generateCostAnalysis(env);
         console.log(`💰 ${env.toUpperCase()} Environment Cost Analysis:`);
         console.log(`Monthly Cost: $${analysis.totalMonthlyCost.toFixed(2)}`);
         console.log("Recommendations:");
-        analysis.recommendations.forEach((rec) => console.log(`  • ${rec}`));
+        analysis.recommendations.forEach(rec => console.log(`  • ${rec}`));
         break;
+      }
       default:
         console.error(
           "Usage: tsx cost-analyzer.ts [report|export|environment] [args...]"
@@ -382,8 +388,9 @@ async function main() {
   }
 }
 
-if (require.main === module) {
-  main().catch(console.error);
+// ES module equivalent of require.main === module
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
 }
 
 export { InfrastructureCostAnalyzer, ResourceCost, CostAnalysis };

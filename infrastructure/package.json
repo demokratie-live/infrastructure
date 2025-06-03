@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Democracy Deutschland e.V. Infrastructure Monorepo",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "foundation:preview": "cd democracy-foundation && pulumi preview",
     "foundation:up": "cd democracy-foundation && pulumi up",
@@ -16,7 +20,6 @@
     "validate:mock": "tsx scripts/validate-infrastructure-comprehensive.ts mock",
     "validate:live": "tsx scripts/validate-infrastructure-comprehensive.ts live",
     "validate:deployment": "tsx scripts/validate-infrastructure-comprehensive.ts deployment",
-    "validate:all": "tsx scripts/validate-infrastructure.ts",
     "health:check": "tsx scripts/deployment-health-check.ts",
     "health:full": "tsx scripts/deployment-health-check.ts full",
     "health:dns": "tsx scripts/deployment-health-check.ts dns-only",
@@ -27,9 +30,19 @@
     "ci:full": "tsx scripts/ci-cd-helper.ts --full",
     "cleanup:scan": "tsx scripts/resource-cleanup.ts",
     "cleanup:report": "tsx scripts/resource-cleanup.ts --save",
-    "lint": "pnpm -r lint"
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "format": "prettier --write \"**/*.{ts,js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,js,json,md}\""
   },
   "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "@typescript-eslint/eslint-plugin": "^8.33.0",
+    "@typescript-eslint/parser": "^8.33.0",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "globals": "^16.2.0",
+    "prettier": "^3.5.3",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   }

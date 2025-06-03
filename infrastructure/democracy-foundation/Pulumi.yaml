@@ -9,3 +9,4 @@ config:
     value:
       pulumi:template: typescript
       project: foundation
+      environment: ${PULUMI_STACK}

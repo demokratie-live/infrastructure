@@ -1,5 +1,4 @@
 import * as digitalocean from "@pulumi/digitalocean";
-import * as pulumi from "@pulumi/pulumi";
 
 // Default VPC for fra1 region
 export const defaultFra1Vpc = new digitalocean.Vpc(

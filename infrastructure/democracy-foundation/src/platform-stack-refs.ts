@@ -1,4 +1,3 @@
-import * as pulumi from "@pulumi/pulumi";
 import { createPlatformReference } from "../../shared/src/stack-refs";
 
 // Reference to the democracy-platform stack to get load balancer IP

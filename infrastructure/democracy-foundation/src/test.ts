@@ -1,6 +1,6 @@
 import { runFoundationTests } from "@democracy/shared-infrastructure";
 
-async function main() {
+async function main(): Promise<void> {
   console.log("🏗️  Testing Democracy Foundation Infrastructure...");
 
   try {

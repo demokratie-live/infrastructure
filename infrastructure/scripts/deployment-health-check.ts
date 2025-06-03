@@ -9,13 +9,15 @@
 import * as dns from "dns";
 import * as http from "http";
 import * as https from "https";
+import { exec } from "child_process";
+import { promisify } from "util";
 
 interface HealthCheckResult {
   service: string;
   status: "healthy" | "degraded" | "unhealthy";
   message: string;
   responseTime?: number;
-  details?: any;
+  details?: unknown;
 }
 
 class DeploymentHealthChecker {
@@ -38,11 +40,13 @@ class DeploymentHealthChecker {
           responseTime,
         });
       } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
         results.push({
           service: `DNS:${domain}`,
           status: "unhealthy",
-          message: `DNS resolution failed: ${error}`,
-          details: { error: error.toString() },
+          message: `DNS resolution failed: ${errorMessage}`,
+          details: { error: errorMessage },
         });
       }
     }
@@ -61,8 +65,8 @@ class DeploymentHealthChecker {
     const isHttps = url.startsWith("https");
     const client = isHttps ? https : http;
 
-    return new Promise((resolve) => {
-      const req = client.request(url, { timeout }, (res) => {
+    return new Promise(resolve => {
+      const req = client.request(url, { timeout }, res => {
         const responseTime = Date.now() - startTime;
 
         if (res.statusCode && res.statusCode >= 200 && res.statusCode < 400) {
@@ -84,7 +88,7 @@ class DeploymentHealthChecker {
         }
       });
 
-      req.on("error", (error) => {
+      req.on("error", error => {
         resolve({
           service: `HTTP:${url}`,
           status: "unhealthy",
@@ -111,14 +115,12 @@ class DeploymentHealthChecker {
    */
   static async checkKubernetesHealth(): Promise<HealthCheckResult> {
     try {
-      const { exec } = require("child_process");
-      const { promisify } = require("util");
       const execPromise = promisify(exec);
 
       const startTime = Date.now();
-      const { stdout } = await execPromise(
+      const { stdout } = (await execPromise(
         "kubectl cluster-info --request-timeout=10s"
-      );
+      )) as { stdout: string };
       const responseTime = Date.now() - startTime;
 
       if (stdout.includes("is running")) {
@@ -139,11 +141,13 @@ class DeploymentHealthChecker {
         };
       }
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       return {
         service: "Kubernetes:cluster",
         status: "unhealthy",
-        message: `Kubernetes cluster check failed: ${error}`,
-        details: { error: error.toString() },
+        message: `Kubernetes cluster check failed: ${errorMessage}`,
+        details: { error: errorMessage },
       };
     }
   }
@@ -153,22 +157,22 @@ class DeploymentHealthChecker {
    */
   static async checkKubernetesNodes(): Promise<HealthCheckResult> {
     try {
-      const { exec } = require("child_process");
-      const { promisify } = require("util");
       const execPromise = promisify(exec);
 
       const startTime = Date.now();
-      const { stdout } = await execPromise(
+      const { stdout } = (await execPromise(
         "kubectl get nodes --no-headers --request-timeout=10s"
-      );
+      )) as { stdout: string };
       const responseTime = Date.now() - startTime;
 
-      const lines = stdout
+      const lines: string[] = stdout
         .trim()
         .split("\n")
-        .filter((line) => line.trim());
-      const readyNodes = lines.filter((line) => line.includes("Ready"));
-      const notReadyNodes = lines.filter((line) => !line.includes("Ready"));
+        .filter((line: string) => line.trim());
+      const readyNodes = lines.filter((line: string) => line.includes("Ready"));
+      const notReadyNodes = lines.filter(
+        (line: string) => !line.includes("Ready")
+      );
 
       if (notReadyNodes.length === 0 && readyNodes.length > 0) {
         return {
@@ -199,11 +203,13 @@ class DeploymentHealthChecker {
         };
       }
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       return {
         service: "Kubernetes:nodes",
         status: "unhealthy",
-        message: `Node check failed: ${error}`,
-        details: { error: error.toString() },
+        message: `Node check failed: ${errorMessage}`,
+        details: { error: errorMessage },
       };
     }
   }
@@ -269,13 +275,13 @@ class DeploymentHealthChecker {
     let degradedCount = 0;
     let unhealthyCount = 0;
 
-    results.forEach((result) => {
+    results.forEach(result => {
       const icon =
         result.status === "healthy"
           ? "✅"
           : result.status === "degraded"
-          ? "⚠️"
-          : "❌";
+            ? "⚠️"
+            : "❌";
       const responseTime = result.responseTime
         ? ` (${result.responseTime}ms)`
         : "";
@@ -299,7 +305,7 @@ class DeploymentHealthChecker {
 }
 
 // CLI handling
-async function main() {
+async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const configArg = args[0];
 
@@ -320,8 +326,8 @@ async function main() {
   try {
     const results = await DeploymentHealthChecker.runHealthCheck(config);
 
-    const hasUnhealthy = results.some((r) => r.status === "unhealthy");
-    const hasIssues = results.some((r) => r.status !== "healthy");
+    const hasUnhealthy = results.some(r => r.status === "unhealthy");
+    const hasIssues = results.some(r => r.status !== "healthy");
 
     if (hasUnhealthy) {
       console.log("\n❌ Critical health issues detected!");
@@ -339,7 +345,8 @@ async function main() {
   }
 }
 
-if (require.main === module) {
+// ES module equivalent of require.main === module
+if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch(console.error);
 }
 

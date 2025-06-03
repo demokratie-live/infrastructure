@@ -29,11 +29,11 @@ interface CIPipelineResult {
   duration: number;
 }
 
-async function runStage(
+function runStage(
   name: string,
   command: string,
   timeout: number = 60000
-): Promise<CIResult> {
+): CIResult {
   const startTime = Date.now();
   console.log(`🔄 Running ${name}...`);
 
@@ -53,32 +53,33 @@ async function runStage(
       duration,
       details: output,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     const duration = Date.now() - startTime;
     console.log(`❌ ${name} failed after ${duration}ms`);
 
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
       success: false,
       stage: name,
       duration,
-      details: error.message || "Unknown error",
+      details: errorMessage,
     };
   }
 }
 
-async function runLinting(): Promise<CIResult> {
+function runLinting(): CIResult {
   return runStage("Linting", 'pnpm lint || echo "Linting not configured"');
 }
 
-async function runMockValidation(): Promise<CIResult> {
+function runMockValidation(): CIResult {
   return runStage("Mock Validation", "pnpm validate:mock");
 }
 
-async function runUnitTests(): Promise<CIResult> {
+function runUnitTests(): CIResult {
   return runStage("Unit Tests", "pnpm test:all");
 }
 
-async function runSecurityScan(): Promise<CIResult> {
+function runSecurityScan(): CIResult {
   // Basic security checks that can run in CI
   const commands = [
     'npm audit --audit-level=high || echo "No npm vulnerabilities found"',
@@ -88,7 +89,7 @@ async function runSecurityScan(): Promise<CIResult> {
   return runStage("Security Scan", commands.join(" && "));
 }
 
-async function runPulumiValidation(): Promise<CIResult> {
+function runPulumiValidation(): CIResult {
   // Validate Pulumi configurations without deploying
   const commands = [
     'cd democracy-foundation && pulumi preview --diff --non-interactive || echo "Preview not available"',
@@ -107,7 +108,7 @@ async function generateArtifacts(): Promise<string[]> {
     await fs.mkdir(artifactsDir, { recursive: true });
 
     // Generate infrastructure status report
-    const statusResult = await runStage(
+    const statusResult = runStage(
       "Status Report",
       "tsx scripts/infrastructure-status.ts --save"
     );
@@ -137,7 +138,7 @@ function getGitInfo(): { commit?: string; branch?: string } {
       encoding: "utf-8",
     }).trim();
     return { commit, branch };
-  } catch (error) {
+  } catch {
     return {};
   }
 }
@@ -158,14 +159,14 @@ async function runCIPipeline(
   const results: CIResult[] = [];
 
   // Core stages that always run
-  results.push(await runLinting());
-  results.push(await runMockValidation());
-  results.push(await runUnitTests());
+  results.push(runLinting());
+  results.push(runMockValidation());
+  results.push(runUnitTests());
 
   // Additional stages for full mode
   if (mode === "full") {
-    results.push(await runSecurityScan());
-    results.push(await runPulumiValidation());
+    results.push(runSecurityScan());
+    results.push(runPulumiValidation());
   }
 
   // Generate artifacts
@@ -174,7 +175,7 @@ async function runCIPipeline(
     results[results.length - 1].artifacts = artifacts;
   }
 
-  const overall = results.every((r) => r.success);
+  const overall = results.every(r => r.success);
   const duration = Date.now() - startTime;
 
   return {
@@ -196,12 +197,12 @@ function printResults(pipeline: CIPipelineResult): void {
   console.log("");
 
   console.log("📋 Stage Results:");
-  pipeline.results.forEach((result) => {
+  pipeline.results.forEach(result => {
     const status = result.success ? "✅" : "❌";
     console.log(`   ${status} ${result.stage} (${result.duration}ms)`);
     if (!result.success) {
       const errorLines = result.details.split("\n").slice(0, 3);
-      errorLines.forEach((line) => {
+      errorLines.forEach(line => {
         if (line.trim()) {
           console.log(`      ${line.trim()}`);
         }
@@ -210,7 +211,7 @@ function printResults(pipeline: CIPipelineResult): void {
   });
 
   console.log("");
-  const passedCount = pipeline.results.filter((r) => r.success).length;
+  const passedCount = pipeline.results.filter(r => r.success).length;
   console.log(
     `📈 Summary: ${passedCount}/${pipeline.results.length} stages passed`
   );
@@ -272,6 +273,7 @@ Environment Variables:
   process.exit(0);
 }
 
-if (require.main === module) {
-  main();
+// ES module equivalent of require.main === module
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void main();
 }

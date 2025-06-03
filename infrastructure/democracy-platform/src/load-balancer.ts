@@ -11,8 +11,8 @@ const project = digitalocean.getProject({ name: projectName });
 export const loadBalancer = new digitalocean.LoadBalancer(
   "load-balancer",
   {
-    dropletIds: cluster.nodePool.nodes.apply((nodes) =>
-      nodes.map((node) => Number(node.dropletId))
+    dropletIds: cluster.nodePool.nodes.apply(nodes =>
+      nodes.map(node => Number(node.dropletId))
     ),
     enableProxyProtocol: true,
     forwardingRules: [
@@ -37,7 +37,7 @@ export const loadBalancer = new digitalocean.LoadBalancer(
     },
     httpIdleTimeoutSeconds: 60,
     name: "a3c41d38353c14b6f879aa95e2d558a9",
-    projectId: project.then((p) => p.id),
+    projectId: project.then(p => p.id),
     region: digitalocean.Region.FRA1,
     sizeUnit: 1,
     type: "REGIONAL",

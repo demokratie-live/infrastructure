@@ -1,7 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
 import { clusterId } from "../kubernetes-cluster";
-import { domainOutputs } from "../foundation-stack-refs";
 
 // Load configuration values
 const config = new pulumi.Config();

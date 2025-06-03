@@ -1,18 +1,13 @@
-import * as pulumi from "@pulumi/pulumi";
-import "./kubernetes-cluster";
-import "./load-balancer";
-import "./projects/team-democracy";
+import { cluster } from "./kubernetes-cluster";
+import { loadBalancer } from "./load-balancer";
+import { teamDemocracy } from "./projects/team-democracy";
 import { exportStackHealth } from "../../shared/src/monitoring";
 
 // Import foundation stack references to ensure dependency
 import "./foundation-stack-refs";
 
 // Collect all resources for monitoring
-const allResources = [
-  require("./kubernetes-cluster").cluster,
-  require("./load-balancer").loadBalancer,
-  require("./projects/team-democracy").teamDemocracy,
-];
+const allResources = [cluster, loadBalancer, teamDemocracy];
 
 // Export stack health monitoring
 export const stackHealth = exportStackHealth(allResources);

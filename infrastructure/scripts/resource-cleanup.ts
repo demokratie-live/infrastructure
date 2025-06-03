@@ -47,8 +47,15 @@ const PROTECTED_TAGS = [
 
 async function runCommand(command: string): Promise<string> {
   try {
-    return execSync(command, { encoding: "utf-8", timeout: 30000 });
-  } catch (error) {
+    return await new Promise<string>((resolve, reject) => {
+      try {
+        const result = execSync(command, { encoding: "utf-8", timeout: 30000 });
+        resolve(result);
+      } catch (error) {
+        reject(error instanceof Error ? error : new Error(String(error)));
+      }
+    });
+  } catch {
     console.warn(`⚠️ Command failed: ${command}`);
     return "";
   }
@@ -219,7 +226,7 @@ function generateRecommendations(resources: Resource[]): string[] {
   const recommendations: string[] = [];
 
   const orphanedVolumes = resources.filter(
-    (r) => r.type === "volume" && !r.protected && r.status !== "attached"
+    r => r.type === "volume" && !r.protected && r.status !== "attached"
   );
 
   if (orphanedVolumes.length > 0) {
@@ -228,7 +235,7 @@ function generateRecommendations(resources: Resource[]): string[] {
     );
   }
 
-  const oldDroplets = resources.filter((r) => {
+  const oldDroplets = resources.filter(r => {
     if (r.type !== "droplet" || r.protected) return false;
     const createdDate = new Date(r.created);
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
@@ -242,7 +249,7 @@ function generateRecommendations(resources: Resource[]): string[] {
   }
 
   const runningResources = resources.filter(
-    (r) => r.status === "active" || r.status === "running"
+    r => r.status === "active" || r.status === "running"
   );
 
   recommendations.push(
@@ -260,8 +267,8 @@ async function generateCleanupReport(): Promise<CleanupReport> {
   console.log("🧹 Generating resource cleanup report...");
 
   const resources = await scanAllResources();
-  const candidatesForCleanup = resources.filter((r) => !r.protected);
-  const protectedResources = resources.filter((r) => r.protected);
+  const candidatesForCleanup = resources.filter(r => !r.protected);
+  const protectedResources = resources.filter(r => r.protected);
   const recommendations = generateRecommendations(resources);
 
   return {
@@ -286,7 +293,7 @@ function printCleanupReport(report: CleanupReport): void {
   if (report.protectedResources.length === 0) {
     console.log("   None found");
   } else {
-    report.protectedResources.forEach((resource) => {
+    report.protectedResources.forEach(resource => {
       console.log(
         `   ✅ ${resource.type}: ${resource.name} (${resource.status})`
       );
@@ -298,7 +305,7 @@ function printCleanupReport(report: CleanupReport): void {
   if (report.candidatesForCleanup.length === 0) {
     console.log("   ✨ No resources found for cleanup!");
   } else {
-    report.candidatesForCleanup.forEach((resource) => {
+    report.candidatesForCleanup.forEach(resource => {
       console.log(
         `   ⚠️ ${resource.type}: ${resource.name} (${resource.status}, created: ${resource.created})`
       );
@@ -349,7 +356,9 @@ async function performCleanup(
         await executeCleanupAction(resource);
         console.log(`   ✅ Successfully cleaned up ${resource.name}`);
       } catch (error) {
-        console.log(`   ❌ Failed to clean up ${resource.name}: ${error}`);
+        console.log(
+          `   ❌ Failed to clean up ${resource.name}: ${error instanceof Error ? error.message : String(error)}`
+        );
       }
     }
   }
@@ -377,7 +386,10 @@ function getCleanupAction(resource: Resource): string {
 async function executeCleanupAction(resource: Resource): Promise<void> {
   // This is where actual cleanup would happen
   // For safety, we'll just simulate it for now
-  throw new Error("Actual cleanup not implemented - safety measure");
+  await new Promise(resolve => setTimeout(resolve, 100)); // Simulate async operation
+  throw new Error(
+    `Actual cleanup not implemented for ${resource.type} ${resource.name} - safety measure`
+  );
 }
 
 async function main(): Promise<void> {
@@ -433,6 +445,7 @@ Safety Features:
   }
 }
 
-if (require.main === module) {
-  main();
+// ES module equivalent of require.main === module
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void main();
 }

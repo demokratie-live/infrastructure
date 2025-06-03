@@ -1,5 +1,4 @@
 import * as digitalocean from "@pulumi/digitalocean";
-import * as pulumi from "@pulumi/pulumi";
 
 // k8s-public-access firewall
 export const k8sPublicAccessFirewall = new digitalocean.Firewall(

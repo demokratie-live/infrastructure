@@ -30,26 +30,28 @@ interface StatusSummary {
   recommendations: string[];
 }
 
-async function runCommand(
-  command: string
-): Promise<{ success: boolean; output: string; error?: string }> {
+function runCommand(command: string): {
+  success: boolean;
+  output: string;
+  error?: string;
+} {
   try {
     const output = execSync(command, { encoding: "utf-8", timeout: 30000 });
     return { success: true, output };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
       output: "",
-      error: error.message || "Unknown error",
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
 
-async function checkStackHealth(): Promise<StatusCheck[]> {
+function checkStackHealth(): StatusCheck[] {
   const checks: StatusCheck[] = [];
 
   // Check foundation stack
-  const foundationResult = await runCommand(
+  const foundationResult = runCommand(
     "cd democracy-foundation && pulumi stack --show-name"
   );
   checks.push({
@@ -62,7 +64,7 @@ async function checkStackHealth(): Promise<StatusCheck[]> {
   });
 
   // Check platform stack
-  const platformResult = await runCommand(
+  const platformResult = runCommand(
     "cd democracy-platform && pulumi stack --show-name"
   );
   checks.push({
@@ -77,7 +79,7 @@ async function checkStackHealth(): Promise<StatusCheck[]> {
   return checks;
 }
 
-async function checkDNSHealth(): Promise<StatusCheck[]> {
+function checkDNSHealth(): StatusCheck[] {
   const domains = [
     "democracy-deutschland.de",
     "democracy-app.de",
@@ -86,7 +88,7 @@ async function checkDNSHealth(): Promise<StatusCheck[]> {
   const checks: StatusCheck[] = [];
 
   for (const domain of domains) {
-    const result = await runCommand(`nslookup ${domain}`);
+    const result = runCommand(`nslookup ${domain}`);
     checks.push({
       name: `DNS: ${domain}`,
       status: result.success ? "healthy" : "unhealthy",
@@ -98,8 +100,8 @@ async function checkDNSHealth(): Promise<StatusCheck[]> {
   return checks;
 }
 
-async function checkKubernetesHealth(): Promise<StatusCheck> {
-  const result = await runCommand("kubectl cluster-info --request-timeout=10s");
+function checkKubernetesHealth(): StatusCheck {
+  const result = runCommand("kubectl cluster-info --request-timeout=10s");
   return {
     name: "Kubernetes Cluster",
     status: result.success ? "healthy" : "unhealthy",
@@ -108,9 +110,8 @@ async function checkKubernetesHealth(): Promise<StatusCheck> {
   };
 }
 
-async function getCostEstimate(): Promise<{ monthly: number; annual: number }> {
+function getCostEstimate(): { monthly: number; annual: number } {
   // Simplified cost calculation based on our cost analyzer
-  const environments = ["dev", "staging", "production"];
   const costs = {
     dev: 39,
     staging: 39,
@@ -124,7 +125,7 @@ async function getCostEstimate(): Promise<{ monthly: number; annual: number }> {
   };
 }
 
-async function getRecommendations(): Promise<string[]> {
+function getRecommendations(): string[] {
   return [
     "Review and optimize Kubernetes node sizes based on actual usage",
     "Implement automated scaling for cost efficiency",
@@ -135,20 +136,20 @@ async function getRecommendations(): Promise<string[]> {
   ];
 }
 
-async function generateStatusReport(): Promise<StatusSummary> {
+function generateStatusReport(): StatusSummary {
   console.log("🔍 Gathering infrastructure status...");
 
   const checks: StatusCheck[] = [];
 
   // Collect all health checks
-  const stackChecks = await checkStackHealth();
-  const dnsChecks = await checkDNSHealth();
-  const k8sCheck = await checkKubernetesHealth();
+  const stackChecks = checkStackHealth();
+  const dnsChecks = checkDNSHealth();
+  const k8sCheck = checkKubernetesHealth();
 
   checks.push(...stackChecks, ...dnsChecks, k8sCheck);
 
   // Determine overall health
-  const healthyCount = checks.filter((c) => c.status === "healthy").length;
+  const healthyCount = checks.filter(c => c.status === "healthy").length;
   const totalCount = checks.length;
   let overall: "healthy" | "degraded" | "unhealthy";
 
@@ -160,8 +161,8 @@ async function generateStatusReport(): Promise<StatusSummary> {
     overall = "unhealthy";
   }
 
-  const costs = await getCostEstimate();
-  const recommendations = await getRecommendations();
+  const costs = getCostEstimate();
+  const recommendations = getRecommendations();
 
   return {
     timestamp: new Date().toISOString(),
@@ -196,7 +197,7 @@ function printStatusReport(summary: StatusSummary): void {
   console.log("");
 
   console.log("🔍 Component Health:");
-  summary.checks.forEach((check) => {
+  summary.checks.forEach(check => {
     console.log(
       `   ${formatStatus(check.status)} ${check.name}: ${check.message}`
     );
@@ -218,7 +219,7 @@ function printStatusReport(summary: StatusSummary): void {
 
   // Health summary
   const healthyCount = summary.checks.filter(
-    (c) => c.status === "healthy"
+    c => c.status === "healthy"
   ).length;
   const totalCount = summary.checks.length;
   console.log("");
@@ -235,7 +236,7 @@ async function saveStatusReport(summary: StatusSummary): Promise<void> {
   const reportsDir = path.join(process.cwd(), "reports");
   try {
     await fs.mkdir(reportsDir, { recursive: true });
-  } catch (error) {
+  } catch {
     // Directory might already exist
   }
 
@@ -250,7 +251,7 @@ async function saveStatusReport(summary: StatusSummary): Promise<void> {
 
 async function main(): Promise<void> {
   try {
-    const summary = await generateStatusReport();
+    const summary = generateStatusReport();
     printStatusReport(summary);
 
     if (process.argv.includes("--save")) {
@@ -265,6 +266,7 @@ async function main(): Promise<void> {
   }
 }
 
-if (require.main === module) {
-  main();
+// ES module equivalent of require.main === module
+if (import.meta.url === `file://${process.argv[1]}`) {
+  void main();
 }
