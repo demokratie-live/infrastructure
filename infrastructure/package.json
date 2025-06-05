@@ -20,6 +20,7 @@
     "validate:mock": "tsx scripts/validate-infrastructure-comprehensive.ts mock",
     "validate:live": "tsx scripts/validate-infrastructure-comprehensive.ts live",
     "validate:deployment": "tsx scripts/validate-infrastructure-comprehensive.ts deployment",
+    "validate:all": "pnpm validate:mock && pnpm test:all && pnpm lint && pnpm format:check",
     "health:check": "tsx scripts/deployment-health-check.ts",
     "health:full": "tsx scripts/deployment-health-check.ts full",
     "health:dns": "tsx scripts/deployment-health-check.ts dns-only",
