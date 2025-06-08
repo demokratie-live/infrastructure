@@ -1,55 +1,56 @@
-import {
-  vpcOutputs,
-  defaultFra1Vpc,
-  websiteVpc,
-  kubernetesTestVpc,
-} from "./vpcs";
-import {
-  firewallOutputs,
-  k8sPublicAccessFirewall,
-  k8sWorkerFirewall,
-} from "./firewalls";
-import { bundestagIoOutputs, bundestagIo } from "./domains/bundestag-io";
-import {
-  democracyDeutschlandDeOutputs,
-  democracyDeutschlandDe,
-} from "./domains/democracy-deutschland-de";
-import {
-  democracyAppDeOutputs,
-  democracyAppDe,
-} from "./domains/democracy-app-de";
+import * as pulumi from "@pulumi/pulumi";
+import { StackReference } from "@pulumi/pulumi";
+import { createEnvironmentDnsRecords } from "./dns-records-stack-ref";
 import { platformOutputs } from "./platform-stack-refs";
-import { exportStackHealth } from "../../shared/src/monitoring";
 
-// Collect all resources for monitoring
-const allResources = [
-  // VPCs
-  defaultFra1Vpc,
-  websiteVpc,
-  kubernetesTestVpc,
-  // Firewalls
-  k8sPublicAccessFirewall,
-  k8sWorkerFirewall,
-  // Domains
-  bundestagIo,
-  democracyDeutschlandDe,
-  democracyAppDe,
-];
+// Type definitions for infrastructure outputs
+interface DomainOutput {
+  name: pulumi.Output<string>;
+  urn: pulumi.Output<string>;
+}
 
-// Export stack health monitoring
-export const stackHealth = exportStackHealth(allResources);
+interface DomainsOutput {
+  democracyAppDe: DomainOutput;
+  democracyDeutschlandDe: DomainOutput;
+  bundestagIo: DomainOutput;
+}
 
-// Export all outputs for cross-stack references
-export { vpcOutputs, firewallOutputs, platformOutputs };
-export {
-  bundestagIoOutputs,
-  democracyDeutschlandDeOutputs,
-  democracyAppDeOutputs,
-};
+interface SharedInfrastructure {
+  domains: DomainsOutput;
+  vpcs: unknown;
+  firewalls: unknown;
+}
 
-// Export individual resources for easier reference
-export { defaultFra1Vpc, websiteVpc, kubernetesTestVpc };
-export { k8sPublicAccessFirewall, k8sWorkerFirewall };
-export { bundestagIo };
-export { democracyDeutschlandDe };
-export { democracyAppDe };
+// Get the current stack name to determine environment
+const currentStack = pulumi.getStack();
+
+// Create a stack reference to the infrastructure-base project
+const infraBaseStackRef = new StackReference(
+  `ManAnRuck/infrastructure-base/prod`
+);
+
+// Get shared infrastructure outputs from the base stack
+const sharedInfrastructure = infraBaseStackRef.getOutput(
+  "sharedInfrastructure"
+) as pulumi.Output<SharedInfrastructure>;
+const sharedDomains = sharedInfrastructure.apply(
+  (infra: SharedInfrastructure) => infra.domains
+);
+
+// Create environment-specific DNS records - TEST VERSION
+const dnsRecords = createEnvironmentDnsRecords({
+  democracyAppDomain: sharedDomains.apply(
+    (domains: DomainsOutput) => domains.democracyAppDe
+  ),
+  democracyDeutschlandDomain: sharedDomains.apply(
+    (domains: DomainsOutput) => domains.democracyDeutschlandDe
+  ),
+  bundestagIoDomain: sharedDomains.apply(
+    (domains: DomainsOutput) => domains.bundestagIo
+  ),
+  environment: currentStack,
+  platformOutputs,
+});
+
+// Export outputs
+export const dnsRecordsOutputs = dnsRecords;

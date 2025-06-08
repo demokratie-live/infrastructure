@@ -240,7 +240,3 @@ export const EnhancedValidationRules = {
     },
   },
 };
-
-// Export for use in Pulumi programs
-export { StackValidator } from "./stack-validator";
-export type { StackValidationRule, ValidationResult } from "./stack-validator";

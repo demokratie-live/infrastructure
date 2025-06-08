@@ -75,8 +75,10 @@ export const k8sWorkerFirewall = new digitalocean.Firewall(
   }
 );
 
-// Export firewall IDs for cross-stack references
+// Export firewall outputs for other projects to reference
 export const firewallOutputs = {
   k8sPublicAccessFirewallId: k8sPublicAccessFirewall.id,
+  k8sPublicAccessFirewallUrn: k8sPublicAccessFirewall.urn,
   k8sWorkerFirewallId: k8sWorkerFirewall.id,
+  k8sWorkerFirewallUrn: k8sWorkerFirewall.urn,
 };

@@ -14,22 +14,3 @@ export const vpcOutputs = {
   mainVpc: foundationStackRef.getOutput("mainVpc"),
   mainVpcId: foundationStackRef.getOutput("mainVpcId"),
 };
-
-// Firewall outputs from foundation
-export const firewallOutputs = {
-  kubernetesFirewall: foundationStackRef.getOutput("kubernetesFirewall"),
-  kubernetesFirewallId: foundationStackRef.getOutput("kubernetesFirewallId"),
-  webServerFirewall: foundationStackRef.getOutput("webServerFirewall"),
-  webServerFirewallId: foundationStackRef.getOutput("webServerFirewallId"),
-};
-
-// Domain outputs from foundation
-export const domainOutputs = {
-  democracyAppDomain: foundationStackRef.getOutput("democracyAppDomain"),
-  democracyApiDomain: foundationStackRef.getOutput("democracyApiDomain"),
-  bundestagioDomain: foundationStackRef.getOutput("bundestagioDomain"),
-  bundestagioAdminDomain: foundationStackRef.getOutput(
-    "bundestagioAdminDomain"
-  ),
-  bundestagioDipDomain: foundationStackRef.getOutput("bundestagioDipDomain"),
-};

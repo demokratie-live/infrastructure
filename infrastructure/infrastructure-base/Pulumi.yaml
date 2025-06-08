@@ -1,0 +1,4 @@
+name: infrastructure-base
+description: Base infrastructure for democracy platform (domains, VPCs, firewalls)
+runtime: nodejs
+main: src/

@@ -44,9 +44,12 @@ export const kubernetesTestVpc = new digitalocean.Vpc(
   }
 );
 
-// Export VPC IDs for cross-stack references
+// Export VPC outputs for other projects to reference
 export const vpcOutputs = {
   defaultFra1VpcId: defaultFra1Vpc.id,
+  defaultFra1VpcUrn: defaultFra1Vpc.urn,
   websiteVpcId: websiteVpc.id,
+  websiteVpcUrn: websiteVpc.urn,
   kubernetesTestVpcId: kubernetesTestVpc.id,
+  kubernetesTestVpcUrn: kubernetesTestVpc.urn,
 };
