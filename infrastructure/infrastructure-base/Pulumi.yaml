@@ -4,6 +4,5 @@ runtime:
   name: nodejs
   options:
     packagemanager: pnpm
-    typescript: false
-    binary: tsx
+    typescript: true
 main: src/
