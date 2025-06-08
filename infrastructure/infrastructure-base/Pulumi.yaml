@@ -1,4 +1,9 @@
 name: infrastructure-base
 description: Base infrastructure for democracy platform (domains, VPCs, firewalls)
-runtime: nodejs
+runtime:
+  name: nodejs
+  options:
+    packagemanager: pnpm
+    typescript: false
+    binary: tsx
 main: src/

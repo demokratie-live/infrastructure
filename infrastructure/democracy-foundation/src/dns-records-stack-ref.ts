@@ -27,14 +27,21 @@ interface DnsRecordConfig {
   platformOutputs: PlatformOutputs;
 }
 
+interface StackManagedRecord {
+  recordName: string;
+  type: string;
+  managedByStack: string;
+  id: pulumi.Output<string>;
+}
+
 interface EnvironmentDnsRecords {
   democracyAppDe: {
     dnsRecords: digitalocean.DnsRecord[];
-    stackManagedRecords: digitalocean.DnsRecord[];
+    stackManagedRecords: StackManagedRecord[];
   };
   democracyDeutschlandDe?: {
     dnsRecords: digitalocean.DnsRecord[];
-    stackManagedRecords: digitalocean.DnsRecord[];
+    stackManagedRecords: StackManagedRecord[];
   };
 }
 
@@ -44,7 +51,7 @@ export function createEnvironmentDnsRecords(
   const { environment } = config; // platformOutputs nicht verwendet für Test
 
   const dnsRecords: digitalocean.DnsRecord[] = [];
-  const stackManagedRecords: digitalocean.DnsRecord[] = [];
+  const stackManagedRecords: StackManagedRecord[] = [];
 
   // Environment-specific DNS records for democracy-app.de
   if (environment === "internal") {
