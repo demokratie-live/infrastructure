@@ -2,11 +2,16 @@
 
 ## 🏗️ Project Structure
 
-The infrastructure is organized into three specialized projects:
+The infrastructure is organized into four specialized projects:
 
-- **democracy-foundation**: Base infrastructure (VPCs, firewalls, domains)
+- **infrastructure-base**: Shared base resources (domains, VPCs, firewalls) - base layer
+- **democracy-foundation**: Environment-specific DNS and foundation configs
 - **democracy-platform**: Platform services (Kubernetes, load balancers)
 - **shared**: Common configurations and utilities
+
+**Architecture Pattern**: Base → Foundation → Platform → Applications
+
+**Status**: ✅ Phase 4 Complete (as of June 2025) - All phases implemented and production-ready
 
 ## 🚀 Common Operations
 
