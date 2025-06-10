@@ -1,22 +1,53 @@
 # Infrastructure Base
 
-This project manages the shared infrastructure resources for the democracy platform that are used across multiple environments and projects.
+This project manages the **shared base infrastructure resources** for the democracy platform that are used across multiple environments and projects.
 
-## 🏗️ **Architecture Overview**
+> 📋 **Architektur-Übersicht**: Siehe [`ARCHITECTURE.md`](../ARCHITECTURE.md) für die komplette vier-schichtige Architektur-Dokumentation
 
-This project follows the **Base Infrastructure Pattern** to avoid resource ownership conflicts in Pulumi:
+## 🏗️ **Rolle in der Architektur**
+
+**Infrastructure-Base** ist die **Basis-Ebene** (Schicht 1 von 4):
 
 ```
-infrastructure-base/        # This project - shared resources
+Applications        ← Anwendungsebene
+     ↓ verwendet
+democracy-platform  ← Platform-Ebene
+     ↓ verwendet
+democracy-foundation ← Foundation-Ebene
+     ↓ verwendet
+infrastructure-base ← 🎯 DIESE SCHICHT (Basis-Ebene)
+```
+
+**Zweck**: Bereitstellung unveränderlicher, geteilter Basis-Ressourcen für alle Umgebungen.
+
+```
+infrastructure-base/        # 🎯 DIESE SCHICHT - unveränderliche Basis-Ressourcen
 ├── domains.ts              # democracy-app.de, bundestag.io, democracy-deutschland.de
 ├── vpcs.ts                 # VPCs (default-fra1, website, kubernetes-test)
 └── firewalls.ts            # Firewalls (k8s-public-access, k8s-worker)
 
-democracy-foundation/       # Environment-specific project
-├── DNS records             # Only DNS records (prod, internal, alpha)
-├── Load balancers          # Platform-specific resources
-└── Stack references        # References to this base project
+democracy-foundation/       # ↑ Foundation-Schicht (referenziert diese Basis)
+├── DNS records             # Umgebungsspezifische DNS-Einträge
+├── SSL certificates        # Let's Encrypt Integration
+└── Stack references        # Referenzen zu infrastructure-base
+
+democracy-platform/         # ↑ Platform-Schicht
+├── Kubernetes cluster      # Kubernetes und Load Balancer
+└── Load balancers          # Platform-Services
+
+Applications/               # ↑ Anwendungsebene
+└── Vote apps, Admin tools  # Anwendungen verwenden Platform-Exports
 ```
+
+## ⚠️ **Wichtiger Unterschied zu democracy-foundation**
+
+| **infrastructure-base**                         | **democracy-foundation**                       |
+| ----------------------------------------------- | ---------------------------------------------- |
+| **Basis-Ressourcen** (Domains, VPCs, Firewalls) | **Umgebungs-Konfiguration** (DNS Records, SSL) |
+| **Ein Stack**: `prod`                           | **Mehrere Stacks**: `prod`, `staging`, `dev`   |
+| **Ändert sich selten**                          | **Ändert sich häufiger**                       |
+| **Alle Resources protected**                    | **Selektiv protected**                         |
+| **Keine Abhängigkeiten**                        | **Abhängig von infrastructure-base**           |
 
 ## 🎯 **Managed Resources**
 

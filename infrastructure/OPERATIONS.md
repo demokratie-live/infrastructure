@@ -2,7 +2,9 @@
 
 ## 🏗️ Project Structure
 
-The infrastructure is organized into four specialized projects:
+> 📋 **Detaillierte Architektur**: Siehe [`ARCHITECTURE.md`](./ARCHITECTURE.md) für die komplette vier-schichtige Architektur-Dokumentation
+
+Die Infrastruktur ist in vier spezialisierte Projekte organisiert:
 
 - **infrastructure-base**: Shared base resources (domains, VPCs, firewalls) - base layer
 - **democracy-foundation**: Environment-specific DNS and foundation configs
@@ -11,7 +13,7 @@ The infrastructure is organized into four specialized projects:
 
 **Architecture Pattern**: Base → Foundation → Platform → Applications
 
-**Status**: ✅ Phase 4 Complete (as of June 2025) - All phases implemented and production-ready
+**Status**: ✅ Phase 4 Complete (as of Juni 2025) - All phases implemented and production-ready
 
 ## 🚀 Common Operations
 

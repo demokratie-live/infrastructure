@@ -1,10 +1,24 @@
 # Democracy Platform Infrastructure
 
-This project contains the platform infrastructure components for Democracy Deutschland e.V.
+This project contains the **platform infrastructure components** for Democracy Deutschland e.V.
+
+> 📋 **Architektur-Übersicht**: Siehe [`ARCHITECTURE.md`](../ARCHITECTURE.md) für die komplette vier-schichtige Architektur-Dokumentation
 
 ## Overview
 
-This is part of the completed infrastructure restructuring, implementing **Phase 4: Complete Platform Setup**.
+**Democracy-Platform** ist die **Platform-Ebene** (Schicht 3 von 4) der Infrastructure-Architektur:
+
+```
+Applications        ← Anwendungsebene
+     ↓ verwendet
+democracy-platform  ← 🎯 DIESE SCHICHT (Platform-Ebene)
+     ↓ verwendet
+democracy-foundation ← Foundation-Ebene
+     ↓ verwendet
+infrastructure-base ← Basis-Ebene
+```
+
+**Zweck**: Kubernetes-Cluster und Platform-Services für Anwendungen.
 
 ## Components
 
