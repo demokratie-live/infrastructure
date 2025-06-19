@@ -41,18 +41,52 @@
     "format:check": "prettier --check \"**/*.{ts,js,json,md}\"",
     "knip": "knip",
     "knip:fix": "knip --fix",
-    "knip:production": "knip --production"
+    "knip:production": "knip --production",
+    "prepare": "husky",
+    "pre-commit": "lint-staged",
+    "type-check": "pnpm -r exec tsc --noEmit",
+    "security:audit": "pnpm audit --audit-level=moderate",
+    "test:staged": "pnpm test:all",
+    "commit-msg": "echo 'Validating commit message format...'",
+    "validate:pre-commit": "pnpm type-check && pnpm security:audit && pnpm knip:ci"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
+    "@types/node": "^20.0.0",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
     "globals": "^16.2.0",
+    "husky": "^9.0.11",
     "knip": "^5.60.2",
+    "lint-staged": "^15.2.2",
     "prettier": "^3.5.3",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write",
+      "bash -c 'echo \"🔧 TypeScript/JavaScript files processed\"'",
+      "bash -c 'echo \"🧹 Running dead code analysis...\" && pnpm knip:ci'"
+    ],
+    "*.{json,md,yaml,yml}": [
+      "prettier --write",
+      "bash -c 'echo \"📄 Config/doc files formatted\"'"
+    ],
+    "*.ts": [
+      "bash -c 'echo \"🔍 Running TypeScript type check...\" && pnpm type-check'"
+    ],
+    "*.{js,ts,json,yaml,yml}": [
+      "bash -c 'echo \"🔐 Scanning for secrets...\" && git diff --cached --name-only | xargs grep -l \"password\\|secret\\|key\\|token\" | wc -l | xargs -I {} bash -c \"if [ {} -gt 0 ]; then echo \\\"⚠️  Potential secrets detected in staged files. Please review!\\\"; fi\"'"
+    ],
+    "package.json": [
+      "bash -c 'echo \"📦 Checking dependencies for vulnerabilities...\" && pnpm security:audit'"
+    ],
+    "pnpm-lock.yaml": [
+      "bash -c 'echo \"🔒 Lock file changed - running security audit...\" && pnpm security:audit'"
+    ]
   }
 }

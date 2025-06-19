@@ -113,6 +113,8 @@ jobs:
       - name: Code Quality Checks
         working-directory: infrastructure
         run: |
+          # These checks are also run by Husky pre-commit hooks for shift-left approach
+          # This ensures consistency between local development and CI environment
           pnpm lint
           pnpm format:check
 
@@ -121,6 +123,7 @@ jobs:
         working-directory: infrastructure
         run: |
           echo "🔍 Running dead code analysis..."
+          # This check is also performed by Husky hooks on staged files
           pnpm knip:ci
 
       # Infrastructure Validation
