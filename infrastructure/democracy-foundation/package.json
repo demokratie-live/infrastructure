@@ -15,11 +15,12 @@
   },
   "devDependencies": {
     "@types/node": "^20.17.57",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@democracy/shared-infrastructure": "workspace:*",
     "@pulumi/digitalocean": "^4.45.0",
     "@pulumi/pulumi": "^3.173.0"
   }

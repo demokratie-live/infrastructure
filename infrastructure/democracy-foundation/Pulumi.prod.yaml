@@ -5,23 +5,54 @@ config:
     value: prod
   democracy-foundation:dnsRecords:
     value:
-      - name: "@"
+      # democracy-app.de records
+      - domain: "democracy-app.de"
+        name: "@"
         type: "A"
         value: "LOAD_BALANCER_IP"
         ttl: 3601
         importId: "55307990"
-      - name: "api"
+      - domain: "democracy-app.de"
+        name: "api"
         type: "A"
         value: "LOAD_BALANCER_IP"
         ttl: 3601
         importId: "57525594"
-      - name: "website"
+      - domain: "democracy-app.de"
+        name: "website"
         type: "A"
         value: "161.35.206.64" # Website has its own server
         ttl: 3600
         importId: "1762512106"
-      - name: "listmonk"
+      - domain: "democracy-app.de"
+        name: "listmonk"
         type: "A"
         value: "LOAD_BALANCER_IP"
         ttl: 3600
         importId: "1762904294"
+      # bundestag.io records
+      - domain: "bundestag.io"
+        name: "admin"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "55646855"
+      - domain: "bundestag.io"
+        name: "api"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "57525525"
+      - domain: "bundestag.io"
+        name: "dip"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "262322845"
+      # democracy-deutschland.de records
+      - domain: "democracy-deutschland.de"
+        name: "qr"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "1701532948"

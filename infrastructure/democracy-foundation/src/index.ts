@@ -1,56 +1,36 @@
 import * as pulumi from "@pulumi/pulumi";
 import { StackReference } from "@pulumi/pulumi";
-import { createEnvironmentDnsRecords } from "./dns-records-stack-ref";
-import { platformOutputs } from "./platform-stack-refs";
-
-// Type definitions for infrastructure outputs
-interface DomainOutput {
-  name: pulumi.Output<string>;
-  urn: pulumi.Output<string>;
-}
-
-interface DomainsOutput {
-  democracyAppDe: DomainOutput;
-  democracyDeutschlandDe: DomainOutput;
-  bundestagIo: DomainOutput;
-}
-
-interface SharedInfrastructure {
-  domains: DomainsOutput;
-  vpcs: unknown;
-  firewalls: unknown;
-}
+import { createAllDomainsDnsRecords } from "./dns-records-all-domains";
 
 // Get the current stack name to determine environment
 const currentStack = pulumi.getStack();
 
-// Create a stack reference to the infrastructure-base project
-const infraBaseStackRef = new StackReference(
+// Create a stack reference to the infrastructure-base project for domain dependencies
+const infrastructureBaseStackRef = new StackReference(
   `ManAnRuck/infrastructure-base/prod`
 );
 
-// Get shared infrastructure outputs from the base stack
-const sharedInfrastructure = infraBaseStackRef.getOutput(
-  "sharedInfrastructure"
-) as pulumi.Output<SharedInfrastructure>;
-const sharedDomains = sharedInfrastructure.apply(
-  (infra: SharedInfrastructure) => infra.domains
+// Create a stack reference to the democracy-platform project for load balancer IP
+// Note: Using prod stack for load balancer reference as it's the only one currently deployed
+const platformStackRef = new StackReference(
+  currentStack === "prod"
+    ? `ManAnRuck/democracy-platform/${currentStack}`
+    : `ManAnRuck/democracy-platform/prod` // Fallback to prod for other environments
 );
 
-// Create environment-specific DNS records
-const dnsRecords = createEnvironmentDnsRecords({
-  democracyAppDomain: sharedDomains.apply(
-    (domains: DomainsOutput) => domains.democracyAppDe
-  ),
-  democracyDeutschlandDomain: sharedDomains.apply(
-    (domains: DomainsOutput) => domains.democracyDeutschlandDe
-  ),
-  bundestagIoDomain: sharedDomains.apply(
-    (domains: DomainsOutput) => domains.bundestagIo
-  ),
-  environment: currentStack,
-  platformOutputs,
-});
+// Create DNS records based on Pulumi configuration
+const dnsRecords = createAllDomainsDnsRecords(platformStackRef);
 
 // Export outputs
-export const dnsRecordsOutputs = dnsRecords;
+export const dnsRecordsCount = dnsRecords.length;
+export const createdDnsRecords = dnsRecords.map((record, index) => ({
+  id: record.id,
+  fqdn: record.fqdn,
+  name: `dns-record-${index}`,
+}));
+
+// Export infrastructure dependencies for reference
+export const infrastructureDependencies = {
+  domains: infrastructureBaseStackRef.getOutput("domainOutputs"),
+  loadBalancer: platformStackRef.getOutput("loadBalancerIp"),
+};

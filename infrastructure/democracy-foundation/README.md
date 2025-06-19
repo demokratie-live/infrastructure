@@ -1,152 +1,174 @@
 # Democracy Foundation Infrastructure
 
-This project manages the foundation infrastructure for Democracy Deutschland e.V., including DNS records for domains managed across different environments.
+This project manages DNS records for all Democracy-related domains using Pulumi and DigitalOcean.
 
-## Architecture
+## Features
 
-The Democracy Foundation project creates environment-specific DNS records that reference domains managed in the `infrastructure-base` project. It uses Pulumi stack references to get domain information and creates only the necessary DNS records for each environment.
+- **Stack-agnostic DNS management**: All DNS record configurations are stored in Pulumi stack YAML files
+- **Dynamic load balancer resolution**: Automatically resolves `LOAD_BALANCER_IP` from the platform stack
+- **Multi-domain support**: Manages `democracy-app.de`, `bundestag.io`, and `democracy-deutschland.de`
+- **Environment-specific records**: Different DNS records per environment (prod, internal, alpha)
 
-## Available Stacks
+## Configuration
 
-### Production Stack (`prod`)
+DNS records are configured entirely in Pulumi stack YAML files (`Pulumi.{stack}.yaml`). No hardcoded configurations exist in the TypeScript code.
 
-Manages production DNS records without prefixes:
+### Stack Configuration Format
 
-- `@` (root domain) → 174.138.102.21
-- `api` → 174.138.102.21
-- `website` → 161.35.206.64
-- `listmonk` → 174.138.102.21
-
-### Internal Stack (`internal`)
-
-Manages internal DNS records with "internal" prefix:
-
-- `internal` → 174.138.102.21
-- `internal.api` → 174.138.102.21
-- `internal.qr` → 174.138.102.21
-
-## DNS Records Analysis
-
-Based on the current DNS configuration for democracy-app.de:
-
-```bash
-doctl compute domain records list democracy-app.de --output json
+```yaml
+config:
+  democracy-foundation:environment:
+    value: prod
+  democracy-foundation:dnsRecords:
+    value:
+      - domain: "democracy-app.de"
+        name: "@"
+        type: "A"
+        value: "LOAD_BALANCER_IP" # Resolves dynamically
+        ttl: 3601
+        importId: "55307990" # For importing existing records
+      - domain: "bundestag.io"
+        name: "api"
+        type: "A"
+        value: "192.168.1.100" # Static IP
+        ttl: 3600
+        importId: "57525525"
 ```
 
-**Production Records (Root Domain)**:
+### Special Values
 
-- Root domain (`@`) points to main load balancer
-- API endpoint for production traffic
-- Website points to separate server
-- Listmonk for newsletter management
-
-**Internal Records (Internal Prefix)**:
-
-- Internal environment for testing
-- Internal API for development/staging
-- Internal QR code service
+- `LOAD_BALANCER_IP`: Automatically resolved from the democracy-platform stack's load balancer output
 
 ## Stack Management
 
 Use standard Pulumi commands for stack operations:
 
-```bash
-# Deploy production stack
+````bash
+# Deploy production stack (all domains)
 pulumi stack select prod
 pulumi up
 
-# Deploy internal stack
-pulumi stack select internal
-pulumi up
+## Usage
 
-# Preview changes before deployment
-pulumi stack select prod
-pulumi preview
-
-pulumi stack select internal
-pulumi preview
-
-# Check stack status
-pulumi stack ls
-pulumi stack
-
-# Initialize new stacks if needed
-pulumi stack init prod
-pulumi stack init internal
-```
-
-## Configuration
-
-Stack-specific configurations are managed in:
-
-- `Pulumi.prod.yaml` - Production environment DNS records
-- `Pulumi.internal.yaml` - Internal environment DNS records
-
-Each configuration includes:
-
-- DNS record definitions with import IDs
-- Environment-specific values
-- TTL settings
-- **Dynamic Load Balancer IP**: Use `"LOAD_BALANCER_IP"` as value to automatically reference the platform load balancer IP
-
-### Dynamic IP Configuration
-
-DNS records can use `"LOAD_BALANCER_IP"` as the value to automatically reference the load balancer IP from the democracy-platform stack:
-
-```yaml
-- name: "@"
-  type: "A"
-  value: "LOAD_BALANCER_IP" # Dynamically resolved to platform load balancer IP
-  ttl: 3601
-  importId: "55307990"
-```
-
-This ensures DNS records automatically update when the load balancer IP changes, eliminating hardcoded IP addresses.
-
-## Development
-
-### Prerequisites
-
-- Node.js and pnpm
-- Pulumi CLI
-- DigitalOcean API token
-
-### Setup
+### Deploy DNS Records
 
 ```bash
-pnpm install
-export DIGITALOCEAN_TOKEN="your-token-here"
-```
+# Production environment
+pulumi up -s prod
 
-### Testing Changes
+# Internal environment
+pulumi up -s internal
+
+# Alpha environment
+pulumi up -s alpha
+````
+
+### Import Existing DNS Records
+
+If you have existing DNS records that need to be imported:
 
 ```bash
+# Example: Import a DNS record
+pulumi import digitalocean:DnsRecord democracy-app-de-root-a democracy-app.de,55307990
+```
+
+The `importId` values in the configuration correspond to the DigitalOcean DNS record IDs.
+
+## Architecture
+
+- **`src/index.ts`**: Main entry point, creates stack reference and initiates DNS record creation
+- **`src/dns-records-all-domains.ts`**: Generic DNS record creation logic that reads from Pulumi config
+- **`Pulumi.{stack}.yaml`**: Stack-specific DNS record configurations
+
+## Environment-Specific Records
+
+Each environment manages different DNS records:
+
+### Production (`prod`)
+
+- Complete set of production DNS records
+- Points to production load balancer
+- Includes website, API, admin, and special purpose subdomains
+
+### Internal (`internal`)
+
+- Internal testing and staging records
+- Separate load balancer for internal services
+- Isolated from production traffic
+
+### Alpha (`alpha`)
+
+- Alpha testing environment
+- Experimental features and early testing
+- Separate infrastructure stack
+
+## Maintenance
+
+### Adding New DNS Records
+
+1. Edit the appropriate `Pulumi.{stack}.yaml` file
+2. Add the new DNS record to the `dnsRecords` array
+3. Run `pulumi up` to create the record
+
+### Updating Existing Records
+
+1. Modify the record in the stack YAML file
+2. Run `pulumi up` to apply changes
+
+### Removing DNS Records
+
+1. Remove the record from the stack YAML file
+2. Run `pulumi up` to delete the record
+
+## Troubleshooting
+
+### Preview Changes
+
+```bash
+pulumi preview -s <stack-name>
+```
+
+### Check Configuration
+
+```bash
+pulumi config -s <stack-name>
+```
+
+### Validate Stack
+
+```bash
+pulumi stack select <stack-name>
+pulumi refresh
+```
+
+That's all there is to it! The new system provides a clean, maintainable approach to DNS management with full separation between infrastructure logic and stack-specific configuration.
+
 # Preview changes without applying
+
 pulumi preview
 
 # Apply changes
+
 pulumi up
+
 ```
 
 ## Stack Dependencies
 
 This project depends on:
-
 - `infrastructure-base/prod` - For domain references
-- `democracy-platform/{stack}` - For load balancer IPs (when used)
+- `democracy-platform/{stack}` - For load balancer IPs
 
 ## Import Strategy
 
 DNS records are imported using DigitalOcean record IDs to avoid conflicts:
-
-- Records are imported with format: `democracy-app.de,{record-id}`
-- Import IDs are documented in stack configurations
+- Records are imported with format: `{domain},{record-id}`
+- Import IDs are documented in the centralized configuration
 - Existing records are preserved during stack creation
 
 ## Monitoring
 
 Monitor DNS record changes through:
-
 - Pulumi state tracking
 - DigitalOcean control panel
 - DNS propagation checks
@@ -159,5 +181,7 @@ Monitor DNS record changes through:
 
 ## Stack Overview
 
-- **`prod`** - Production DNS records (root domain)
-- **`internal`** - Internal DNS records (internal.\* subdomains)
+- **`prod`** - Production DNS records (all domains)
+- **`internal`** - Internal DNS records (selected domains)
+- **`alpha`** - Alpha DNS records (bundestag.io only)
+```
