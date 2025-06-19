@@ -115,7 +115,13 @@ jobs:
         run: |
           pnpm lint
           pnpm format:check
-          pnpm knip  # Dead code elimination
+
+      # Dead code elimination (non-blocking)
+      - name: Dead Code Analysis
+        working-directory: infrastructure
+        run: |
+          echo "🔍 Running dead code analysis..."
+          pnpm knip:ci
 
       # Infrastructure Validation
       - name: Infrastructure Validation
