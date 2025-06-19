@@ -14,18 +14,22 @@ The git hooks are configured to run at different stages:
 
 The pre-commit hook runs **lint-staged** which performs the following checks on staged files:
 
-### TypeScript/JavaScript Files (*.ts, *.js)
+### TypeScript/JavaScript Files (_.ts, _.js)
+
 - ✅ **ESLint**: Automatically fixes linting issues
 - ✅ **Prettier**: Formats code consistently
 - ✅ **Dead Code Analysis**: Runs Knip to detect unused code
 
-### TypeScript Files (*.ts)
+### TypeScript Files (\*.ts)
+
 - ✅ **Type Checking**: Validates TypeScript types without emitting files
 
-### Configuration Files (*.json, *.md, *.yaml, *.yml)
+### Configuration Files (_.json, _.md, _.yaml, _.yml)
+
 - ✅ **Prettier**: Formats configuration and documentation files
 
 ### Security Scanning
+
 - 🔐 **Secret Detection**: Scans for potential secrets in staged files
 - 📦 **Dependency Audit**: Checks for security vulnerabilities when package.json changes
 - 🔒 **Lock File Security**: Runs security audit when pnpm-lock.yaml changes
@@ -35,11 +39,13 @@ The pre-commit hook runs **lint-staged** which performs the following checks on 
 Validates that commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/) specification.
 
 ### Format
+
 ```
 type(scope): description
 ```
 
 ### Supported Types
+
 - `feat`: A new feature
 - `fix`: A bug fix
 - `docs`: Documentation only changes
@@ -53,6 +59,7 @@ type(scope): description
 - `revert`: Reverts a previous commit
 
 ### Examples
+
 ```bash
 feat(auth): add user authentication
 fix(api): resolve memory leak in data processing
@@ -65,6 +72,7 @@ ci(husky): add pre-commit hooks
 The pre-push hook behavior depends on the target branch:
 
 ### Protected Branches (main, develop)
+
 - 🛡️ **Comprehensive Validation**: Runs `pnpm validate:all:strict`
 - 🧪 **Full Test Suite**: Executes all tests with `pnpm test:all`
 - 🔍 **Security Checks**: Includes dependency audit and security validation
@@ -72,6 +80,7 @@ The pre-push hook behavior depends on the target branch:
 - 🎯 **Type Checking**: Complete TypeScript validation
 
 ### Feature Branches
+
 - 📋 **Quick Validation**: Runs `pnpm validate:mock`
 - ⚡ **Fast Feedback**: Lightweight checks for rapid development
 
@@ -123,6 +132,7 @@ pnpm validate:all:strict
 ### Performance Optimization
 
 The hooks are optimized for performance:
+
 - **Parallel execution** where possible
 - **Staged files only** for pre-commit
 - **Incremental checks** for type checking
@@ -131,6 +141,7 @@ The hooks are optimized for performance:
 ### Customization
 
 To modify the hooks, edit the files in `.husky/` directory:
+
 - `.husky/pre-commit`
 - `.husky/commit-msg`
 - `.husky/pre-push`
@@ -148,6 +159,7 @@ To modify lint-staged configuration, edit the `lint-staged` section in `infrastr
 ## Integration with CI/CD
 
 These hooks complement the CI/CD pipeline by:
+
 - Catching issues before they reach remote repository
 - Reducing CI/CD failures and resource usage
 - Providing immediate feedback to developers
