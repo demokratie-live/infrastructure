@@ -6,22 +6,16 @@
       "project": ["scripts/**/*.ts"]
     },
     "infrastructure-base": {
-      "entry": [],
       "project": ["src/**/*.ts"],
       "ignore": ["src/test.ts"]
     },
     "democracy-foundation": {
-      "entry": [],
-      "project": ["src/**/*.ts"],
-      "ignore": ["src/test.ts"]
+      "project": ["src/**/*.ts"]
     },
     "democracy-platform": {
-      "entry": [],
-      "project": ["src/**/*.ts"],
-      "ignore": ["src/test.ts"]
+      "project": ["src/**/*.ts"]
     },
     "shared": {
-      "entry": [],
       "project": ["src/**/*.ts"]
     }
   },
@@ -30,8 +24,13 @@
     "**/node_modules/**",
     "**/dist/**",
     "**/reports/**",
-    "archive/**"
+    "archive/**",
+    "kustomize/**",
+    "**/*.yaml",
+    "**/*.yml",
+    "**/*.md"
   ],
   "ignoreBinaries": ["pulumi"],
-  "ignoreDependencies": ["@pulumi/pulumi"]
+  "ignoreDependencies": ["@pulumi/pulumi"],
+  "ignoreExportsUsedInFile": true
 }

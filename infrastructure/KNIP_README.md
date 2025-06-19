@@ -23,7 +23,7 @@ pnpm knip:fix
 
 ## Konfiguration
 
-Die Knip-Konfiguration befindet sich in `.kniprc.json` und ist für das Pulumi/Infrastructure-Monorepo optimiert.
+Die Knip-Konfiguration befindet sich in `.knip.json` und ist für das Pulumi/Infrastructure-Monorepo optimiert.
 
 ### Workspace-Struktur
 
@@ -99,7 +99,7 @@ Dies prüft nur die für Production relevanten Teile und ignoriert Development/T
 
 ## Erweiterte Konfiguration
 
-Die Konfiguration kann in `.kniprc.json` angepasst werden:
+Die Konfiguration kann in `.knip.json` angepasst werden:
 
 - `entry`: Dateien die als Einstiegspunkte gelten
 - `project`: Alle Projektdateien
