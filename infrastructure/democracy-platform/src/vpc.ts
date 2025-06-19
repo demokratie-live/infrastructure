@@ -38,7 +38,3 @@ export const vpcOutputs = {
   vpcName: platformVpc.name,
   vpcIpRange: platformVpc.ipRange,
 };
-
-// Export for external stack references
-export const mainVpc = platformVpc;
-export const mainVpcId = platformVpc.id;
