@@ -42,7 +42,7 @@ infrastructure-base ← Basis-Ebene
 ## Stacks
 
 - **production**: Production environment
-- **staging**: Staging environment (if configured)
+- **dev**: Development environment for testing and development
 
 ## Cross-Stack Dependencies
 
@@ -77,8 +77,8 @@ This project exports the following for use by application stacks:
 # Install dependencies
 pnpm install
 
-# Select stack
-pulumi stack select production
+# Select stack (production or dev)
+pulumi stack select production  # or dev
 
 # Preview changes (requires foundation stack to be deployed first)
 pulumi preview
@@ -87,12 +87,31 @@ pulumi preview
 pulumi up
 ```
 
+## Environment-Specific Configuration
+
+### Production Stack
+
+- **Cluster Name**: `democracy`
+- **Node Pool**: `s-4vcpu-8gb` (5 nodes)
+- **Project**: `Team DEMOCRACY`
+- **Protection**: Resources are protected from deletion
+- **Tags**: `kubernetes-test`
+
+### Development Stack
+
+- **Cluster Name**: `democracy-dev`
+- **Node Pool**: `s-2vcpu-4gb` (2 nodes)
+- **Project**: `Team DEMOCRACY Dev`
+- **Protection**: Resources can be deleted for testing
+- **Tags**: `kubernetes-test-dev`
+
 ## Dependencies
 
 **⚠️ Important:** This stack must be deployed after `democracy-foundation`:
 
 1. First: `cd ../democracy-foundation && pulumi up`
-2. Then: `cd ../democracy-platform && pulumi up`
+2. Then (for production): `cd ../democracy-platform && pulumi stack select production && pulumi up`
+3. Or (for development): `cd ../democracy-platform && pulumi stack select dev && pulumi up`
 
 ## Migration Notes
 

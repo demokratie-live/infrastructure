@@ -8,7 +8,9 @@ const projectName = config.require("projectName");
 const environment = config.get("environment") || "production";
 const description =
   config.get("description") ||
-  "Production environment for Democracy project infrastructure";
+  (environment === "production"
+    ? "Production environment for Democracy project infrastructure"
+    : "Development environment for Democracy project infrastructure testing");
 const isDefault = config.getBoolean("isDefault") || true;
 
 export const teamDemocracy = new digitalocean.Project(

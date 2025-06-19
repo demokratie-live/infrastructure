@@ -3,3 +3,4 @@ config:
     secure: AAABAGVrozQvz9eO+bsBuf3q+mZkf8e+au8nT0xrH6BTY0W9CZjf6GlrOWFw9vAdBLlkO33ZZ4fz0lxzz8aBIhFnM1+sBBmRx/cHmpzTpN1tDNxtgDCm3WiPM6YzjEUvSo2ZEVKZ/g==
   democracy-platform:environment: production
   democracy-platform:projectName: Team DEMOCRACY
+  democracy-platform:nodePoolName: worker-pool-4c-6m

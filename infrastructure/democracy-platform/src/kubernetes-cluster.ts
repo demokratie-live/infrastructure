@@ -5,15 +5,23 @@ import { vpcOutputs } from "./foundation-stack-refs";
 // Load configuration values
 const config = new pulumi.Config();
 
+// Get environment to determine resource protection and naming
+const environment = config.get("environment") || "production";
+
 // Configurable Kubernetes cluster parameters
 const kubernetesVersion = config.get("kubernetesVersion") || "1.30.10-do.1";
 const autoUpgrade = config.getBoolean("autoUpgrade") ?? true;
 const clusterName = config.get("clusterName") || "democracy";
 const nodePoolSize = config.get("nodePoolSize") || "s-4vcpu-8gb";
 const nodePoolCount = config.getNumber("nodePoolCount") || 5;
+const nodePoolName = config.get("nodePoolName") || "worker-pool-4c-6m";
 const clusterTags = config.getObject<string[]>("clusterTags") || [
   "kubernetes-test",
 ];
+
+// Environment-based settings
+const isProduction = environment === "production";
+const resourceProtection = isProduction;
 
 // Validation
 if (!kubernetesVersion.includes("do.")) {
@@ -30,7 +38,7 @@ export const cluster = new digitalocean.KubernetesCluster(
     version: kubernetesVersion,
     autoUpgrade: autoUpgrade,
     nodePool: {
-      name: "worker-pool-4c-6m",
+      name: nodePoolName,
       size: nodePoolSize,
       nodeCount: nodePoolCount,
     },
@@ -39,7 +47,7 @@ export const cluster = new digitalocean.KubernetesCluster(
     destroyAllAssociatedResources: false,
   },
   {
-    protect: true,
+    protect: resourceProtection,
   }
 );
 

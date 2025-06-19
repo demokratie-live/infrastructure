@@ -2,11 +2,18 @@ import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
 import { cluster } from "./kubernetes-cluster";
 import { vpcOutputs } from "./foundation-stack-refs";
+import { teamDemocracy } from "./projects/team-democracy";
 
-// Get project dynamically to avoid circular dependencies
+// Get configuration
 const config = new pulumi.Config();
-const projectName = config.require("projectName");
-const project = digitalocean.getProject({ name: projectName });
+const environment = config.get("environment") || "production";
+
+// Environment-based settings
+const isProduction = environment === "production";
+const resourceProtection = isProduction;
+const loadBalancerName = isProduction
+  ? "a3c41d38353c14b6f879aa95e2d558a9"
+  : `load-balancer-${environment}`;
 
 export const loadBalancer = new digitalocean.LoadBalancer(
   "load-balancer",
@@ -36,15 +43,15 @@ export const loadBalancer = new digitalocean.LoadBalancer(
       protocol: "http",
     },
     httpIdleTimeoutSeconds: 60,
-    name: "a3c41d38353c14b6f879aa95e2d558a9",
-    projectId: project.then(p => p.id),
+    name: loadBalancerName,
+    projectId: teamDemocracy.id,
     region: digitalocean.Region.FRA1,
     sizeUnit: 1,
     type: "REGIONAL",
     vpcUuid: vpcOutputs.mainVpcId,
   },
   {
-    protect: true,
+    protect: resourceProtection,
   }
 );
 

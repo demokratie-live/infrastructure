@@ -1,0 +1,12 @@
+config:
+  democracy-platform:environment: development
+  democracy-platform:projectName: Team DEMOCRACY Dev
+  democracy-platform:clusterName: democracy-dev
+  democracy-platform:nodePoolSize: s-2vcpu-4gb
+  democracy-platform:nodePoolCount: 2
+  democracy-platform:nodePoolName: worker-pool-2n-dev
+  democracy-platform:autoUpgrade: true
+  democracy-platform:clusterTags:
+    - kubernetes-test-dev
+  digitalocean:token:
+    secure: AAABAK318qKpvHFGEORE9Oea3JduhP3aYNZ+O5ncXopNtCwwArDfU9yuwJqFTpJwoRQ/BbVyaZM7DzloT76qAnSo3a1bMcXtdq6mUi5Pzlp5Zdp12XqHiA40y+VUXxPjdgRhceA10Q==
