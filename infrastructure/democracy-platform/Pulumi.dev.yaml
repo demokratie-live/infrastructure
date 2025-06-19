@@ -8,5 +8,9 @@ config:
   democracy-platform:autoUpgrade: true
   democracy-platform:clusterTags:
     - kubernetes-test-dev
+  # VPC Configuration for Development
+  democracy-platform:vpcName: democracy-platform-dev
+  democracy-platform:vpcIpRange: 10.136.0.0/16
+  democracy-platform:vpcDescription: VPC for democracy-platform development environment
   digitalocean:token:
     secure: AAABAK318qKpvHFGEORE9Oea3JduhP3aYNZ+O5ncXopNtCwwArDfU9yuwJqFTpJwoRQ/BbVyaZM7DzloT76qAnSo3a1bMcXtdq6mUi5Pzlp5Zdp12XqHiA40y+VUXxPjdgRhceA10Q==

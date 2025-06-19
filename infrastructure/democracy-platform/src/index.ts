@@ -1,13 +1,11 @@
 import { cluster } from "./kubernetes-cluster";
 import { loadBalancer } from "./load-balancer";
 import { teamDemocracy } from "./projects/team-democracy";
+import { platformVpc } from "./vpc";
 import { exportStackHealth } from "../../shared/src/monitoring";
 
-// Import foundation stack references to ensure dependency
-import "./foundation-stack-refs";
-
 // Collect all resources for monitoring
-const allResources = [cluster, loadBalancer, teamDemocracy];
+const allResources = [cluster, loadBalancer, teamDemocracy, platformVpc];
 
 // Export stack health monitoring
 export const stackHealth = exportStackHealth(allResources);
@@ -16,3 +14,4 @@ export const stackHealth = exportStackHealth(allResources);
 export { cluster, kubeconfig, endpoint, clusterId } from "./kubernetes-cluster";
 export { loadBalancer, loadBalancerId, loadBalancerIp } from "./load-balancer";
 export { teamDemocracy } from "./projects/team-democracy";
+export { platformVpc, vpcOutputs } from "./vpc";

@@ -22,17 +22,27 @@ infrastructure-base ← Basis-Ebene
 
 ## Components
 
+### VPC (Network Infrastructure)
+
+- **Environment-specific VPCs**: Each stack manages its own VPC for maximum isolation
+- **IP Range allocation**:
+  - Production: `10.135.0.0/16` (imported existing VPC)
+  - Development: `10.136.0.0/16` (new dedicated VPC)
+  - Staging: `10.137.0.0/16` (new dedicated VPC)
+- **Security**: Isolated network boundaries between environments
+
 ### Kubernetes Cluster
 
 - **Main cluster**: Production-ready Kubernetes cluster on DigitalOcean
 - **Node configuration**: Auto-scaling worker nodes
-- **Network**: Connected to foundation VPCs
+- **Network**: Connected to stack-specific VPC (not shared)
 
 ### Load Balancer
 
 - **External load balancer**: DigitalOcean Load Balancer for external traffic
 - **Health checks**: Configured health monitoring
 - **SSL termination**: Automatic SSL certificate management
+- **VPC integration**: Connected to stack-specific VPC
 
 ### Projects
 
@@ -50,13 +60,23 @@ This project depends on the **democracy-foundation** stack for:
 
 ### Foundation Resources
 
-- VPC networks (`vpcOutputs.defaultFra1VpcId`)
-- Firewall rules (`firewallOutputs.k8sPublicAccessFirewallId`)
-- Domain foundations
+- DNS Records and SSL certificates
+- Domain foundations (not VPCs - these are now managed per-stack)
+
+**⚠️ Important**: VPCs are **no longer** imported from foundation. Each stack manages its own VPC.
 
 ## Cross-Stack Exports
 
 This project exports the following for use by application stacks:
+
+### VPC Outputs
+
+- `platformVpc`: VPC resource for this environment
+- `vpcOutputs`: VPC configuration details
+  - `vpcId`: VPC identifier
+  - `vpcUrn`: VPC URN
+  - `vpcName`: VPC name
+  - `vpcIpRange`: IP range
 
 ### Kubernetes Outputs
 

@@ -1,7 +1,6 @@
 {
   "name": "infrastructure-base",
   "version": "1.0.0",
-  "type": "module",
   "description": "Base infrastructure for democracy platform (domains, VPCs, firewalls)",
   "main": "src/index.ts",
   "packageManager": "pnpm@9.0.0",

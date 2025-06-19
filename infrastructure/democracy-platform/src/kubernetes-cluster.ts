@@ -1,6 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
-import { vpcOutputs } from "./foundation-stack-refs";
+import { vpcOutputs } from "./vpc";
 
 // Load configuration values
 const config = new pulumi.Config();
@@ -43,7 +43,7 @@ export const cluster = new digitalocean.KubernetesCluster(
       nodeCount: nodePoolCount,
     },
     tags: clusterTags,
-    vpcUuid: vpcOutputs.mainVpcId,
+    vpcUuid: vpcOutputs.vpcId,
     destroyAllAssociatedResources: false,
   },
   {

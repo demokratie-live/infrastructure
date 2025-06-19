@@ -4,3 +4,8 @@ config:
   democracy-platform:environment: production
   democracy-platform:projectName: Team DEMOCRACY
   democracy-platform:nodePoolName: worker-pool-4c-6m
+  # VPC Configuration for Production
+  democracy-platform:vpcName: kubernetes-test
+  democracy-platform:vpcIpRange: 10.114.0.0/20
+  democracy-platform:vpcDescription: this private network is for testing the first Kubernetes structure
+  democracy-platform:vpcImportId: 64d3d4fa-f217-4832-8201-627bdd37690c

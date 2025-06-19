@@ -27,7 +27,6 @@ Die Democracy-Infrastruktur verwendet eine klare vier-schichtige Architektur zur
 ┌─────────────────────────────────────────────────────┐
 │             infrastructure-base/                    │  ← Basis-Ebene
 │  • Domains (democracy-app.de, bundestag.io)        │
-│  • VPCs (Netzwerk-Grundlagen)                      │
 │  • Firewalls (Basis-Sicherheitsregeln)             │
 └─────────────────────────────────────────────────────┘
 ```
@@ -41,13 +40,13 @@ Die Democracy-Infrastruktur verwendet eine klare vier-schichtige Architektur zur
 ```typescript
 // Verwaltet:
 - Domains (democracy-app.de, bundestag.io, democracy-deutschland.de)
-- VPCs (default-fra1, website, kubernetes-test)
 - Firewalls (k8s-public-access, k8s-worker)
+- Shared DNS-Ressourcen
 
 // Charakteristika:
 - Ein einziger "prod" Stack
 - Resources sind protected (können nicht gelöscht werden)
-- Wird von allen anderen Projekten referenziert
+- Wird von anderen Projekten für Domains und Firewalls referenziert
 - Ändert sich nur bei fundamentalen Infrastruktur-Updates
 ```
 
@@ -71,21 +70,25 @@ Die Democracy-Infrastruktur verwendet eine klare vier-schichtige Architektur zur
 
 ### 3. **democracy-platform/** (Platform-Ebene)
 
-**Zweck**: Kubernetes und Platform-Services
+**Zweck**: Kubernetes, Platform-Services und Environment-spezifische VPCs
 
 ```typescript
 // Verwaltet:
+- VPCs (pro Environment isoliert)
 - Kubernetes Cluster
 - Load Balancer
 - DigitalOcean Project-Organisation
 - Platform-spezifische Ressourcen
 
 // Charakteristika:
-- Abhängig von democracy-foundation
+- Eigene VPC pro Stack für bessere Isolation
+- Abhängig von democracy-foundation für DNS/SSL
 - Stellt Platform-Resources für Applications bereit
 - Kubernetes-fokussiert
 - Load Balancer und Ingress Management
 ```
+
+**🔗 VPC-Isolation**: Jeder `democracy-platform` Stack hat seine eigene VPC für maximale Environment-Trennung.
 
 ### 4. **shared/** (Utility-Ebene)
 
@@ -129,7 +132,6 @@ cd democracy-platform && pulumi stack select production && pulumi up
 ```typescript
 // Exports für andere Projekte:
 export const domainOutputs = { demokratie-app.de, bundestag.io, ... };
-export const vpcOutputs = { defaultFra1VpcId, websiteVpcId, ... };
 export const firewallOutputs = { k8sPublicAccessFirewallId, ... };
 ```
 
@@ -150,23 +152,28 @@ export const sslCertOutputs = { ... };
 ```typescript
 // Imports von democracy-foundation:
 const foundationStack = createFoundationReference("production");
-const vpcId = foundationStack.getOutput("vpcId");
+const dnsRecords = foundationStack.getOutput("dnsRecordsOutputs");
+
+// Eigene VPC (nicht mehr von infrastructure-base):
+export const platformVpc = new VPC(...);
 
 // Exports für applications:
 export const clusterId = cluster.id;
 export const loadBalancerIp = loadBalancer.ip;
+export const vpcOutputs = { vpcId, vpcUrn, ... };
 ```
 
 ## ⚠️ **Wichtige Unterschiede**
 
-| Aspekt                  | infrastructure-base | democracy-foundation    |
-| ----------------------- | ------------------- | ----------------------- |
-| **Zweck**               | Basis-Ressourcen    | Umgebungs-Konfiguration |
-| **Stacks**              | Nur "prod"          | prod, staging, dev      |
-| **Änderungshäufigkeit** | Selten              | Häufiger                |
-| **Resource Protection** | Alle protected      | Selektiv protected      |
-| **Abhängigkeiten**      | Keine               | infrastructure-base     |
-| **Beispiel-Ressourcen** | Domains, VPCs       | DNS Records, SSL        |
+| Aspekt                  | infrastructure-base | democracy-foundation    | democracy-platform       |
+| ----------------------- | ------------------- | ----------------------- | ------------------------ |
+| **Zweck**               | Basis-Ressourcen    | Umgebungs-Konfiguration | Platform + VPCs          |
+| **Stacks**              | Nur "prod"          | prod, staging, dev      | prod, dev, staging       |
+| **Änderungshäufigkeit** | Selten              | Häufiger                | Häufiger                 |
+| **Resource Protection** | Alle protected      | Selektiv protected      | Selektiv protected       |
+| **Abhängigkeiten**      | Keine               | infrastructure-base     | democracy-foundation     |
+| **Beispiel-Ressourcen** | Domains, Firewalls  | DNS Records, SSL        | VPCs, K8s, Load Balancer |
+| **VPC-Verantwortung**   | ❌ Keine mehr       | ❌ Keine                | ✅ Eigene VPCs           |
 
 ## 🎯 **Vorteile dieser Architektur**
 
@@ -175,6 +182,20 @@ export const loadBalancerIp = loadBalancer.ip;
 3. **🔄 Flexibilität**: Umgebungen können unabhängig verwaltet werden
 4. **♻️ Wiederverwendung**: Basis-Ressourcen werden von allen Umgebungen geteilt
 5. **🚀 Skalierung**: Neue Umgebungen können einfach hinzugefügt werden
+6. **🛡️ Isolation**: Jede Platform hat ihre eigene VPC für maximale Sicherheit
+
+## 🔄 **VPC-Migration (Juni 2025)**
+
+**Änderung**: VPCs wurden von `infrastructure-base` zu `democracy-platform` migriert.
+
+**Vorteile**:
+
+- **Environment-Isolation**: Jeder Stack hat seine eigene VPC
+- **Bessere Sicherheit**: Keine geteilten Netzwerk-Ressourcen zwischen Environments
+- **Flexibilität**: VPC-Konfiguration kann pro Environment angepasst werden
+- **Skalierbarkeit**: Neue Environments können schnell erstellt werden
+
+**Backward Compatibility**: Production VPC wird importiert, um Downtime zu vermeiden.
 
 ## 📚 **Weitere Dokumentation**
 

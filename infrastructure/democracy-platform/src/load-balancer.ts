@@ -1,7 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as digitalocean from "@pulumi/digitalocean";
 import { cluster } from "./kubernetes-cluster";
-import { vpcOutputs } from "./foundation-stack-refs";
+import { vpcOutputs } from "./vpc";
 import { teamDemocracy } from "./projects/team-democracy";
 
 // Get configuration
@@ -48,7 +48,7 @@ export const loadBalancer = new digitalocean.LoadBalancer(
     region: digitalocean.Region.FRA1,
     sizeUnit: 1,
     type: "REGIONAL",
-    vpcUuid: vpcOutputs.mainVpcId,
+    vpcUuid: vpcOutputs.vpcId,
   },
   {
     protect: resourceProtection,
