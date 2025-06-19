@@ -5,52 +5,22 @@ import * as pulumi from "@pulumi/pulumi";
 const config = new pulumi.Config();
 const stackName = pulumi.getStack();
 
-// Stack-specific firewall configurations
-const firewallConfig: Record<
-  string,
-  {
-    k8sPublicAccess: {
-      name: string;
-      tags: string[];
-      importId?: string;
-    };
-    k8sWorker: {
-      name: string;
-      tags: string[];
-      importId?: string;
-    };
-  }
-> = {
-  prod: {
-    k8sPublicAccess: {
-      name: "k8s-public-access-47f41c0b-f8b6-4c32-9364-c6f6beed456e",
-      tags: ["k8s:47f41c0b-f8b6-4c32-9364-c6f6beed456e"],
-      importId: config.get("firewallK8sPublicAccessImportId") || undefined,
-    },
-    k8sWorker: {
-      name: "k8s-47f41c0b-f8b6-4c32-9364-c6f6beed456e-worker",
-      tags: ["k8s:47f41c0b-f8b6-4c32-9364-c6f6beed456e"],
-      importId: config.get("firewallK8sWorkerImportId") || undefined,
-    },
+// Stack-specific firewall configurations - fully config-driven
+const getFirewallConfig = () => ({
+  k8sPublicAccess: {
+    name: config.require("firewallK8sPublicAccessName"),
+    tags: [config.require("firewallK8sPublicAccessTag")],
+    importId: config.get("firewallK8sPublicAccessImportId") || undefined,
   },
-  dev: {
-    k8sPublicAccess: {
-      name:
-        config.get("firewallK8sPublicAccessName") ||
-        `k8s-public-access-${stackName}`,
-      tags: [config.get("firewallK8sPublicAccessTag") || `k8s:${stackName}`],
-      importId: config.get("firewallK8sPublicAccessImportId") || undefined,
-    },
-    k8sWorker: {
-      name: config.get("firewallK8sWorkerName") || `k8s-${stackName}-worker`,
-      tags: [config.get("firewallK8sWorkerTag") || `k8s:${stackName}`],
-      importId: config.get("firewallK8sWorkerImportId") || undefined,
-    },
+  k8sWorker: {
+    name: config.require("firewallK8sWorkerName"),
+    tags: [config.require("firewallK8sWorkerTag")],
+    importId: config.get("firewallK8sWorkerImportId") || undefined,
   },
-};
+});
 
 // Get current stack config
-const currentConfig = firewallConfig[stackName] || firewallConfig.dev;
+const currentConfig = getFirewallConfig();
 
 // k8s-public-access firewall
 export const k8sPublicAccessFirewall = new digitalocean.Firewall(
