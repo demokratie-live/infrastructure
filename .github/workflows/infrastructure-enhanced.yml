@@ -1,4 +1,4 @@
-name: Infrastructure CI/CD - Enhanced
+name: Infrastructure CI/CD
 
 on:
   push:
@@ -11,6 +11,13 @@ on:
     paths:
       - "infrastructure/**"
       - "kustomize/**"
+  # Manual trigger for emergency deployments
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason for manual deployment"
+        required: true
+        default: "Manual deployment"
 
 env:
   DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
@@ -126,8 +133,8 @@ jobs:
           # Check for performance regressions
           echo "TODO: Implement performance regression tests"
 
-  # Enhanced Preview with Cost Analysis
-  preview-with-analysis:
+  # Enhanced Preview with separate Foundation and Platform jobs
+  preview-foundation:
     needs: [security-scan, validate-enhanced]
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
@@ -151,23 +158,16 @@ jobs:
         working-directory: infrastructure
         run: pnpm install
 
-      # Cost Analysis
-      - name: Infrastructure Cost Analysis
+      # Foundation cost analysis
+      - name: Foundation Cost Analysis
         working-directory: infrastructure
         run: |
-          # Foundation cost preview
           cd democracy-foundation && pulumi stack select production
           cd ../
           echo "## 💰 Cost Analysis - Foundation" >> $GITHUB_STEP_SUMMARY
           pnpm foundation:preview | grep -E "(create|update|delete|replace)" >> $GITHUB_STEP_SUMMARY || true
 
-          # Platform cost preview
-          cd democracy-platform && pulumi stack select prod
-          cd ../
-          echo "## 💰 Cost Analysis - Platform" >> $GITHUB_STEP_SUMMARY
-          pnpm platform:preview | grep -E "(create|update|delete|replace)" >> $GITHUB_STEP_SUMMARY || true
-
-      # Preview with Detailed Output
+      # Preview foundation changes
       - name: Preview Foundation Changes
         working-directory: infrastructure
         run: |
@@ -175,6 +175,40 @@ jobs:
           cd ../
           pnpm foundation:preview --diff
 
+  preview-platform:
+    needs: preview-foundation
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install Pulumi CLI
+        uses: pulumi/actions@v4
+
+      - name: Install dependencies
+        working-directory: infrastructure
+        run: pnpm install
+
+      # Platform cost analysis
+      - name: Platform Cost Analysis
+        working-directory: infrastructure
+        run: |
+          cd democracy-platform && pulumi stack select prod
+          cd ../
+          echo "## 💰 Cost Analysis - Platform" >> $GITHUB_STEP_SUMMARY
+          pnpm platform:preview | grep -E "(create|update|delete|replace)" >> $GITHUB_STEP_SUMMARY || true
+
+      # Preview platform changes
       - name: Preview Platform Changes
         working-directory: infrastructure
         run: |
@@ -182,8 +216,8 @@ jobs:
           cd ../
           pnpm platform:preview --diff
 
-  # Deployment with Enhanced Monitoring
-  deploy-with-monitoring:
+  # Deploy Foundation
+  deploy-foundation:
     needs: [security-scan, validate-enhanced]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -221,6 +255,31 @@ jobs:
           cd ../
           pnpm foundation:up --yes
 
+  # Deploy Platform
+  deploy-platform:
+    needs: deploy-foundation
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install Pulumi CLI
+        uses: pulumi/actions@v4
+
+      - name: Install dependencies
+        working-directory: infrastructure
+        run: pnpm install
+
       # Deploy Platform
       - name: Deploy Platform
         working-directory: infrastructure
@@ -229,7 +288,34 @@ jobs:
           cd ../
           pnpm platform:up --yes
 
-      # Post-deployment Comprehensive Tests
+      # Post-deployment Tests (from Legacy)
+      - name: Run post-deployment tests
+        working-directory: infrastructure
+        run: pnpm test:all
+
+  # Enhanced post-deployment monitoring
+  post-deployment-monitoring:
+    needs: deploy-platform
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        working-directory: infrastructure
+        run: pnpm install
+
+      # Enhanced Post-deployment Tests
       - name: Post-deployment Validation
         working-directory: infrastructure
         run: |
@@ -262,7 +348,7 @@ jobs:
   rollback:
     runs-on: ubuntu-latest
     if: failure() && github.ref == 'refs/heads/main'
-    needs: [deploy-with-monitoring]
+    needs: [deploy-platform]
     steps:
       - uses: actions/checkout@v4
 
