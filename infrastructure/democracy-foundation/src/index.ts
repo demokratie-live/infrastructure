@@ -37,7 +37,7 @@ const sharedDomains = sharedInfrastructure.apply(
   (infra: SharedInfrastructure) => infra.domains
 );
 
-// Create environment-specific DNS records - TEST VERSION
+// Create environment-specific DNS records
 const dnsRecords = createEnvironmentDnsRecords({
   democracyAppDomain: sharedDomains.apply(
     (domains: DomainsOutput) => domains.democracyAppDe

@@ -1,4 +1,27 @@
 config:
   digitalocean:token:
-    secure: AAABAIBOCBtVi3Uy6COq1XUgE7/xETAhyjunxRbPRRKoBs81baaHmwuh7gTn5t3ixDqI7xYnBL0/+bnk7TF3U/A/NAyF9nMjuoUTMH077xZ0AKd+/5Cd/AHo/EXY+YcHJSHYuhppZw==
-  democracy-foundation:environment: "production"
+    secure: AAABAFr6JqgSYSogXjtG3jYrbuxRG5Hqx1ftXzemJorOL/5PSmwvfR6AIxuvXLIMywX0HsiKJQDn1k6lxVFH/7PJA5JZ5a0eDUnWyKt1Al4XI3ncGSrADjUXLNk+6JDY/ExcOV5NMQ==
+  democracy-foundation:environment:
+    value: prod
+  democracy-foundation:dnsRecords:
+    value:
+      - name: "@"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "55307990"
+      - name: "api"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "57525594"
+      - name: "website"
+        type: "A"
+        value: "161.35.206.64" # Website has its own server
+        ttl: 3600
+        importId: "1762512106"
+      - name: "listmonk"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3600
+        importId: "1762904294"

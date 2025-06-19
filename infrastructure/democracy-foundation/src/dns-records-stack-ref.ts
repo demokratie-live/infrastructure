@@ -25,6 +25,13 @@ interface DnsRecordConfig {
   bundestagIoDomain: pulumi.Output<DomainOutput>;
   environment: string;
   platformOutputs: PlatformOutputs;
+  dnsRecords?: Array<{
+    name: string;
+    type: string;
+    value: string;
+    ttl: number;
+    importId: string;
+  }>;
 }
 
 interface StackManagedRecord {
@@ -48,37 +55,94 @@ interface EnvironmentDnsRecords {
 export function createEnvironmentDnsRecords(
   config: DnsRecordConfig
 ): EnvironmentDnsRecords {
-  const { environment } = config; // platformOutputs nicht verwendet für Test
+  const { environment, dnsRecords: configDnsRecords, platformOutputs } = config;
 
   const dnsRecords: digitalocean.DnsRecord[] = [];
   const stackManagedRecords: StackManagedRecord[] = [];
 
-  // Environment-specific DNS records for democracy-app.de
-  if (environment === "internal") {
-    // Test with just one DNS record first
-    const internalRecord = new digitalocean.DnsRecord(
-      "democracy-app.de-internal-a",
+  // Get DNS records from Pulumi config if available
+  const pulumiConfig = new pulumi.Config();
+  const configDnsRecordsRaw = pulumiConfig.getObject("dnsRecords");
+
+  let stackDnsRecords: Array<{
+    name: string;
+    type: string;
+    value: string;
+    ttl: number;
+    importId: string;
+  }> = [];
+
+  if (configDnsRecords) {
+    stackDnsRecords = configDnsRecords;
+  } else if (configDnsRecordsRaw) {
+    // Handle the case where Pulumi wraps the array in a {value: [...]} object
+    const recordsConfig = configDnsRecordsRaw as
+      | { value?: unknown }
+      | unknown[];
+    let recordsArray: unknown;
+
+    if (Array.isArray(recordsConfig)) {
+      recordsArray = recordsConfig;
+    } else if (
+      recordsConfig &&
+      typeof recordsConfig === "object" &&
+      "value" in recordsConfig
+    ) {
+      recordsArray = recordsConfig.value;
+    }
+
+    if (Array.isArray(recordsArray)) {
+      stackDnsRecords = recordsArray as Array<{
+        name: string;
+        type: string;
+        value: string;
+        ttl: number;
+        importId: string;
+      }>;
+    } else {
+      console.warn(
+        `DNS records configuration is not an array for stack: ${environment}`
+      );
+    }
+  } else {
+    console.warn(
+      `No DNS records configuration found for stack: ${environment}`
+    );
+  }
+
+  // Create DNS records based on environment and configuration
+  stackDnsRecords.forEach(recordConfig => {
+    const recordName = `democracy-app.de-${recordConfig.name.replace(/[@.]/g, "-")}-${recordConfig.type.toLowerCase()}`;
+
+    // Determine the IP value - use load balancer IP if specified
+    const recordValue =
+      recordConfig.value === "LOAD_BALANCER_IP"
+        ? platformOutputs.loadBalancerIp
+        : recordConfig.value;
+
+    const dnsRecord = new digitalocean.DnsRecord(
+      recordName,
       {
-        domain: "democracy-app.de", // Hard-coded string
-        type: "A",
-        name: "internal",
-        value: "174.138.102.21", // Hard-coded IP for import test
-        ttl: 3601,
+        domain: "democracy-app.de",
+        type: recordConfig.type,
+        name: recordConfig.name,
+        value: recordValue,
+        ttl: recordConfig.ttl,
       },
       {
-        import: "democracy-app.de,55308007", // domain,ID format
+        import: `democracy-app.de,${recordConfig.importId}`,
       }
     );
 
-    dnsRecords.push(internalRecord);
+    dnsRecords.push(dnsRecord);
 
     stackManagedRecords.push({
-      recordName: "internal",
-      type: "A",
+      recordName: recordConfig.name,
+      type: recordConfig.type,
       managedByStack: environment,
-      id: internalRecord.id,
+      id: dnsRecord.id,
     });
-  }
+  });
 
   return {
     democracyAppDe: {
