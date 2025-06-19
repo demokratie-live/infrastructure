@@ -15,3 +15,4 @@ export { cluster, kubeconfig, endpoint, clusterId } from "./kubernetes-cluster";
 export { loadBalancer, loadBalancerId, loadBalancerIp } from "./load-balancer";
 export { teamDemocracy } from "./projects/team-democracy";
 export { platformVpc, vpcOutputs } from "./vpc";
+export { firewallOutputs } from "./firewalls";

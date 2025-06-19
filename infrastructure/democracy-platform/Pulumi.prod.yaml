@@ -9,3 +9,6 @@ config:
   democracy-platform:vpcIpRange: 10.114.0.0/20
   democracy-platform:vpcDescription: this private network is for testing the first Kubernetes structure
   democracy-platform:vpcImportId: 64d3d4fa-f217-4832-8201-627bdd37690c
+  # Firewall Configuration for Production
+  democracy-platform:firewallK8sPublicAccessImportId: 79db9db7-6f38-4cf5-bb61-fd9f6eabac1f
+  democracy-platform:firewallK8sWorkerImportId: 3f0125df-c4b9-451a-9acf-9605963c953e

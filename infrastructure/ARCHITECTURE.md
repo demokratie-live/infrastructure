@@ -14,6 +14,8 @@ Die Democracy-Infrastruktur verwendet eine klare vier-schichtige Architektur zur
 │              democracy-platform/                    │  ← Platform-Ebene
 │  • Kubernetes Cluster                              │
 │  • Load Balancer                                   │
+│  • VPCs (umgebungsspezifisch)                      │
+│  • Firewalls (umgebungsspezifisch)                 │
 │  • DigitalOcean Projects                           │
 └─────────────────────────────────────────────────────┘
                             ↓ verwendet
@@ -27,7 +29,7 @@ Die Democracy-Infrastruktur verwendet eine klare vier-schichtige Architektur zur
 ┌─────────────────────────────────────────────────────┐
 │             infrastructure-base/                    │  ← Basis-Ebene
 │  • Domains (democracy-app.de, bundestag.io)        │
-│  • Firewalls (Basis-Sicherheitsregeln)             │
+│  • Global geteilte Ressourcen                      │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -40,14 +42,14 @@ Die Democracy-Infrastruktur verwendet eine klare vier-schichtige Architektur zur
 ```typescript
 // Verwaltet:
 - Domains (democracy-app.de, bundestag.io, democracy-deutschland.de)
-- Firewalls (k8s-public-access, k8s-worker)
-- Shared DNS-Ressourcen
+- Global geteilte Ressourcen (nur was wirklich zentral verwaltet werden muss)
 
 // Charakteristika:
 - Ein einziger "prod" Stack
 - Resources sind protected (können nicht gelöscht werden)
-- Wird von anderen Projekten für Domains und Firewalls referenziert
+- Wird von anderen Projekten für Domains referenziert
 - Ändert sich nur bei fundamentalen Infrastruktur-Updates
+- Fokus auf global einmalige Ressourcen (wie Domains)
 ```
 
 ### 2. **democracy-foundation/** (Foundation-Ebene)
@@ -77,18 +79,21 @@ Die Democracy-Infrastruktur verwendet eine klare vier-schichtige Architektur zur
 - VPCs (pro Environment isoliert)
 - Kubernetes Cluster
 - Load Balancer
+- VPCs (umgebungsspezifisch für bessere Isolation)
+- Firewalls (umgebungsspezifisch für flexible Sicherheitsrichtlinien)
 - DigitalOcean Project-Organisation
 - Platform-spezifische Ressourcen
 
 // Charakteristika:
 - Eigene VPC pro Stack für bessere Isolation
+- Eigene Firewall-Regeln pro Stack für flexible Sicherheit
 - Abhängig von democracy-foundation für DNS/SSL
 - Stellt Platform-Resources für Applications bereit
 - Kubernetes-fokussiert
 - Load Balancer und Ingress Management
 ```
 
-**🔗 VPC-Isolation**: Jeder `democracy-platform` Stack hat seine eigene VPC für maximale Environment-Trennung.
+**🔗 VPC & Firewall-Isolation**: Jeder `democracy-platform` Stack hat seine eigene VPC und Firewall-Regeln für maximale Environment-Trennung und flexible Sicherheitsrichtlinien.
 
 ### 4. **shared/** (Utility-Ebene)
 
