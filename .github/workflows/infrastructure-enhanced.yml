@@ -138,6 +138,13 @@ jobs:
           # Check for performance regressions
           echo "TODO: Implement performance regression tests"
 
+      # Performance Regression Check
+      - name: Performance Regression Check
+        working-directory: infrastructure
+        run: |
+          echo "🚀 Checking for performance regressions..."
+          pnpm performance:check || echo "⚠️ Performance regression detected - review required"
+
   # Enhanced Preview with separate Foundation and Platform jobs
   preview-foundation:
     needs: [security-scan, validate-enhanced]

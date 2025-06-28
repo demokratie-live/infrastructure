@@ -1,0 +1,114 @@
+{
+  "rules": [
+    {
+      "description": "Pulumi Infrastructure as Code Patterns",
+      "patterns": ["pulumi", "stack", "resource", "component", "digitalocean"],
+      "suggestions": [
+        "Use pulumi.ComponentResource for reusable infrastructure components",
+        "Implement stack references for cross-stack dependencies: createFoundationReference()",
+        "Apply resource protection based on environment: protect: isProduction",
+        "Use consistent naming: democracy-<env>-<resource>",
+        "Export stack health monitoring: exportStackHealth(resources)"
+      ]
+    },
+    {
+      "description": "DigitalOcean Resource Management",
+      "patterns": ["kubernetes", "cluster", "loadbalancer", "vpc", "droplet"],
+      "suggestions": [
+        "Use environment-specific node pools: s-4vcpu-8gb (prod), s-2vcpu-4gb (dev)",
+        "Configure load balancer with proper health checks and SSL",
+        "Reference foundation VPC via stack outputs",
+        "Tag resources with environment suffix: kubernetes-test-dev",
+        "Set appropriate projects: Team DEMOCRACY, Team DEMOCRACY Dev"
+      ]
+    },
+    {
+      "description": "TypeScript Development Standards",
+      "patterns": ["typescript", "interface", "type", "import"],
+      "suggestions": [
+        "Use strict TypeScript configuration from tsconfig.json",
+        "Import shared utilities: import { ... } from '@democracy/shared-infrastructure'",
+        "Prefer ES2020+ features and ES modules",
+        "Use tsx for direct TypeScript execution",
+        "Follow existing interface patterns for configuration objects"
+      ]
+    },
+    {
+      "description": "Testing & Validation Workflows",
+      "patterns": ["test", "validate", "health", "check"],
+      "suggestions": [
+        "Use pnpm test:all for comprehensive testing",
+        "Implement validate:mock for CI-safe testing",
+        "Add health checks for deployment validation",
+        "Use validate:live for production stack verification",
+        "Include performance regression checks"
+      ]
+    },
+    {
+      "description": "Security & Compliance",
+      "patterns": ["security", "secret", "audit", "vulnerability"],
+      "suggestions": [
+        "Store secrets only in GitHub Secrets",
+        "Use pnpm security:audit for dependency scanning",
+        "Implement Checkov rules for infrastructure security",
+        "Add secret detection in git hooks",
+        "Follow least privilege principle for resource access"
+      ]
+    },
+    {
+      "description": "CI/CD Pipeline Integration",
+      "patterns": ["github", "workflow", "action", "pipeline"],
+      "suggestions": [
+        "Follow security-scan → validate → preview → deploy pipeline",
+        "Use separate jobs for foundation and platform deployment",
+        "Implement cost analysis in preview jobs",
+        "Add post-deployment monitoring and health checks",
+        "Include rollback strategies for failed deployments"
+      ]
+    },
+    {
+      "description": "Monitoring & Operations",
+      "patterns": ["monitoring", "status", "health", "report"],
+      "suggestions": [
+        "Use pnpm status:save for infrastructure reporting",
+        "Implement comprehensive health checks with health:full",
+        "Add monitoring exports for stack health",
+        "Generate deployment artifacts and reports",
+        "Include performance baseline tracking"
+      ]
+    },
+    {
+      "description": "Code Quality & Maintenance",
+      "patterns": ["lint", "format", "knip", "prettier"],
+      "suggestions": [
+        "Use ESLint with TypeScript plugin configuration",
+        "Format code with Prettier for consistency",
+        "Run knip:ci for dead code elimination",
+        "Use Husky hooks for pre-commit quality checks",
+        "Follow lint-staged configuration for optimal performance"
+      ]
+    },
+    {
+      "description": "Kubernetes & Container Management",
+      "patterns": ["kubernetes", "kustomize", "manifest", "deployment"],
+      "suggestions": [
+        "Use Kustomize for environment-specific manifests",
+        "Build configurations: pnpm build:k8s:production",
+        "Structure manifests in base/ and overlays/ directories",
+        "Validate Kubernetes security with kubesec",
+        "Follow cloud-native deployment patterns"
+      ]
+    },
+    {
+      "description": "Environment Management",
+      "patterns": ["environment", "production", "development", "staging"],
+      "suggestions": [
+        "Use stack-specific configurations: Pulumi.<env>.yaml",
+        "Implement environment-based resource sizing",
+        "Apply different protection levels per environment",
+        "Use environment-specific naming conventions",
+        "Configure appropriate backup and retention policies"
+      ]
+    }
+  ]
+}
