@@ -38,9 +38,7 @@ jobs:
           node-version: "20"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Install dependencies
         working-directory: infrastructure
@@ -84,7 +82,7 @@ jobs:
 
       # Upload security results
       - name: Upload Checkov results to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@main
         if: always()
         with:
           sarif_file: reports/checkov.sarif
@@ -102,8 +100,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 8
 
       - name: Install dependencies
         working-directory: infrastructure
@@ -157,8 +153,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 8
 
       - name: Install Pulumi CLI
         uses: pulumi/actions@v6
@@ -197,12 +191,10 @@ jobs:
           node-version: "20"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Install Pulumi CLI
-        uses: pulumi/actions@v4
+        uses: pulumi/actions@v6
 
       - name: Install dependencies
         working-directory: infrastructure
@@ -239,12 +231,10 @@ jobs:
           node-version: "20"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Install Pulumi CLI
-        uses: pulumi/actions@v4
+        uses: pulumi/actions@v6
 
       - name: Install dependencies
         working-directory: infrastructure
@@ -278,12 +268,10 @@ jobs:
           node-version: "20"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Install Pulumi CLI
-        uses: pulumi/actions@v4
+        uses: pulumi/actions@v6
 
       - name: Install dependencies
         working-directory: infrastructure
@@ -316,9 +304,7 @@ jobs:
           node-version: "20"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Install dependencies
         working-directory: infrastructure
@@ -348,7 +334,7 @@ jobs:
 
       # Upload Deployment Artifacts
       - name: Upload Deployment Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: infrastructure-status-report
           path: infrastructure/reports/
@@ -367,12 +353,10 @@ jobs:
           node-version: "20"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Install Pulumi CLI
-        uses: pulumi/actions@v4
+        uses: pulumi/actions@v6
 
       - name: Install dependencies
         working-directory: infrastructure
@@ -403,9 +387,7 @@ jobs:
           node-version: "20"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+        uses: pnpm/action-setup@v4
 
       - name: Install dependencies
         working-directory: infrastructure
@@ -418,7 +400,7 @@ jobs:
           pnpm status:save
 
       - name: Upload Health Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: scheduled-health-report
           path: infrastructure/reports/
