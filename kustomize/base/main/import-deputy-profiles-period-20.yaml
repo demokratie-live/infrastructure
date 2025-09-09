@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: import-deputy-profiles
-              image: democracy/import-deputy-profiles:0.1.21
+              image: democracy/import-deputy-profiles:0.1.22
               imagePullPolicy: Always
               env:
                 - name: PERIOD

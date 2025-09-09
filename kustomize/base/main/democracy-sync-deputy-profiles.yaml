@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: democracy-sync-deputy-profiles
-              image: democracy/sync-deputy-profiles:0.1.15
+              image: democracy/sync-deputy-profiles:0.1.16
               imagePullPolicy: Always
               env:
                 - name: DB_URL
