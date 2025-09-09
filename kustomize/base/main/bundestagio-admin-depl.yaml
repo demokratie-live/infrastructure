@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bundestagio-admin
-          image: democracy/bundestag.io-admin:3.8.2
+          image: democracy/bundestag.io-admin:3.8.3
           env:
             - name: AI_ACCESS_TOKEN
               valueFrom:

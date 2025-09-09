@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: index-sync-democracy
-              image: democracy/index-sync-democracy:0.1.7
+              image: democracy/index-sync-democracy:0.1.8
               env:
                 - name: DB_URL
                   valueFrom:
