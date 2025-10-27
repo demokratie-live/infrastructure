@@ -23,3 +23,5 @@ spec:
                     configMapKeyRef:
                       name: bio-api-config
                       key: DB_URL
+                - name: CRAWL_MAX_REQUESTS_PER_CRAWL
+                  value: "100"
