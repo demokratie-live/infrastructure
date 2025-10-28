@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: index-sync-bundestagio
-              image: democracy/index-sync-bundestagio:0.1.11
+              image: democracy/index-sync-bundestagio:0.1.12
               imagePullPolicy: Always
               env:
                 - name: DB_URL
