@@ -1,0 +1,69 @@
+# Husky ignore patterns
+# Add patterns here to exclude files from git hooks
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/settings.json
+.idea/
+*.sublime-*
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build artifacts
+dist/
+build/
+bin/
+.next/
+.nuxt/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Dependency directories
+node_modules/
+
+# Environment files (should be in .gitignore anyway)
+.env*
+!.env.example
+
+# Husky hooks themselves (to prevent recursive issues)
+.husky/_/*
+
+# Generated files
+*.generated.*
+*.auto.*
+
+# Large binary files that shouldn't be linted
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.pdf
+*.zip
+*.tar.gz
+
+# Lock files (handled separately)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

@@ -1,0 +1,39 @@
+#!/usr/bin/env sh
+
+echo "🔍 Validating commit message..."
+
+# Get the commit message
+commit_message=$(cat "$1")
+
+# Check if the commit message follows conventional commits format
+# Pattern: type(scope): description
+# Examples: feat(auth): add login functionality, fix: resolve memory leak, docs: update README
+if ! echo "$commit_message" | grep -qE "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(.+\))?: .{1,}"; then
+    echo "❌ Commit message does not follow Conventional Commits format!"
+    echo ""
+    echo "Format: type(scope): description"
+    echo ""
+    echo "Types:"
+    echo "  - feat: A new feature"
+    echo "  - fix: A bug fix"
+    echo "  - docs: Documentation only changes"
+    echo "  - style: Changes that do not affect the meaning of the code"
+    echo "  - refactor: A code change that neither fixes a bug nor adds a feature"
+    echo "  - perf: A code change that improves performance"
+    echo "  - test: Adding missing tests or correcting existing tests"
+    echo "  - build: Changes that affect the build system or external dependencies"
+    echo "  - ci: Changes to our CI configuration files and scripts"
+    echo "  - chore: Other changes that don't modify src or test files"
+    echo "  - revert: Reverts a previous commit"
+    echo ""
+    echo "Examples:"
+    echo "  - feat(auth): add user authentication"
+    echo "  - fix(api): resolve memory leak in data processing"
+    echo "  - docs: update installation instructions"
+    echo ""
+    echo "Your commit message:"
+    echo "  $commit_message"
+    exit 1
+fi
+
+echo "✅ Commit message format is valid!"

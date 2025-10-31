@@ -1,19 +1,5 @@
 **/node_modules/
 
-# CDKTF generierte Dateien
-cdktf.out/
-**/.terraform/
-**/terraform.tfstate
-**/terraform.tfstate.backup
-**/terraform.tfstate.*.backup
-**/.terraform.lock.hcl
-**/*.tfvars
-**/*.tfvars.json
-**/crash.log
-**/crash.*.log
-cdktf/dist/
-cdktf/src/generated/
-
 # TypeScript kompilierte Dateien
 dist/
 build/
@@ -35,7 +21,3 @@ yarn-error.log*
 .env
 .env.local
 .env.*.local
-
-# DigitalOcean API Tokens
-.spaces-key-*.json
-.doctl-config.yaml
