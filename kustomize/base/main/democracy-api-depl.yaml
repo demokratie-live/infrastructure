@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: democracy-api
-          image: democracy/democracy-server:0.2.69-alpha-chore-yarn-to-pnpm.1
+          image: democracy/democracy-server:0.2.69-alpha-chore-yarn-to-pnpm.2
           envFrom:
             - configMapRef:
                 name: democracy-api-config
