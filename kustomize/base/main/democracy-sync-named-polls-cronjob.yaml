@@ -14,8 +14,8 @@ spec:
           restartPolicy: Never
           activeDeadlineSeconds: 86400
           containers:
-            - name: democracy-sync-named-polls
-              image: democracy/sync-named-polls:0.1.18
+            - name: sync-named-polls
+              image: democracy/sync-named-polls:0.1.19
               imagePullPolicy: Always
               env:
                 - name: DB_URL
