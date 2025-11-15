@@ -14,8 +14,8 @@ spec:
           restartPolicy: Never
           activeDeadlineSeconds: 86400
           containers:
-            - name: democracy-sync-deputy-profiles
-              image: democracy/sync-deputy-profiles:0.1.16
+            - name: sync-deputy-profiles
+              image: democracy/sync-deputy-profiles:0.1.17
               imagePullPolicy: Always
               env:
                 - name: DB_URL

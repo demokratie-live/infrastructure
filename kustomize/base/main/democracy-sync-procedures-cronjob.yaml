@@ -14,8 +14,8 @@ spec:
           restartPolicy: Never
           activeDeadlineSeconds: 86400
           containers:
-            - name: democracy-sync-procedures
-              image: democracy/sync-procedures:0.1.25
+            - name: sync-procedures
+              image: democracy/sync-procedures:0.1.26
               imagePullPolicy: Always
               env:
                 - name: DB_URL
