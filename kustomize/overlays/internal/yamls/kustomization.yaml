@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - ../../../base/cluster
   - ingress-srv.yaml
-  - push-send-queued.yaml
 
 patches:
   - path: bundestagio-depl.yaml
