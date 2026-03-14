@@ -19,3 +19,4 @@ patches:
   - path: procedures.yaml
 
 namespace: democracy-internal
+
