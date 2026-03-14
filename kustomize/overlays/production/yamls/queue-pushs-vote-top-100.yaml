@@ -1,0 +1,6 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: queue-pushs-vote-top-100-cronjob
+spec:
+  suspend: true
