@@ -6,7 +6,11 @@ patches:
   - path: bundestagio-admin-depl.yaml
   - path: democracy-api-depl.yaml
   - path: democracy-app-depl.yaml
+  - path: gorush-depl.yaml
   - path: mongo-statefulset.yaml
+  - path: queue-pushs-conference-week.yaml
+  - path: queue-pushs-vote-conference-week.yaml
+  - path: queue-pushs-vote-top-100.yaml
 
 resources:
   - ../../../base/cluster
