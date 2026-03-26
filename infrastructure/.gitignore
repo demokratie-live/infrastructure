@@ -1,0 +1,24 @@
+# Reports and logs
+reports/
+*.log
+
+# Dependencies
+node_modules/
+
+# Build output
+bin/
+dist/
+
+# Environment files
+.env
+.env.local
+
+# IDE files
+.DS_Store
+.vscode/settings.json
+
+# Pulumi state files (if using local backend)
+.pulumi/
+
+# Archive directory is tracked but contents may vary
+archive/

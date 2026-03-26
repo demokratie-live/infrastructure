@@ -1,0 +1,26 @@
+{
+  "name": "@democracy/shared-infrastructure",
+  "version": "1.0.0",
+  "description": "Shared infrastructure configurations and utilities for Democracy Deutschland e.V.",
+  "type": "module",
+  "main": "src/index.ts",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "test": "tsx src/testing/test-runner.ts",
+    "lint": "eslint src/**/*.ts --config ../eslint.config.js",
+    "lint:fix": "eslint src/**/*.ts --config ../eslint.config.js --fix",
+    "format": "prettier --write \"src/**/*.{ts,js,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js,json}\""
+  },
+  "dependencies": {
+    "@pulumi/digitalocean": "^4.45.0",
+    "@pulumi/pulumi": "^3.173.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.57",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
