@@ -7,12 +7,25 @@ spec:
     matchLabels:
       app: mongo
   serviceName: "mongo"
-  replicas: 5
+  replicas: 3
+  ordinals:
+    start: 3
+  updateStrategy:
+    type: OnDelete
   template:
     metadata:
       labels:
         app: mongo
+        mongo-rs-role: active
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: mongo
+                  mongo-rs-role: active
+              topologyKey: kubernetes.io/hostname
       containers:
         - name: mongo
           command:

@@ -7,6 +7,7 @@ patches:
   - path: democracy-api-depl.yaml
   - path: democracy-app-depl.yaml
   - path: gorush-depl.yaml
+  - path: mongo-headless-service.yaml
   - path: mongo-statefulset.yaml
   - path: queue-pushs-conference-week.yaml
   - path: queue-pushs-vote-conference-week.yaml
@@ -15,5 +16,6 @@ patches:
 resources:
   - ../../../base/cluster
   - ingress-srv.yaml
+  - mongo-pdb.yaml
 
 namespace: democracy-production
