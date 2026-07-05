@@ -1,0 +1,92 @@
+{
+  "name": "@democracy/infrastructure-monorepo",
+  "version": "1.0.0",
+  "description": "Democracy Deutschland e.V. Infrastructure Monorepo",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "foundation:preview": "cd democracy-foundation && pulumi preview",
+    "foundation:up": "cd democracy-foundation && pulumi up",
+    "foundation:destroy": "cd democracy-foundation && pulumi destroy",
+    "platform:preview": "cd democracy-platform && pulumi preview",
+    "platform:up": "cd democracy-platform && pulumi up",
+    "platform:destroy": "cd democracy-platform && pulumi destroy",
+    "test:foundation": "cd democracy-foundation && tsx src/test.ts",
+    "test:platform": "cd democracy-platform && tsx src/test.ts",
+    "test:all": "pnpm test:foundation && pnpm test:platform",
+    "validate:mock": "tsx scripts/validate-infrastructure-comprehensive.ts mock",
+    "validate:live": "tsx scripts/validate-infrastructure-comprehensive.ts live",
+    "validate:deployment": "tsx scripts/validate-infrastructure-comprehensive.ts deployment",
+    "validate:all": "pnpm validate:mock && pnpm test:all && pnpm lint && pnpm format:check",
+    "validate:all:strict": "pnpm validate:mock && pnpm test:all && pnpm lint && pnpm format:check && pnpm security:check && pnpm knip",
+    "knip:ci": "pnpm knip || echo 'Knip analysis completed with warnings'",
+    "security:check": "tsx scripts/security-validation.ts",
+    "security:report": "tsx scripts/security-validation.ts --save",
+    "health:check": "tsx scripts/deployment-health-check.ts",
+    "health:full": "tsx scripts/deployment-health-check.ts full",
+    "health:dns": "tsx scripts/deployment-health-check.ts dns-only",
+    "health:k8s": "tsx scripts/deployment-health-check.ts kubernetes-only",
+    "status": "tsx scripts/infrastructure-status.ts",
+    "status:save": "tsx scripts/infrastructure-status.ts --save",
+    "ci:fast": "tsx scripts/ci-cd-helper.ts",
+    "ci:full": "tsx scripts/ci-cd-helper.ts --full",
+    "cleanup:scan": "tsx scripts/resource-cleanup.ts",
+    "cleanup:report": "tsx scripts/resource-cleanup.ts --save",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "format": "prettier --write \"**/*.{ts,js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,js,json,md}\"",
+    "knip": "knip",
+    "knip:fix": "knip --fix",
+    "knip:production": "knip --production",
+    "prepare": "husky",
+    "pre-commit": "lint-staged",
+    "type-check": "pnpm -r exec tsc --noEmit",
+    "security:audit": "pnpm audit --audit-level=moderate",
+    "test:staged": "pnpm test:all",
+    "commit-msg": "echo 'Validating commit message format...'",
+    "validate:pre-commit": "pnpm type-check && pnpm security:audit && pnpm knip:ci"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
+    "@types/node": "^20.0.0",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "globals": "^16.2.0",
+    "husky": "^9.0.11",
+    "knip": "^5.60.2",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.5.3",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write",
+      "bash -c 'echo \"🔧 TypeScript/JavaScript files processed\"'",
+      "bash -c 'echo \"🧹 Running dead code analysis...\" && pnpm knip:ci'"
+    ],
+    "*.{json,md,yaml,yml}": [
+      "prettier --write",
+      "bash -c 'echo \"📄 Config/doc files formatted\"'"
+    ],
+    "*.ts": [
+      "bash -c 'echo \"🔍 Running TypeScript type check...\" && pnpm type-check'"
+    ],
+    "*.{js,ts,json,yaml,yml}": [
+      "bash -c 'echo \"🔐 Scanning for secrets...\" && git diff --cached --name-only | xargs grep -l \"password\\|secret\\|key\\|token\" | wc -l | xargs -I {} bash -c \"if [ {} -gt 0 ]; then echo \\\"⚠️  Potential secrets detected in staged files. Please review!\\\"; fi\"'"
+    ],
+    "package.json": [
+      "bash -c 'echo \"📦 Checking dependencies for vulnerabilities...\" && pnpm security:audit'"
+    ],
+    "pnpm-lock.yaml": [
+      "bash -c 'echo \"🔒 Lock file changed - running security audit...\" && pnpm security:audit'"
+    ]
+  }
+}

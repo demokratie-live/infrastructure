@@ -1,0 +1,5 @@
+config:
+  infrastructure-base:environment: "prod"
+  infrastructure-base:description: "Production shared infrastructure (domains, VPCs, firewalls)"
+  digitalocean:token:
+    secure: AAABAMRtUA9X78v4YNqZCVhUVK41GBp7jqz2X6B8J1pohe9/Jz6GWV+sWZ01vX88mPMGN7xBjq1XswOXtaXvorlfs4lKTmBogmDXfl9QR8a8Jb1Khv7CfZxnn4CkvVqIcdCuebc2cA==

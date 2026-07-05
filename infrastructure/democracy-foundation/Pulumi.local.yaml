@@ -1,0 +1,20 @@
+config:
+  digitalocean:token:
+    secure: AAABAHJ9axzl6e6YYAF6aslX4gvNstmjW7bHgUrp5OM8Jnaz79734XjkgyXordWWTSnWZqlLFo8eA6zk+k4RbHT9hqQtHLJLZ6L8CQbnSGtcUgrxHJ/u1ZoFkCbxRjX9TdSX97Ak2A==
+  democracy-foundation:environment:
+    value: local
+  democracy-foundation:dnsRecords:
+    value:
+      # Local development DNS records
+      - domain: "democracy-app.de"
+        name: "local"
+        type: "A"
+        value: "127.0.0.1"
+        ttl: 3600
+        importId: "1740791288"
+      - domain: "democracy-app.de"
+        name: "*.local"
+        type: "A"
+        value: "127.0.0.1"
+        ttl: 3600
+        importId: "1740790703"

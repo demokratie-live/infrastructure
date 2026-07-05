@@ -1,0 +1,45 @@
+#!/usr/bin/env sh
+
+echo "🚀 Running pre-push checks..."
+
+# Change to infrastructure directory
+cd infrastructure
+
+# Check if we're pushing to main or develop - run comprehensive tests
+protected_branch='main\|develop'
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+if echo "$current_branch" | grep -q "$protected_branch"; then
+    echo "🛡️  Pushing to protected branch '$current_branch' - running full validation suite..."
+    
+    # Run comprehensive validation
+    echo "🔍 Running comprehensive validation..."
+    if ! pnpm validate:all:strict; then
+        echo "❌ Comprehensive validation failed!"
+        echo "Please fix the issues before pushing to $current_branch"
+        exit 1
+    fi
+    
+    # Run tests
+    echo "🧪 Running all tests..."
+    if ! pnpm test:all; then
+        echo "❌ Tests failed!"
+        echo "Please fix the failing tests before pushing to $current_branch"
+        exit 1
+    fi
+    
+    echo "✅ All pre-push checks passed for protected branch!"
+else
+    echo "📋 Running quick validation for feature branch..."
+    
+    # Quick validation for feature branches
+    if ! pnpm validate:mock; then
+        echo "❌ Basic validation failed!"
+        echo "Please fix the issues before pushing"
+        exit 1
+    fi
+    
+    echo "✅ Quick validation passed!"
+fi
+
+echo "🎉 Pre-push checks completed successfully!"

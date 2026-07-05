@@ -1,0 +1,45 @@
+config:
+  digitalocean:token:
+    secure: AAABAH7YZfD5NTzbgxbIfOoeyN1vauiHcr3enzT52iQybZnmRXvLG2R5Ug9Vx89tMCSMXvaXzCRt7d9LhlhUqRgfDtOg5jpuOO3YXJbgmWa+N7JoXysT7t7Xbij1tkiQcTf3gMl84Q==
+  democracy-foundation:environment:
+    value: alpha
+  democracy-foundation:dnsRecords:
+    value:
+      # democracy-app.de records for alpha
+      - domain: "democracy-app.de"
+        name: "alpha"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "55308033"
+      - domain: "democracy-app.de"
+        name: "alpha.api"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "57525603"
+      - domain: "democracy-app.de"
+        name: "alpha.qr"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "1701541452"
+      # bundestag.io records for alpha
+      - domain: "bundestag.io"
+        name: "alpha.admin"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "57525564"
+      - domain: "bundestag.io"
+        name: "alpha.api"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "57525532"
+      - domain: "bundestag.io"
+        name: "alpha.dip"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "262322739"
