@@ -6,4 +6,4 @@ resources:
   - ./yamls
   - ./configs
   - namespace.yaml
-  # - resource-quotas.yaml
+
