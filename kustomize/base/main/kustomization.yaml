@@ -33,3 +33,14 @@ resources:
   - index-sync-democracy.yaml
   - index-sync-bundestagio.yaml
   - qr-code-handler-depl.yaml
+
+# Abgeschlossene Jobs nach 7 Tagen automatisch entfernen. Ohne diese TTL bleibt je
+# CronJob ein fehlgeschlagenes Job-Objekt dauerhaft liegen und löst endlos
+# KubeJobFailed/KubeJobCompletion aus (siehe TASK-9).
+patches:
+  - target:
+      kind: CronJob
+    patch: |-
+      - op: add
+        path: /spec/jobTemplate/spec/ttlSecondsAfterFinished
+        value: 604800
