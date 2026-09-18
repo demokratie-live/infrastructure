@@ -3,10 +3,17 @@ kind: StatefulSet
 metadata:
   name: mongo
 spec:
+  updateStrategy:
+    type: OnDelete
   template:
     spec:
       containers:
         - name: mongo
+          command:
+            - mongod
+            - "--bind_ip_all"
+            - "--replSet"
+            - rs0
           resources:
             requests:
               memory: "0.75G"
