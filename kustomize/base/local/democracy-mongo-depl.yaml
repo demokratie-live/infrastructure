@@ -19,6 +19,11 @@ spec:
       containers:
         - name: democracy-mongo
           image: mongo:4
+          command:
+            - mongod
+            - "--bind_ip_all"
+            - "--replSet"
+            - rs0
           volumeMounts:
             - name: mongo-storage
               mountPath: /data/db
@@ -26,7 +31,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: democracy-mongo-srv
+  name: mongo
 spec:
   selector:
     app: democracy-mongo
