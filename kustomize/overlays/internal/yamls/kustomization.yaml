@@ -14,6 +14,7 @@ patches:
   - path: import-named-poll-deputies.yaml
   - path: import-named-polls.yaml
   - path: import-procedures.yaml
+  - path: mongo-headless-service.yaml
   - path: mongo-statefulset.yaml
   - path: non-named-votes-ai.yaml
   - path: procedures.yaml
