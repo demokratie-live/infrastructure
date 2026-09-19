@@ -1,0 +1,19 @@
+# Knip ignore file
+# Dateien oder Patterns die von Knip komplett ignoriert werden sollen
+
+# Pulumi-spezifische Dateien die zur Laufzeit geladen werden
+Pulumi.*.yaml
+
+# Temporäre oder generierte Dateien
+**/*.tmp
+**/*.temp
+**/temp/**
+
+# Legacy oder archivierte Dateien die noch nicht gelöscht werden können
+archive/**
+
+# CI/CD Artefakte
+ci-artifacts/**
+
+# Reports die regelmäßig überschrieben werden
+reports/**/*.json
