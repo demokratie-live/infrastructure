@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: non-named-votes-ai
-          image: democracy/non-named-votes-ai:1.1.6
+          image: democracy/non-named-votes-ai:1.1.7
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3005
