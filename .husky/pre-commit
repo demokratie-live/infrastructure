@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+echo "🔍 Running pre-commit checks..."
+
+# Change to infrastructure directory
+cd infrastructure
+
+# Run lint-staged for staged files
+echo "📝 Checking staged files..."
+pnpm pre-commit
+
+echo "✅ Pre-commit checks completed!"

@@ -1,0 +1,58 @@
+config:
+  digitalocean:token:
+    secure: AAABAFr6JqgSYSogXjtG3jYrbuxRG5Hqx1ftXzemJorOL/5PSmwvfR6AIxuvXLIMywX0HsiKJQDn1k6lxVFH/7PJA5JZ5a0eDUnWyKt1Al4XI3ncGSrADjUXLNk+6JDY/ExcOV5NMQ==
+  democracy-foundation:environment:
+    value: prod
+  democracy-foundation:dnsRecords:
+    value:
+      # democracy-app.de records
+      - domain: "democracy-app.de"
+        name: "@"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "55307990"
+      - domain: "democracy-app.de"
+        name: "api"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "57525594"
+      - domain: "democracy-app.de"
+        name: "website"
+        type: "A"
+        value: "161.35.206.64" # Website has its own server
+        ttl: 3600
+        importId: "1762512106"
+      - domain: "democracy-app.de"
+        name: "listmonk"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3600
+        importId: "1762904294"
+      # bundestag.io records
+      - domain: "bundestag.io"
+        name: "admin"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "55646855"
+      - domain: "bundestag.io"
+        name: "api"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "57525525"
+      - domain: "bundestag.io"
+        name: "dip"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "262322845"
+      # democracy-deutschland.de records
+      - domain: "democracy-deutschland.de"
+        name: "qr"
+        type: "A"
+        value: "LOAD_BALANCER_IP"
+        ttl: 3601
+        importId: "1701532948"

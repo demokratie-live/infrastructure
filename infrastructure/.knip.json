@@ -1,0 +1,36 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/*.ts"],
+      "project": ["scripts/**/*.ts"]
+    },
+    "infrastructure-base": {
+      "project": ["src/**/*.ts"],
+      "ignore": ["src/test.ts"]
+    },
+    "democracy-foundation": {
+      "project": ["src/**/*.ts"]
+    },
+    "democracy-platform": {
+      "project": ["src/**/*.ts"]
+    },
+    "shared": {
+      "project": ["src/**/*.ts"]
+    }
+  },
+  "ignore": [
+    "**/*.d.ts",
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/reports/**",
+    "archive/**",
+    "kustomize/**",
+    "**/*.yaml",
+    "**/*.yml",
+    "**/*.md"
+  ],
+  "ignoreBinaries": ["pulumi"],
+  "ignoreDependencies": ["@pulumi/pulumi"],
+  "ignoreExportsUsedInFile": true
+}
