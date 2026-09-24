@@ -15,7 +15,7 @@ spec:
           activeDeadlineSeconds: 86400
           containers:
             - name: import-plenary-minutes
-              image: democracy/import-plenary-minutes:0.1.20
+              image: democracy/import-plenary-minutes:0.1.21
               imagePullPolicy: Always
               env:
                 - name: DB_URL
@@ -23,3 +23,7 @@ spec:
                     configMapKeyRef:
                       name: bio-api-config
                       key: DB_URL
+              envFrom:
+                - secretRef:
+                    name: dip-api-token
+                    optional: false
