@@ -23,3 +23,7 @@ spec:
                     configMapKeyRef:
                       name: bio-api-config
                       key: DB_URL
+              envFrom:
+                - secretRef:
+                    name: dip-api-token
+                    optional: false
