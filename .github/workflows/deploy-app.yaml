@@ -51,7 +51,15 @@ jobs:
       - uses: azure/setup-kubectl@v4
 
       - name: Show diff
-        run: kubectl diff -f ./${{ inputs.environment }}.yaml | grep -e "^\+ " -e "^- "
+        # kubectl diff: 0 = keine Unterschiede, 1 = Unterschiede, >1 = Fehler
+        run: |
+          rc=0
+          out=$(kubectl diff -f ./${{ inputs.environment }}.yaml) || rc=$?
+          case $rc in
+            0) echo "Keine Änderungen" ;;
+            1) grep -e '^[+-] ' <<<"$out" || true ;;
+            *) echo "$out"; exit $rc ;;
+          esac
 
       - name: Deploy
         run: kubectl apply -f ./${{ inputs.environment }}.yaml -n democracy-${{ inputs.environment }}
