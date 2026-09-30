@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - ../main
   - democracy-mongo-depl.yaml
+  - democracy-mongo-rs-init-job.yaml
   - democracy-mongo-persistent-volume-claim.yaml
   - ingress-srv.yaml

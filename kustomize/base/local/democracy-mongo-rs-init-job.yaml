@@ -1,0 +1,33 @@
+# Initialisiert das Replica Set rs0 einmalig mit dem Service-Namen als Host.
+# Ohne expliziten Host nimmt mongod den Pod-Hostnamen, den kein anderer Pod auflösen kann.
+# Läuft erneut durch, solange mongo noch nicht erreichbar ist; ist rs0 schon da, passiert nichts.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: democracy-mongo-rs-init
+spec:
+  backoffLimit: 20
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: rs-init
+          image: mongo:4
+          command:
+            - mongo
+            - --host
+            - mongo
+            - --quiet
+            - --eval
+            - |
+              var s = rs.status();
+              if (s.ok) {
+                print("rs0 ist bereits initialisiert");
+              } else if (s.code === 94) {
+                var r = rs.initiate({ _id: "rs0", members: [{ _id: 0, host: "mongo:27017" }] });
+                printjson(r);
+                if (!r.ok) quit(1);
+              } else {
+                printjson(s);
+                quit(1);
+              }
