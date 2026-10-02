@@ -33,6 +33,8 @@ spec:
             - "--bind_ip_all"
             - "--replSet"
             - rs0
+            - "--oplogSize"
+            - "10240"
           resources:
             requests:
               memory: "3G"
