@@ -13,12 +13,25 @@ spec:
       labels:
         app: mongo
     spec:
-      terminationGracePeriodSeconds: 10
+      terminationGracePeriodSeconds: 60
       containers:
         - name: mongo
           image: mongo:4
           ports:
             - containerPort: 27017
+          # Bereit erst als PRIMARY oder SECONDARY, damit mongo-pdb nur
+          # Mitglieder zählt, die im Replica Set mitarbeiten.
+          readinessProbe:
+            exec:
+              command:
+                - mongo
+                - --quiet
+                - --eval
+                - 'var m=db.isMaster(); quit(m.ismaster || m.secondary ? 0 : 1)'
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
           volumeMounts:
             - name: mongo-volume
               mountPath: /data/db
