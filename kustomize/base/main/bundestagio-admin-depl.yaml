@@ -18,8 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: bundestagio-admin
-          # PLATZHALTER: Release-Tag samt Digest eintragen, z. B. 3.8.10@sha256:…
-          image: democracy/bundestag.io-admin:PLATZHALTER
+          image: democracy/bundestag.io-admin:3.8.10@sha256:0752905a413e8ca05c4bc643e3406154c093b0c24d86d9e9851292ebc0fe1017
           securityContext:
             allowPrivilegeEscalation: false
             seccompProfile:
