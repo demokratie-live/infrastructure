@@ -5,6 +5,7 @@ resources:
   - ../main
   - mongo-headless-service.yaml
   - mongo-statefulset.yaml
+  - bundestagio-admin-netpol.yaml
 
 patches:
   - path: patches/bundestagio-admin-depl.yaml

@@ -16,6 +16,11 @@ patches:
 resources:
   - ../../../base/cluster
   - ingress-srv.yaml
+  - bundestagio-admin-ingress.yaml
   - mongo-pdb.yaml
+
+# IP-Allowlist für den Admin, bei Bedarf einkommentieren
+# components:
+#   - ../../../components/bundestagio-admin-allowlist
 
 namespace: democracy-production
