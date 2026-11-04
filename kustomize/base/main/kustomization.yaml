@@ -8,7 +8,6 @@ resources:
   - votes-ai.yaml
   - non-named-votes-ai.yaml
   - procedures.yaml
-  - bundestagio-dip-depl.yaml
   - democracy-api-depl.yaml
   - democracy-app-depl.yaml
   - nats-depl.yaml
