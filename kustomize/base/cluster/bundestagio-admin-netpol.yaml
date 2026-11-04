@@ -1,0 +1,82 @@
+# Grundsperre für alle Admin-Pods, ein- und ausgehend.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: bundestagio-admin-default-deny
+spec:
+  podSelector:
+    matchLabels:
+      app: bundestagio-admin
+  policyTypes:
+    - Ingress
+    - Egress
+---
+# Freigaben nur für Pods mit dem Label network-policy=bundestagio-admin.
+# Eingehend nur ingress-nginx, ausgehend nur DNS und die Dienste, die der Admin
+# aufruft (siehe bio-admin.env und PROCEDURES_SERVER_URL). Die Ports sind die
+# Container-Ports, nicht die Service-Ports.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: bundestagio-admin
+spec:
+  podSelector:
+    matchLabels:
+      app: bundestagio-admin
+      network-policy: bundestagio-admin
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+              app.kubernetes.io/component: controller
+      ports:
+        - protocol: TCP
+          port: 3000
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+    - to:
+        - podSelector:
+            matchLabels:
+              app: bundestagio
+      ports:
+        - protocol: TCP
+          port: 3100
+    - to:
+        - podSelector:
+            matchLabels:
+              app: votes-ai
+      ports:
+        - protocol: TCP
+          port: 4003
+    - to:
+        - podSelector:
+            matchLabels:
+              app: non-named-votes-ai
+      ports:
+        - protocol: TCP
+          port: 3005
+    - to:
+        - podSelector:
+            matchLabels:
+              app: procedures
+      ports:
+        - protocol: TCP
+          port: 3000

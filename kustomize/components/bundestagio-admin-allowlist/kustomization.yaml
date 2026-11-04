@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# IP-Allowlist für den Admin-Ingress, zusätzlich zur Basic-Auth. Einschalten über
+# `components:` im Overlay. Der Wert unten ist ein Dokumentationsnetz und sperrt
+# alle aus, bis echte Bereiche eingetragen sind (kommagetrennt, CIDR).
+patches:
+  - target:
+      kind: Ingress
+      name: bundestagio-admin
+    patch: |-
+      - op: add
+        path: /metadata/annotations/nginx.ingress.kubernetes.io~1whitelist-source-range
+        value: "203.0.113.0/24"

@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ../../../base/cluster
   - ingress-srv.yaml
+  - bundestagio-admin-ingress.yaml
 
 patches:
   - path: bundestagio-depl.yaml
@@ -18,5 +19,9 @@ patches:
   - path: mongo-statefulset.yaml
   - path: non-named-votes-ai.yaml
   - path: procedures.yaml
+
+# IP-Allowlist für den Admin, bei Bedarf einkommentieren
+# components:
+#   - ../../../components/bundestagio-admin-allowlist
 
 namespace: democracy-internal
