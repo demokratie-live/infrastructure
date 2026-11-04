@@ -14,7 +14,6 @@ spec:
         - internal.qr.democracy-app.de
         - internal.api.bundestag.io
         - internal.admin.bundestag.io
-        - internal.dip.bundestag.io
       secretName: democracy-internal-tls
   rules:
     - host: internal.api.democracy-app.de
@@ -67,13 +66,3 @@ spec:
                 name: bundestagio-admin-srv
                 port:
                   number: 3000
-    - host: internal.dip.bundestag.io
-      http:
-        paths:
-          - path: /?(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: bundestagio-dip-srv
-                port:
-                  number: 3101
