@@ -10,6 +10,7 @@ spec:
     spec:
       containers:
         - name: democracy-api
+          image: democracy/democracy-server:0.2.82
           imagePullPolicy: Always
           resources:
             requests:
