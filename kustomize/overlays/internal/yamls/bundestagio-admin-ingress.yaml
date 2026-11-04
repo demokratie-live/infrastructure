@@ -1,6 +1,8 @@
 # Eigener Ingress für den Admin, damit Schutz-Annotationen nur hier greifen.
 # Das Secret bundestagio-admin-basic-auth (Schlüssel auth, htpasswd-Format) wird
-# außerhalb des Repos angelegt.
+# außerhalb des Repos angelegt. Die IP-Allowlist (whitelist-source-range) wird per
+# kubectl annotate am Cluster gesetzt; kubectl apply lässt sie stehen. Die Annotation
+# deshalb hier nicht eintragen, sonst überschreibt bzw. entfernt ein Deploy sie.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

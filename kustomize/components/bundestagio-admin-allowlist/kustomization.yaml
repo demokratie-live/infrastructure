@@ -3,7 +3,8 @@ kind: Component
 
 # IP-Allowlist für den Admin-Ingress, zusätzlich zur Basic-Auth. Einschalten über
 # `components:` im Overlay. Der Wert unten ist ein Dokumentationsnetz und sperrt
-# alle aus, bis echte Bereiche eingetragen sind (kommagetrennt, CIDR).
+# alle aus, bis echte Bereiche eingetragen sind (kommagetrennt, CIDR). Eingeschaltet
+# ersetzt die Component eine per kubectl annotate gesetzte Allowlist.
 patches:
   - target:
       kind: Ingress
