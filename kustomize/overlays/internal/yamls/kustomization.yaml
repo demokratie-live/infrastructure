@@ -25,3 +25,49 @@ patches:
 #   - ../../../components/bundestagio-admin-allowlist
 
 namespace: democracy-internal
+
+images:
+  - name: democracy/bundestag.io
+    newTag: "0.1.74"
+  - name: democracy/cleanup-push-queue
+    newTag: "1.0.10"
+  - name: democracy/crawler
+    newTag: "1.1.14"
+  - name: democracy/democracy-app.de
+    newTag: "1.2.2"
+  - name: democracy/import-conference-week-details
+    newTag: "0.1.43"
+  - name: democracy/import-deputy-profiles
+    newTag: "0.1.26"
+  - name: democracy/import-named-poll-deputies
+    newTag: "0.1.24"
+  - name: democracy/import-named-polls
+    newTag: "0.1.30"
+  - name: democracy/import-plenary-minutes
+    newTag: "0.1.22"
+  - name: democracy/index-sync-bundestagio
+    newTag: "0.1.15"
+  - name: democracy/index-sync-democracy
+    newTag: "0.1.10"
+  - name: democracy/non-named-votes-ai
+    newTag: "1.1.8"
+  - name: democracy/procedures
+    newTag: "0.0.10"
+  - name: democracy/push-send-queued
+    newTag: "0.1.32"
+  - name: democracy/qr-code-handler
+    newTag: "1.0.16"
+  - name: democracy/queue-pushs-conference-week
+    newTag: "0.1.15"
+  - name: democracy/queue-pushs-vote-conference-week
+    newTag: "0.1.13"
+  - name: democracy/queue-pushs-vote-top-100
+    newTag: "0.1.20"
+  - name: democracy/shedule-bio-resync
+    newTag: "0.1.11"
+  - name: democracy/sync-deputy-profiles
+    newTag: "0.1.18"
+  - name: democracy/sync-named-polls
+    newTag: "0.1.20"
+  - name: democracy/sync-procedures
+    newTag: "0.1.28"
