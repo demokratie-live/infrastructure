@@ -14,6 +14,9 @@ metadata:
     nginx.ingress.kubernetes.io/auth-secret: bundestagio-admin-basic-auth
     nginx.ingress.kubernetes.io/auth-realm: 'bundestag.io admin'
     nginx.ingress.kubernetes.io/limit-rps: '20'
+    # KI-Anfragen an Claude können länger als 60 s dauern
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '300'
+    nginx.ingress.kubernetes.io/proxy-send-timeout: '300'
 spec:
   tls:
     - hosts:
