@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: bundestagio-admin
-          image: democracy/bundestag.io-admin:3.9.0@sha256:f2959db73d25a536363475d950dc724154d5bfca0f6fe40636218c4192e33774
+          image: democracy/bundestag.io-admin:3.10.0@sha256:d9f58808ae9234fd8498a383107f7188b3a4c4325383ca18f7faf4789a8249ea
           securityContext:
             allowPrivilegeEscalation: false
             seccompProfile:
