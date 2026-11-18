@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: democracy-app
-          image: democracy/democracy-app.de:1.2.2
+          image: democracy/democracy-app.de:1.2.3@sha256:2887cecb771fb49fc1df50a7851b987e0850d9d9bcfb5a08012f52db930ba787
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
