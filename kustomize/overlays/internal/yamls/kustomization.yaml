@@ -25,3 +25,7 @@ patches:
 #   - ../../../components/bundestagio-admin-allowlist
 
 namespace: democracy-internal
+
+images:
+  - name: democracy/democracy-app.de
+    newTag: "pr-758@sha256:6ed2c302bce64c277490a6c14d2cf6612175f4d3e997837d64773420d10a9b74"
