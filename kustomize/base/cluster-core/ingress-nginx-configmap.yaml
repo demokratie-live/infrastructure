@@ -1,0 +1,16 @@
+# Konfiguration des ingress-nginx-Controllers.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-nginx-controller
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.4.0
+data:
+  allow-snippet-annotations: "false"
+  use-http2: "false"
+  use-proxy-protocol: "true"
