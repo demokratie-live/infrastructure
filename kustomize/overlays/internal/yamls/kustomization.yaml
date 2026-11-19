@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ../../../base/cluster
   - ingress-srv.yaml
+  - donations-ingress.yaml
   - bundestagio-admin-ingress.yaml
 
 patches:

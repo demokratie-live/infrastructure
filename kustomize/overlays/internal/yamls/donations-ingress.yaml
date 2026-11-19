@@ -1,0 +1,31 @@
+# In-App-Spenden (democracy-client: specs/001-in-app-donations, research.md R10)
+#
+# Datenschutz (Constitution Prinzip I): Spenden-Requests dürfen nicht mit IP-Adresse protokolliert
+# werden. Sonst wären sie über IP + Zeitpunkt mit Abstimmungs-Requests auf demselben Host
+# korrelierbar. Dieses Ingress-Objekt deckt nur /donations ab; der längere Regex-Pfad hat in
+# ingress-nginx Vorrang vor '/?(.*)' aus ingress-srv.yaml. Das Zertifikat verwaltet weiterhin
+# ingress-srv.yaml (cert-manager); hier wird es nur referenziert.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: donations-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/enable-access-log: 'false'
+spec:
+  tls:
+    - hosts:
+        - internal.api.democracy-app.de
+      secretName: democracy-internal-tls
+  rules:
+    - host: internal.api.democracy-app.de
+      http:
+        paths:
+          - path: /donations/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: democracy-api-srv
+                port:
+                  number: 3000
