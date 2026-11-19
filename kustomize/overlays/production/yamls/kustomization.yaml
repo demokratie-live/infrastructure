@@ -16,6 +16,7 @@ patches:
 resources:
   - ../../../base/cluster
   - ingress-srv.yaml
+  - donations-ingress.yaml
   - bundestagio-admin-ingress.yaml
   - mongo-pdb.yaml
 
